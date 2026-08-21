@@ -1,1 +1,2661 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Spøgelseshuset – Edith og Willas eventyr</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#0e0820;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:#fff;
+    display:flex;align-items:center;justify-content:center;touch-action:none;overflow:hidden}
+  #wrap{position:relative;width:100%;max-width:880px;padding:8px}
+  #stage{position:relative;width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;
+    box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 3px #ff8a1e inset;background:#0a0518}
+  canvas{display:block;width:100%;height:100%;image-rendering:auto}
+  .screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:14px;padding:22px;background:rgba(12,6,26,.9);backdrop-filter:blur(3px);z-index:6}
+  .screen.hidden{display:none}
+  h1{font-size:clamp(26px,5.4vw,46px);color:#ff8a1e;text-shadow:0 3px 0 #7a2ecf,0 0 22px rgba(255,138,30,.55)}
+  h2{font-size:clamp(22px,4.6vw,36px);color:#ffd166}
+  p{font-size:clamp(14px,2.5vw,18px);line-height:1.5;max-width:36em;color:#f2e9ff}
+  .keys{font-size:clamp(13px,2.2vw,16px);color:#c9b6e8}
+  .btn{cursor:pointer;border:none;border-radius:999px;padding:13px 30px;font-size:clamp(16px,3vw,21px);
+    font-weight:bold;font-family:inherit;background:linear-gradient(#ffb03a,#ff7a00);color:#3a1600;
+    box-shadow:0 6px 0 #b64f00,0 10px 20px rgba(0,0,0,.4)}
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 #b64f00}
+  .picks{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .pick{cursor:pointer;border:3px solid #6b4a9e;background:#241442;color:#fff;border-radius:16px;
+    padding:6px 14px 8px;font-family:inherit;line-height:1.1;display:flex;
+    flex-direction:column;align-items:center;gap:2px}
+  .pick canvas{display:block;width:56px;height:56px}
+  .pick small{display:block;font-size:12px;color:#c9b6e8;font-weight:bold}
+  .pick.on{border-color:#ffd166;background:#4a2a86;box-shadow:0 0 16px rgba(255,209,102,.5)}
+  #sound{position:absolute;left:10px;top:10px;z-index:5;background:rgba(0,0,0,.4);border:2px solid #6b4a9e;
+    color:#fff;border-radius:10px;width:40px;height:34px;font-size:16px;cursor:pointer}
+  .pad{position:absolute;z-index:5;display:none;user-select:none}
+  #dpad{left:12px;bottom:12px;width:150px;height:150px}
+  #dpad button{position:absolute;width:48px;height:48px;border-radius:12px;border:2px solid #ffd166;
+    background:rgba(90,45,150,.72);color:#fff;font-size:20px;font-family:inherit}
+  #dpad .u{left:51px;top:0}#dpad .d{left:51px;top:100px}#dpad .l{left:0;top:50px}#dpad .r{left:102px;top:50px}
+  #actbtn{right:14px;bottom:22px;width:88px;height:88px;border-radius:50%;border:3px solid #ffd166;
+    background:rgba(138,43,226,.78);color:#fff;font-size:17px;font-weight:bold;font-family:inherit}
+  @media (pointer:coarse){.pad{display:block}}
+  .tag{font-size:13px;color:#8d7ab0;text-align:center;margin-top:8px}
+  .names{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .names label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#c9b6e8;font-weight:bold}
+  .names input{width:104px;padding:7px 9px;border-radius:10px;border:2px solid #6b4a9e;
+    background:#241442;color:#fff;font-family:inherit;font-size:15px;text-align:center}
+  .names input:focus{outline:none;border-color:#ffd166}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="game" width="800" height="600"></canvas>
+    <button id="sound" title="Lyd til/fra">&#128266;</button>
+    <div class="pad" id="dpad">
+      <button class="u" data-d="up">&#9650;</button>
+      <button class="l" data-d="left">&#9664;</button>
+      <button class="r" data-d="right">&#9654;</button>
+      <button class="d" data-d="down">&#9660;</button>
+    </div>
+    <button class="pad" id="actbtn">SNAK</button>
 
+    <div class="screen" id="startScreen">
+      <h1>&#127874; SP&Oslash;GELSESHUSET</h1>
+      <p>Edith skal finde sin lilles&oslash;ster Willa &ndash; og en hemmelig d&oslash;r, som kun en <b>guldn&oslash;gle</b> kan &aring;bne.</p>
+      <p class="keys">Find f&oslash;rst de fem gr&aelig;skarlygter til t&aring;rnet. S&aring; f&aring;r du <b>s&oslash;lvn&oslash;glen</b> til havel&aring;gen.<br>
+      Undervejs f&aring;r du f&oslash;lgesvende med i halen &#128062;</p>
+      <div class="names">
+        <label>Storesøster<input id="n1" maxlength="12" value="Edith"></label>
+        <label>Lillesøster<input id="n2" maxlength="12" value="Willa"></label>
+        <label>Katten<input id="n3" maxlength="12" value="Sokke"></label>
+        <label>Hunden<input id="n4" maxlength="12" value="Bums"></label>
+      </div>
+      <div class="picks" id="costumes">
+        <button class="pick on" data-c="&#128103;" data-k="girl"><small>Pige</small></button>
+        <button class="pick" data-c="&#129497;&#8205;&#9792;&#65039;" data-k="witch"><small>Heks</small></button>
+        <button class="pick" data-c="&#129498;&#8205;&#9792;&#65039;" data-k="fairy"><small>Fe</small></button>
+        <button class="pick" data-c="&#128123;" data-k="ghostkid"><small>Sp&oslash;gelse</small></button>
+      </div>
+      <p class="keys"><b>Piletaster</b> = g&aring; &nbsp;·&nbsp; <b>E</b> = snak / kig p&aring; ting</p>
+      <button class="btn" id="contBtn" style="display:none">Forts&aelig;t</button>
+      <div id="contInfo" class="keys" style="display:none"></div>
+      <button class="btn" id="startBtn">Ind i huset!</button>
+    </div>
+
+    <div class="screen hidden" id="winScreen">
+      <h1 id="winTitle">&#127874; TILLYKKE! &#127881;</h1>
+      <p id="winText"></p>
+      <p class="keys" id="winStats"></p>
+      <button class="btn" id="againBtn">Spil igen</button>
+    </div>
+  </div>
+  <div class="tag">Sp&oslash;gelseshuset &middot; et Halloween-f&oslash;dselsdagseventyr</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var cv=document.getElementById('game'), ctx=cv.getContext('2d');
+var W=800, H=600, TS=40, COLS=20, ROWS=12, FLOORH=ROWS*TS; // 480
+var TOTAL=5, PETS=12, MELODI=['ton2','ton1','ton3'];
+var NAMES={pige:'Edith', lille:'Willa', kat:'Sokke', hund:'Bums'};
+var PET_LIST=[['pet1','🐭'],['pet2','🐤'],['pet3','🐢'],['pet4','🐰'],['pet5','🐸'],['pet6','🦔'],
+              ['pet7','🐝'],['pet8','🦋'],['pet9','🐿️'],['pet10','🦊'],['pet11','🐹'],['pet12','🐞']];
+
+/* ================= lyd ================= */
+var actx=null, soundOn=true;
+function ensureAudio(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){actx=null;} }
+  if(actx&&actx.state==='suspended') actx.resume(); }
+function tone(f,d,t,v,dl){ if(!soundOn||!actx) return;
+  var t0=actx.currentTime+(dl||0), o=actx.createOscillator(), g=actx.createGain();
+  o.type=t||'sine'; o.frequency.setValueAtTime(f,t0);
+  g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(v||0.14,t0+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+d);
+  o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0+d+0.03); }
+function sfxTalk(){ tone(420,0.06,'square',0.05); }
+function sfxPick(){ tone(660,0.1,'triangle',0.14); tone(880,0.12,'triangle',0.12,0.08); }
+function sfxLantern(){ [523,659,784,1047].forEach(function(f,i){ tone(f,0.2,'triangle',0.13,i*0.1); }); }
+function sfxDoor(){ tone(240,0.12,'sine',0.10); tone(180,0.16,'sine',0.08,0.07); }
+function sfxLocked(){ tone(160,0.14,'square',0.10); tone(120,0.16,'square',0.08,0.1); }
+function sfxWin(){ [523,659,784,1047,1319].forEach(function(f,i){ tone(f,0.35,'triangle',0.14,i*0.14); }); }
+
+/* ================= rum ================= */
+var BASE = {
+  hall:{ title:'Entréen', floor:'wood', wall:'#3a2350', tint:'#241333',
+    map:["##########T#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "K..................L",
+         "K..................L",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########GG#########"],
+    doors:{ T:{to:'taarn', x:10, y:9, name:'Trappen op til tårnet'},
+            K:{to:'koekken', x:17, y:5, name:'Køkkenet'},
+            L:{to:'bibliotek', x:2, y:5, name:'Biblioteket'},
+            G:{to:'have', x:9, y:1, name:'Haven'} },
+    obj:[ {e:'👻', x:6, y:4, id:'bertha', w:1, solid:true},
+          {e:'🖼️', x:14, y:1, id:'maleri'},
+          {e:'🐈', x:16, y:8, id:'kat', w:1},
+          {e:'🪑', x:3, y:8, id:'stol', solid:true},
+          {e:'🕰️', x:12, y:1, id:'ur'} ,
+          {e:'🧹', x:17, y:2, id:'kost'},
+          {e:'🕯️', x:9, y:1, id:'lys2'},
+          {e:'👞', x:4, y:10, id:'sko'},
+          {e:'🐭', x:18, y:9, id:'pet1', pet:true, w:1}] },
+
+  koekken:{ title:'Køkkenet', floor:'tile', wall:'#3d3050', tint:'#2a2338',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "W..................H",
+         "W..................H",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########CC#########"],
+    doors:{ H:{to:'hall', x:2, y:5, name:'Entréen'},
+            W:{to:'badevaerelse', x:17, y:5, name:'Badeværelset'},
+            C:{to:'kaelder', x:9, y:1, name:'Kælderen'} },
+    obj:[ {e:'🎃', x:15, y:2, id:'lygte1', lantern:true},
+          {e:'🍪', x:4, y:3, id:'kage'},
+          {e:'🎀', x:9, y:9, id:'sloejfe'},
+          {e:'🍲', x:7, y:6, id:'gryde', solid:true},
+          {e:'🧅', x:12, y:8, id:'loeg'},
+          {e:'🚰', x:17, y:2, id:'vask', solid:true} ,
+          {e:'🍎', x:11, y:2, id:'aeble'},
+          {e:'🫖', x:3, y:8, id:'kande', solid:true},
+          {e:'🥧', x:16, y:6, id:'taerte'},
+          {e:'🐤', x:2, y:2, id:'pet2', pet:true, w:1}] },
+
+  bibliotek:{ title:'Biblioteket', floor:'carpet', wall:'#40254a', tint:'#2b1636',
+    map:["##########S#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "H..................M",
+         "H..................M",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ H:{to:'hall', x:17, y:5, name:'Entréen'},
+            M:{to:'musikstue', x:2, y:5, name:'Musikstuen'},
+            S:{to:'sovevaerelse', x:10, y:9, name:'Soveværelset', lock:'noegle',
+               lockMsg:'Døren er låst. Der mangler en nøgle.'} },
+    obj:[ {e:'🦇', x:10, y:3, id:'frank', w:1},
+          {e:'📚', x:3, y:2, id:'reol', solid:true},
+          {e:'📚', x:4, y:2, id:'reol2', solid:true},
+          {e:'📚', x:15, y:2, id:'reol3', solid:true},
+          {e:'🕯️', x:16, y:8, id:'lys'},
+          {e:'🪑', x:7, y:8, id:'stol2', solid:true} ,
+          {e:'🗺️', x:8, y:1, id:'kort'},
+          {e:'🔮', x:13, y:6, id:'kugle'},
+          {e:'📖', x:5, y:9, id:'bog'},
+          {e:'🐢', x:17, y:9, id:'pet3', pet:true, w:1}] },
+
+  sovevaerelse:{ title:'Soveværelset', floor:'wood', wall:'#3a2a55', tint:'#251a3d',
+    map:["##########A#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########BB#########"],
+    doors:{ B:{to:'bibliotek', x:10, y:1, name:'Biblioteket'},
+            A:{to:'loft', x:10, y:9, name:'Loftet'} },
+    obj:[ {e:'🔦', x:10, y:5, id:'lommelygte'},
+          {e:'🛏️', x:4, y:3, id:'seng', solid:true},
+          {e:'🪞', x:15, y:2, id:'spejl', solid:true},
+          {e:'🧦', x:13, y:8, id:'sok'} ,
+          {e:'🧸', x:7, y:6, id:'bamse'},
+          {e:'🕯️', x:16, y:6, id:'lys3'},
+          {e:'👒', x:3, y:9, id:'hat'},
+          {e:'🐰', x:17, y:9, id:'pet4', pet:true, w:1}] },
+
+  kaelder:{ title:'Kælderen', floor:'stone', wall:'#2a2438', tint:'#171326', dark:true,
+    map:["#########KK#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ K:{to:'koekken', x:10, y:9, name:'Køkkenet'} },
+    obj:[ {e:'🎃', x:14, y:7, id:'lygte3', lantern:true},
+          {e:'🕸️', x:3, y:3, id:'spind'},
+          {e:'📦', x:6, y:8, id:'kasse', solid:true},
+          {e:'🐀', x:16, y:3, id:'rotte', w:1},
+          {e:'🛢️', x:4, y:6, id:'toende', solid:true} ,
+          {e:'🧰', x:12, y:3, id:'vaerktoej', solid:true},
+          {e:'🕯️', x:8, y:5, id:'lys4'},
+          {e:'🪣', x:17, y:9, id:'spand'},
+          {e:'🐝', x:9, y:2, id:'pet7', pet:true, w:1}] },
+
+  have:{ outdoor:true, title:'Haven', floor:'grass', wall:'#243522', tint:'#16240f',
+    map:["#########HH#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "S..................#",
+         "S..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ H:{to:'hall', x:10, y:9, name:'Entréen'},
+            S:{to:'koekkenhave', x:17, y:5, name:'Havelågen', lock:'soelv',
+               lockMsg:'Havelågen er låst med en tung sølvlås.'} },
+    obj:[ {e:'🕷️', x:10, y:5, id:'spindeline', w:1, solid:true},
+          {e:'🌳', x:3, y:3, id:'trae', solid:true, ch:'tree', cs:1.6},
+          {e:'🌳', x:16, y:7, id:'trae2', solid:true, ch:'tree', cs:1.5},
+          {e:'🪦', x:6, y:8, id:'grav', solid:true},
+          {e:'🍄', x:14, y:3, id:'svamp'},
+          {e:'🦉', x:17, y:2, id:'ugle', w:1} ,
+          {e:'🐦', x:4, y:6, id:'krage', w:1},
+          {e:'🍂', x:12, y:8, id:'blade'},
+          {e:'🪵', x:8, y:2, id:'braende', solid:true},
+          {e:'🌻', x:15, y:9, id:'blomst'},
+          {e:'🦋', x:2, y:9, id:'pet8', pet:true, w:1}] },
+
+  taarn:{ title:'Tårnet', floor:'stone', wall:'#4a2f5e', tint:'#2c1b3e',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########HH#########"],
+    doors:{ H:{to:'hall', x:10, y:1, name:'Entréen'} },
+    obj:[ {e:'✨', x:10, y:4, id:'alter'},
+          {e:'🔭', x:15, y:6, id:'kikkert', solid:true},
+          {e:'👻', x:6, y:6, id:'oldemor', w:1, ch:'ghost2'} ,
+          {e:'🕯️', x:4, y:3, id:'lys5'},
+          {e:'🦇', x:14, y:2, id:'flagermus2', w:1},
+          {e:'🪟', x:10, y:1, id:'vindue'},
+          {e:'🦊', x:3, y:9, id:'pet10', pet:true, w:1}] },
+
+  musikstue:{ title:'Musikstuen', floor:'carpet', wall:'#452a58', tint:'#2b1a3a',
+    map:["##########X#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "B..................#",
+         "B..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ B:{to:'bibliotek', x:17, y:5, name:'Biblioteket'},
+            X:{to:'hemmelig', x:10, y:9, name:'Den hemmelige gang', flag:'melodi',
+               lockMsg:'Bag klaveret er der en revne i væggen.'} },
+    obj:[ {e:'🎹', x:10, y:3, id:'klaver', solid:true},
+          {e:'🔴', x:8, y:4, id:'ton1', key:1},
+          {e:'🟢', x:10, y:4, id:'ton2', key:1},
+          {e:'🔵', x:12, y:4, id:'ton3', key:1},
+          {e:'🎻', x:3, y:2, id:'violin', solid:true},
+          {e:'🥁', x:16, y:8, id:'tromme', solid:true},
+          {e:'🎵', x:5, y:9, id:'node'},
+          {e:'🐿️', x:17, y:2, id:'pet9', pet:true, w:1} ] },
+
+  hemmelig:{ title:'Det hemmelige kammer', floor:'stone', wall:'#4a3a2a', tint:'#2a2016',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########MM#########"],
+    doors:{ M:{to:'musikstue', x:10, y:1, name:'Musikstuen'} },
+    obj:[ {e:'🎃', x:10, y:4, id:'lygte5', lantern:true},
+          {e:'👻', x:5, y:6, id:'gemmemand', w:1},
+          {e:'💎', x:15, y:3, id:'diamant'},
+          {e:'🏺', x:3, y:3, id:'krukke', solid:true},
+          {e:'🕯️', x:14, y:8, id:'lys6'} ] },
+
+  loft:{ title:'Loftet', floor:'wood', wall:'#2a1d15', tint:'#241a14',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########SS#########"],
+    doors:{ S:{to:'sovevaerelse', x:10, y:1, name:'Soveværelset'} },
+    obj:[ {e:'🎼', x:10, y:4, id:'noder'},
+          {e:'🧳', x:4, y:3, id:'kuffert', solid:true},
+          {e:'🪆', x:15, y:3, id:'dukke'},
+          {e:'🕸️', x:17, y:8, id:'spind2'},
+          {e:'🪟', x:10, y:1, id:'tagvindue'},
+          {e:'🦔', x:6, y:9, id:'pet6', pet:true, w:1} ] },
+
+  badevaerelse:{ title:'Badeværelset', floor:'tile', wall:'#2f4550', tint:'#1c2b33',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................K",
+         "#..................K",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ K:{to:'koekken', x:2, y:5, name:'Køkkenet'} },
+    obj:[ {e:'🛁', x:5, y:4, id:'badekar', solid:true},
+          {e:'🦆', x:8, y:6, id:'and'},
+          {e:'🪥', x:14, y:3, id:'tandboerste'},
+          {e:'🪞', x:15, y:7, id:'spejl2', solid:true},
+          {e:'🧼', x:11, y:9, id:'saebe'},
+          {e:'🐸', x:16, y:2, id:'pet5', pet:true, w:1} ] },
+
+  koekkenhave:{ outdoor:true, title:'Køkkenhaven', floor:'grass', wall:'#2a3a26', tint:'#182310',
+    map:["##########A#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................H",
+         "#..................H",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ H:{to:'have', x:2, y:5, name:'Haven'},
+            A:{to:'aeblelund', x:10, y:9, name:'Æblelunden'} },
+    obj:[ {e:'🐕', x:9, y:6, id:'hund', solid:true, w:1},
+          {e:'🕳️', x:11, y:6, id:'hul'},
+          {e:'🥕', x:4, y:3, id:'gulerod'},
+          {e:'🥬', x:6, y:8, id:'salat'},
+          {e:'🌽', x:15, y:3, id:'majs', solid:true},
+          {e:'🍅', x:16, y:8, id:'tomat'},
+          {e:'🪴', x:3, y:6, id:'potte', solid:true},
+          {e:'🐹', x:17, y:2, id:'pet11', pet:true, w:1} ] },
+
+  aeblelund:{ outdoor:true, title:'Æblelunden', floor:'grass', wall:'#26331f', tint:'#141f0d',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................D",
+         "#..................D",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########KK#########"],
+    doors:{ K:{to:'koekkenhave', x:10, y:1, name:'Køkkenhaven'},
+            D:{to:'drivhus', x:2, y:5, name:'Drivhuset'} },
+    obj:[ {e:'👧', x:10, y:4, id:'soester', solid:true, w:1, ch:'sister'},
+          {e:'🧺', x:6, y:7, id:'kurv'},
+          {e:'🌳', x:4, y:2, id:'aebletrae', solid:true, ch:'appletree', cs:1.7},
+          {e:'🌳', x:15, y:2, id:'aebletrae2', solid:true, ch:'appletree', cs:1.6},
+          {e:'🍎', x:13, y:8, id:'faldaeble'},
+          {e:'🪑', x:16, y:6, id:'baenk', solid:true},
+          {e:'🐞', x:3, y:9, id:'pet12', pet:true, w:1} ] },
+
+  drivhus:{ glass:true, outdoor:true, title:'Drivhuset', floor:'tile', wall:'#2e4a3e', tint:'#1a2c24',
+    map:["##########G#########",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "A..................#",
+         "A..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "####################"],
+    doors:{ A:{to:'aeblelund', x:17, y:5, name:'Æblelunden'},
+            G:{to:'festsal', x:10, y:9, name:'Den gyldne dør', lock:'guld', need:'soester',
+               lockMsg:'En stor gylden dør. Der er et hul til en guldnøgle.'} },
+    obj:[ {e:'🌷', x:6, y:6, id:'blomst'},
+          {e:'🌵', x:15, y:3, id:'kaktus', solid:true},
+          {e:'🍓', x:5, y:3, id:'jordbaer'},
+          {e:'🪴', x:14, y:8, id:'potte2', solid:true},
+          {e:'🦎', x:17, y:9, id:'firben'},
+          {e:'🌿', x:8, y:9, id:'urter'} ] },
+
+  festsal:{ title:'Festsalen', floor:'carpet', wall:'#5e2f4a', tint:'#3a1b2e',
+    map:["####################",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#..................#",
+         "#########DD#########"],
+    doors:{ D:{to:'drivhus', x:10, y:1, name:'Drivhuset'} },
+    obj:[ {e:'🎂', x:10, y:4, id:'lagkage', solid:true},
+          {e:'🎈', x:5, y:2, id:'ballon', w:1},
+          {e:'🎈', x:15, y:2, id:'ballon2', w:1},
+          {e:'🎁', x:6, y:7, id:'gaver'},
+          {e:'👻', x:7, y:4, id:'bertha2', w:1},
+          {e:'🦇', x:13, y:3, id:'frank2', w:1},
+          {e:'🕷️', x:14, y:6, id:'spindeline2', w:1},
+          {e:'👻', x:4, y:5, id:'oldemor2', w:1, ch:'ghost2'},
+          {e:'🍰', x:16, y:8, id:'stykke'},
+          {e:'🎉', x:9, y:8, id:'konfetti'} ] }
+};
+
+/* ================= tilstand ================= */
+var rooms, cur, player, inv, flags, lanterns, dlg, toast, toastT, banner, bannerT, steps, timeSec, playing;
+var pets, melodi, motes, followers, trail, lockT, petsFound, saveT;
+var costume = '👧';
+var keys = {};
+
+var SAVEKEY = 'spoegelseshuset_edith_willa_v1';
+
+function saveGame(){
+  if(!playing) return;
+  try{
+    var objs = {};
+    for(var k in rooms){
+      objs[k] = rooms[k].obj.map(function(ob){ return (ob.seen?1:0) + (ob.gone?2:0); });
+    }
+    localStorage.setItem(SAVEKEY, JSON.stringify({
+      v:1, cur:cur, px:Math.round(player.x), py:Math.round(player.y), face:player.face,
+      inv:inv, flags:flags, lanterns:lanterns, pets:pets, petsFound:petsFound,
+      followers: followers.map(function(f){ return {e:f.e, name:f.name, size:f.size, ch:f.ch}; }),
+      names:NAMES, costume:costume, t:Math.round(timeSec), steps:Math.round(steps),
+      melodi:melodi, objs:objs
+    }));
+  }catch(e){}
+}
+function loadSave(){
+  try{
+    var raw = localStorage.getItem(SAVEKEY);
+    if(!raw) return null;
+    var d = JSON.parse(raw);
+    return (d && d.v === 1 && d.cur) ? d : null;
+  }catch(e){ return null; }
+}
+function clearSave(){ try{ localStorage.removeItem(SAVEKEY); }catch(e){} }
+
+function applySave(d){
+  newGame();
+  NAMES = d.names || NAMES;
+  costume = d.costume || costume;
+  cur = d.cur;
+  player.x = player.tx = d.px; player.y = d.py; player.face = d.face || 1;
+  inv = d.inv || {}; flags = d.flags || {};
+  lanterns = d.lanterns || 0; pets = d.pets || 0; petsFound = d.petsFound || {};
+  melodi = d.melodi || []; timeSec = d.t || 0; steps = d.steps || 0;
+  followers = (d.followers || []).map(function(f){
+    return {e:f.e, name:f.name, size:f.size||28, ch:f.ch||null,
+            x:player.x-26, y:player.y+14, b:0, face:1};
+  });
+  for(var k in (d.objs || {})){
+    if(!rooms[k]) continue;
+    for(var i=0;i<d.objs[k].length;i++){
+      var ob = rooms[k].obj[i]; if(!ob) continue;
+      ob.seen = !!(d.objs[k][i] & 1);
+      ob.gone = !!(d.objs[k][i] & 2);
+    }
+  }
+  banner = rooms[cur].title; bannerT = 2.2;
+  snapFollowers();
+}
+
+function newGame(){
+  rooms = JSON.parse(JSON.stringify(BASE));
+  cur = 'hall';
+  player = {x:10*TS+TS/2, y:9*TS+TS/2, tx:10*TS+TS/2, dir:'down', face:1, bob:0, walking:false, tilt:0};
+  mapOpen = false;
+  inv = {}; flags = {}; lanterns = 0; pets = 0; melodi = []; petsFound = {};
+  flags['visit_hall'] = true;
+  followers = []; trail = []; lockT = 0; saveT = 0; confetti = []; celebT = 0; bubble = null;
+  motes = [];
+  for(var mi=0; mi<46; mi++) motes.push({x:Math.random()*W, y:Math.random()*FLOORH,
+    v:6+Math.random()*14, d:Math.random()*6.28, s:0.8+Math.random()*1.8});
+  dlg = null; toast=null; toastT=0; banner='Entréen'; bannerT=2.2; steps=0; timeSec=0;
+  playing = true;
+}
+
+function room(){ return rooms[cur]; }
+function has(k){ return !!inv[k]; }
+function give(k){ inv[k]=true; }
+
+/* ================= dialog ================= */
+function say(lines, who, emo, onEnd, ch){
+  dlg = {lines:lines, i:0, who:who||'', e:emo||'', t:0, onEnd:onEnd||null, ch:ch||null};
+  sfxTalk();
+}
+var TYPE_SPEED = 42;
+function advance(){
+  if(!dlg) return;
+  var full = dlg.lines[dlg.i] || '';
+  if(dlg.t * TYPE_SPEED < full.length){
+    dlg.t = full.length / TYPE_SPEED + 0.4;   // f\u00f8rste tryk: skriv linjen f\u00e6rdig
+    return;
+  }
+  dlg.i++;
+  dlg.t = 0;
+  if(dlg.i >= dlg.lines.length){ var f = dlg.onEnd; dlg=null; if(f) f(); }
+  else sfxTalk();
+}
+function popup(txt){ toast = txt; toastT = 2.6; }
+
+/* ================= interaktioner ================= */
+function takeLantern(o){
+  o.gone = true; lanterns++;
+  sfxLantern();
+  say(['Du fandt en græskarlygte! 🎃',
+       'Nu har du ' + lanterns + ' af ' + TOTAL + '.',
+       lanterns >= TOTAL ? 'Skynd dig op i tårnet!' : 'Der er flere gemt i huset.'], 'Du fandt noget', '🎃');
+}
+function takeItem(o, key, lines, who, emo){
+  o.gone = true; give(key); sfxPick(); say(lines, who||'Du fandt noget', emo||o.e);
+}
+
+var EXTRA = {
+  gulerod:['En stor gulerod stikker op af jorden.','Gulerødderne','🥕'],
+  salat:['Frisk salat. En snegl har spist lidt af den.','Salaten','🥬'],
+  majs:['Høje majsplanter. Man kan gemme sig mellem dem.','Majsene','🌽'],
+  tomat:['Røde tomater der dufter af sommer.','Tomaterne','🍅'],
+  potte:['En blomsterpotte med jord i. Ikke andet.','Potten','🪴'],
+  potte2:['En potte med noget der ligner en lille palme.','Potten','🪴'],
+  aebletrae:['Et stort æbletræ fuld af røde æbler.','Æbletræet','🌳'],
+  aebletrae2:['Endnu et æbletræ. Der hænger en gynge i grenen.','Æbletræet','🌳'],
+  faldaeble:['Et nedfaldsæble. En orm kigger ud og vinker.','Æblet','🍎'],
+  baenk:['En havebænk. Her kan man sidde og kigge på månen.','Bænken','🪑'],
+  kaktus:['En kaktus med lange pigge. Rør den ikke!','Kaktussen','🌵'],
+  jordbaer:['Jordbær midt om vinteren!','Der er varmt herinde i drivhuset.','Jordbærrene','🍓'],
+  firben:['Et lille firben soler sig under lampen.','Firbenet','🦎'],
+  urter:['Persille, dild og noget der lugter mærkeligt.','Urterne','🌿'],
+  lagkage:['En kæmpe lagkage med fem lys!','Den er pyntet med græskar af marcipan.','Lagkagen','🎂'],
+  ballon:['En ballon svæver op i loftet.','Ballonen','🎈'],
+  ballon2:['Endnu en ballon. Den siger knirk, når du rører den.','Ballonen','🎈'],
+
+  stykke:['Et stykke lagkage står klar til dig.','Lagkagestykket','🍰'],
+  konfetti:['Konfetti over hele gulvet.','Nogen har vist glædet sig længe.','Konfettien','🎉'],
+  bertha2:['Jeg sagde jo, vi havde en overraskelse!','Kagen har jeg bagt helt selv.','Bertha Spøgelse','👻'],
+  frank2:['Jeg har spist tre stykker kage allerede.','Sig det ikke til Bertha.','Frank Flagermus','🦇'],
+  spindeline2:['Jeg har hængt alle guirlanderne op selv.','Spindeline','🕷️'],
+  oldemor2:['100 år har jeg ventet på en fest som denne.','Oldemor Spøgelse','👻'],
+
+  violin:['En violin uden strenge.','Den spiller alligevel en lille tone.','Violinen','🎻'],
+  tromme:['Bom! Bom!','Hele huset rystede lidt.','Trommen','🥁'],
+  node:['En løs node ligger på gulvet.','Den svæver lidt op, når du kigger.','Noden','🎵'],
+  gemmemand:['Puha, endelig nogen!','Jeg har gemt mig herinde i 80 år.','Tak fordi du åbnede døren!','Det gemte spøgelse','👻'],
+  diamant:['En kæmpe glimtende diamant.','Den er nok af glas. Men flot er den!','Diamanten','💎'],
+  krukke:['En stor lerkrukke. Der er ingenting i.','Krukken','🏺'],
+  lys6:['Et lys der har brændt i 80 år.','Lyset','🕯️'],
+  kuffert:['En gammel kuffert fuld af tøj.','Det lugter af mølkugler.','Kufferten','🧳'],
+  dukke:['En babushka-dukke. Inde i den er en mindre.','Og en mindre. Og en mindre...','Dukken','🪆'],
+  spind2:['Et kæmpe spindelvæv på loftet.','Spindeline har vist boet her engang.','Spindelvævet','🕸️'],
+  tagvindue:['Gennem tagvinduet ser du månen.','Den ligner et stort græskar.','Tagvinduet','🪟'],
+  badekar:['Et badekar med løvefødder.','Der drypper stadig vand fra hanen.','Badekarret','🛁'],
+  and:['En gul badeand.','Rap! siger den. Den har ventet længe på nogen.','Badeanden','🦆'],
+  tandboerste:['En meget gammel tandbørste.','Sikkert et spøgelses.','Tandbørsten','🪥'],
+  spejl2:['Et duggen spejl.','Nogen har skrevet "HEJ" i duggen.','Spejlet','🪞'],
+  saebe:['Et stykke sæbe formet som et græskar.','Sæben','🧼'],
+  kost:['En kost. Den står helt af sig selv.','Måske flyver den, når ingen kigger?','Kosten','🧹'],
+  lys2:['Lyset brænder, men bliver aldrig kortere.','Lyset','🕯️'],
+  lys3:['Endnu et lys der aldrig brænder ned.','Lyset','🕯️'],
+  lys4:['Et vådt lys. Det kan ikke tændes.','Lyset','🕯️'],
+  lys5:['Lyset i tårnet venter på de fire lygter.','Lyset','🕯️'],
+  sko:['Et par gamle sko. De peger mod døren.','Skoene','👞'],
+  aeble:['Et rødt æble. Der er allerede taget en bid.','Æblet','🍎'],
+  kande:['En tekande. Den fløjter helt lavt af sig selv.','Tekanden','🫖'],
+  taerte:['Græskartærte! Den dufter helt fantastisk.','Tærten','🥧'],
+  kort:['Et kort over huset:','entré, køkken, badeværelse, bibliotek, musikstue,','soveværelse, loft, kælder, have og tårn.','Kortet','🗺️'],
+  kugle:['I krystalkuglen ser du... dig selv.','Og noget der står lige bag dig. Uha!','Krystalkuglen','🔮'],
+  bog:['En åben bog: "Spøgelser er søde, hvis man er sød."','Bogen','📖'],
+  bamse:['En slidt bamse med ét øje.','Den er blevet krammet rigtig meget.','Bamsen','🧸'],
+  hat:['En stor hat med fjer. Alt for stor til dig.','Hatten','👒'],
+  vaerktoej:['En værktøjskasse. Alt er rustent.','Værktøjskassen','🧰'],
+  spand:['En spand med regnvand. Der svømmer en snegl rundt.','Spanden','🪣'],
+  krage:['Skrææh! siger kragen.','Den flytter sig ikke en tomme.','Kragen','🐦'],
+  blade:['En bunke visne blade. Der rasler noget indeni.','Bladene','🍂'],
+  braende:['Stablet brænde. Perfekt til et bål.','Brændestablen','🪵'],
+  blomst:['En solsikke der stadig blomstrer om natten.','Solsikken','🌻'],
+  flagermus2:['Frank har en lillebror. Han sover.','Lille flagermus','🦇'],
+  vindue:['Ud af vinduet ser du hele byen.','Snart kan de se jeres tårn lyse!','Vinduet','🪟']
+};
+
+function takePet(o){
+  o.gone = true; pets++; petsFound[o.id] = o.e;
+  tone(880,0.09,'sine',0.12); tone(1175,0.12,'sine',0.10,0.07);
+  var navne = {pet1:'en spøgelsesmus', pet2:'en spøgelseskylling', pet3:'en spøgelsesskildpadde',
+    pet4:'en spøgelseskanin', pet5:'en spøgelsesfrø', pet6:'et spøgelsespindsvin',
+    pet7:'en spøgelsesbi', pet8:'en spøgelsessommerfugl', pet9:'et spøgelsesegern', pet10:'en spøgelsesræv'};
+  say(['Du fandt ' + (navne[o.id]||'et lille spøgelsesdyr') + '!',
+       'Den hopper op i rækken foroven.',
+       'Kæledyr: ' + pets + ' af ' + PETS + '.'], 'Lille spøgelsesdyr', o.e);
+  checkRoomDone();
+}
+
+function pressKey(id){
+  if(flags.melodi){ say(['Melodien har allerede virket.','Den hemmelige dør står åben.'],'Klaveret','🎹'); return; }
+  if(!has('noder')){
+    say(['Pling! siger tangenten.',
+         'Men du kan ikke huske melodien.',
+         'Du mangler et nodeark, der viser rækkefølgen.',
+         'Find det, og kom tilbage hertil.'],'Klaveret','🎹');
+    return;
+  }
+  var freq = {ton1:392, ton2:494, ton3:587}[id];
+  tone(freq, 0.35, 'triangle', 0.16);
+  melodi.push(id);
+  var ok = true;
+  for(var i=0;i<melodi.length;i++) if(melodi[i] !== MELODI[i]) ok = false;
+  if(!ok){
+    melodi = [];
+    tone(120,0.3,'square',0.12);
+    say(['Plonk! Det var forkert.',
+         'Nu starter melodien forfra.',
+         'Kig på nodearket: tryk E på selve klaveret.'],'Klaveret','🎹');
+    return;
+  }
+  if(melodi.length === MELODI.length){
+    flags.melodi = true;
+    sfxLantern();
+    say(['Pling! Plong! Plang!','Der lyder et KLIK inde i væggen...','En hemmelig dør er gået op bag klaveret!'],'Klaveret','🎹');
+  } else {
+    say(['Pling! Rigtigt. (' + melodi.length + ' af ' + MELODI.length + ')'],'Klaveret','🎹');
+  }
+}
+
+function pending(ob){
+  switch(ob.id){
+    case 'bertha': return !flags.fest;
+    case 'frank': return !flags.lygte2;
+    case 'spindeline': return !flags.lygte4;
+    case 'hund': case 'hul': return !flags.hund;
+    case 'alter': return !flags.taarn;
+    case 'klaver': case 'ton1': case 'ton2': case 'ton3': return !flags.melodi;
+    case 'reol': case 'reol2': return !flags.noegle;
+    case 'gaver': return (flags.gaver || 0) < 3;
+  }
+  return false;
+}
+
+function roomProgress(rid){
+  var r = rooms[rid || cur]; if(!r) return {seen:0,total:0};
+  var seen = 0, tot = 0;
+  for(var i=0;i<r.obj.length;i++){
+    var ob = r.obj[i];
+    tot++;
+    if((ob.seen || ob.gone) && !pending(ob)) seen++;
+  }
+  return {seen:seen, total:tot};
+}
+
+function interact(o){
+  var r = room();
+  if(o.pet){ if(!(r.dark && !has('lommelygte'))){ takePet(o); return; } }
+  if(r.dark && !has('lommelygte')){
+    say(['Det er alt for mørkt til at se noget.','Måske findes der en lygte i huset?'],'Kælderen','🌑');
+    return;
+  }
+  if(!o.seen){
+    o.seen = true;
+    var rp0 = roomProgress();
+    checkRoomDone();
+  }
+  switch(o.id){
+
+    case 'bertha':
+      if(!flags.quest){
+        flags.quest = true;
+        say(['Godaften, ' + NAMES.pige + '! Jeg hedder Bertha.',
+             'Din lillesøster ' + NAMES.lille + ' løb ud i haven.',
+             'Men havelågen er låst med en sølvlås.',
+             'Find husets fem græskarlygter og tænd tårnet,',
+             'så giver jeg dig sølvnøglen!',
+             'Tryk E når du står ved noget.'],'Bertha Spøgelse','👻');
+      } else if(lanterns >= TOTAL){
+        say(['Du har alle fire! Hvor er du dygtig.','Løb op i tårnet og tænd dem!'],'Bertha Spøgelse','👻');
+      } else {
+        say(['Du har ' + lanterns + ' af ' + TOTAL + ' lygter.',
+             lanterns===0 ? 'Prøv at kigge i køkkenet.' :
+             'Nogle har brug for hjælp, før de giver slip.'],'Bertha Spøgelse','👻');
+      }
+      break;
+
+    case 'lygte1': case 'lygte3': case 'lygte5': takeLantern(o); break;
+
+    case 'ton1': case 'ton2': case 'ton3': pressKey(o.id); break;
+
+    case 'klaver':
+      if(flags.melodi){
+        say(['Klaveret har gjort sit arbejde.','Den hemmelige dør står åben.'],'Klaveret','🎹');
+      } else if(has('noder')){
+        say(['Du tager nodearket op af tasken.',
+             'Der står tre farver i rækkefølge:',
+             '🟢 grøn  –  🔴 rød  –  🔵 blå',
+             'Tryk tangenterne i den rækkefølge.'],'Nodearket','🎼');
+      } else {
+        say(['Et gammelt klaver med tre farvede tangenter.',
+             'Rød, grøn og blå.',
+             'De skal trykkes i en bestemt rækkefølge –',
+             'men du ved ikke hvilken endnu.'],'Klaveret','🎹');
+      }
+      break;
+
+    case 'gaver':
+      flags.gaver = (flags.gaver || 0) + 1;
+      sfxPick();
+      if(flags.gaver === 1)
+        say(['Du løfter den øverste gave forsigtigt.',
+             'Papiret rasler...',
+             'En tegneblok og en kæmpe kasse farver! 🖍️',
+             NAMES.lille + ' klapper i hænderne.'],'Første gave','🎁');
+      else if(flags.gaver === 2)
+        say(['Den næste gave er helt blød.',
+             'Det er en stor bamse med lilla sløjfe. 🧸',
+             '"Den skal hedde Græskar," siger ' + NAMES.lille + '.'],'Anden gave','🎁');
+      else if(flags.gaver === 3)
+        say(['Den sidste gave rasler mystisk.',
+             'En kæmpe pose slik – nok til hele huset! 🍬',
+             'Frank Flagermus kigger meget interesseret.'],'Tredje gave','🎁');
+      else
+        say(['Resten af gaverne må ' + NAMES.lille + ' pakke op selv.',
+             'Det er trods alt hendes fødselsdag.'],'Gaverne','🎁');
+      break;
+
+    case 'lagkage':
+      if(flags.pustet){ say(['Kagen smager fantastisk.'],'Lagkagen','🎂'); break; }
+      flags.pustet = true;
+      var fin = ['Alle samles om bordet.',
+                 'Hele huset synger fødselsdagssang for ' + NAMES.lille + '.',
+                 'Hun trækker vejret helt dybt ind...',
+                 'FUUUUH! Alle fem lys er pustet ud! 🎂',
+                 'Alle klapper og råber HURRA.'];
+      if(pets > 0) fin.push('Dine ' + pets + ' spøgelseskæledyr klapper med de små poter.');
+      if(followers.length) fin.push(followers.map(function(f){return f.name;}).join(' og ') + ' er lige ved siden af hende.');
+      fin.push('"Tak fordi du fandt mig, ' + NAMES.pige + '," siger ' + NAMES.lille + '.');
+      sfxWin();
+      say(fin, 'Tillykke ' + NAMES.lille + '!', '🎂', win);
+      break;
+
+    case 'kurv':
+      if(!has('koedben')){
+        o.gone = true; give('koedben'); sfxPick();
+        say(['En picnickurv med en dug over.','Indeni ligger et stort kødben! 🦴','Mon nogen er sulten?'],'Picnickurven','🧺');
+      } else say(['Kurven er tom nu.'],'Picnickurven','🧺');
+      break;
+
+    case 'soester':
+      if(!flags.soester){
+        flags.soester = true; o.gone = true;
+        addFollower('👧', NAMES.lille, 30, 'sister');
+        sfxLantern();
+        say([NAMES.lille + '! Der er du jo!',
+             '"Jeg kunne ikke finde vej hjem," siger hun.',
+             'Hun tager dig i hånden.',
+             'Nu følger ' + NAMES.lille + ' med dig overalt.'], NAMES.lille, '👧');
+      }
+      break;
+
+    case 'hund':
+      if(flags.hund){ say(['Vov!','' + NAMES.hund + ' logrer og går lige i hælene på dig.'], NAMES.hund, '🐕'); }
+      else if(has('koedben')){
+        flags.hund = true; inv.koedben = false; give('guld'); o.gone = true;
+        addFollower('🐕', NAMES.hund, 30, 'dog');
+        sfxLantern();
+        say(['Vov! Hunden snupper kødbenet.',
+             'Så begynder den at grave i hullet...',
+             'Grav, grav, grav... KLIRR!',
+             'Der ligger en GULDNØGLE i jorden! 🔑',
+             'Hunden hedder ' + NAMES.hund + ' og vil med dig.'],'En glad hund','🐕');
+      } else {
+        say(['Vov! En hund står og graver ved et hul.',
+             'Den kigger meget sultent på dig.',
+             '"Den mangler vist noget at spise," tænker du.'],'En sulten hund','🐕');
+      }
+      break;
+
+    case 'hul':
+      say(flags.hund ? ['Et tomt hul. Guldnøglen lå her.'] :
+        ['Et dybt hul i jorden.','Noget metal glimter helt nede i bunden.','Men du kan ikke nå det.'],'Hullet','🕳️');
+      break;
+
+    case 'blomst':
+      if(!has('blomst')){ o.gone = true; give('blomst'); sfxPick();
+        say(['En smuk tulipan.','Den ville være en fin gave til en fødselar.'],'Du plukkede en blomst','🌷');
+      }
+      break;
+
+    case 'noder': takeItem(o,'noder',['Et gammelt, gulnet nodeark.','Der står tre farver: grøn – rød – blå.','Mon der står et klaver i huset?'],'Du fandt nodearket','🎼'); break;
+
+    case 'kage': takeItem(o,'kage',['En blød havrekage.','Den dufter dejligt. Måske er nogen sulten?'],'Du tog en kage','🍪'); break;
+    case 'sloejfe': takeItem(o,'sloejfe',['En lille rød sløjfe.','Mon nogen savner den?'],'Du tog en sløjfe','🎀'); break;
+    case 'lommelygte': takeItem(o,'lommelygte',['En lommelygte – og den virker!','Nu tør du gå i kælderen.'],'Du tog lommelygten','🔦'); break;
+
+    case 'reol': case 'reol2':
+      if(!flags.noegle){
+        flags.noegle = true; give('noegle'); sfxPick();
+        say(['Du kigger bag de støvede bøger...','Der ligger en lille messingnøgle! 🗝️','Mon den passer til en dør heroppe?'],'Reolen','📚');
+      } else say(['Bare gamle bøger om græskar og tåge.'],'Reolen','📚');
+      break;
+    case 'reol3': say(['"Sådan taler du med flagermus" – bind 3.','Den er lidt for tyk til dig.'],'Reolen','📚'); break;
+
+    case 'frank':
+      if(flags.lygte2){ say(['Mums. Tak for kagen!','Held og lykke med tårnet.'],'Frank Flagermus','🦇'); }
+      else if(has('kage')){
+        flags.lygte2 = true; inv.kage = false; lanterns++;
+        sfxLantern();
+        say(['En kage! Til MIG?','Så må du få min lygte.','Jeg har passet godt på den.',
+             'Du har nu ' + lanterns + ' af ' + TOTAL + ' lygter.'],'Frank Flagermus','🦇');
+      } else {
+        say(['Hej! Jeg hænger her og er sulten.','Har du noget at spise?','Så får du min græskarlygte.'],'Frank Flagermus','🦇');
+      }
+      break;
+
+    case 'spindeline':
+      if(flags.lygte4){ say(['Min sløjfe sidder så fint!','Tak for hjælpen, lille ven.'],'Spindeline','🕷️'); }
+      else if(has('sloejfe')){
+        flags.lygte4 = true; inv.sloejfe = false; lanterns++;
+        sfxLantern();
+        say(['Min sløjfe! Jeg har ledt hele natten.','Værsgo – tag min græskarlygte.',
+             'Du har nu ' + lanterns + ' af ' + TOTAL + ' lygter.'],'Spindeline Edderkop','🕷️');
+      } else {
+        say(['Hulk... jeg har tabt min røde sløjfe.','Jeg tror, jeg tabte den, da jeg spiste.','Finder du den, får du min lygte.'],'Spindeline Edderkop','🕷️');
+      }
+      break;
+
+    case 'alter':
+      if(flags.taarn){
+        say(['Tårnet lyser ud over hele byen.','Skynd dig ud i haven, ' + NAMES.pige + '!'],'Tårnets alter','✨');
+      } else if(lanterns >= TOTAL){
+        flags.taarn = true; give('soelv'); sfxWin();
+        say(['Du sætter den sidste lygte på plads...',
+             'PLING! Hele tårnet lyser op! ✨',
+             'Bertha kommer flyvende: "Tak, ' + NAMES.pige + '!"',
+             '"Her er sølvnøglen til havelågen."',
+             '"Din lillesøster ' + NAMES.lille + ' løb ud i haven."',
+             '"Skynd dig – vi har en overraskelse til hende!"'],'TÅRNET LYSER!','✨');
+      } else {
+        say([TOTAL + ' tomme pladser til lygter.','Du har ' + lanterns + '. Bliv ved med at lede!','En af dem er rigtig godt gemt...'],'Tårnets alter','✨');
+      }
+      break;
+
+    /* små ting man kan kigge på */
+    case 'maleri': say(['Et maleri af en meget sur mand.','Hans øjne følger dig. Uha!'],'Maleriet','🖼️'); break;
+    case 'ur': say(['Uret er stoppet på tre minutter i midnat.','Det har det været i 100 år.'],'Gammelt ur','🕰️'); break;
+    case 'kat':
+      if(!flags.sokke){
+        flags.sokke = true; o.gone = true;
+        addFollower('🐈', NAMES.kat, 26, 'cat');
+        tone(660,0.12,'sine',0.12); tone(880,0.14,'sine',0.10,0.09);
+        say(['Miav!','Katten hedder ' + NAMES.kat + '.','Nu følger den efter dig overalt.'], NAMES.kat, '🐈');
+      } else say(['Miav!'], NAMES.kat, '🐈');
+      break;
+    case 'stol': case 'stol2': say(['En knirkende stol. Den knirker af sig selv.'],'Stolen','🪑'); break;
+    case 'gryde': say(['Der bobler grøn suppe i gryden.','Den lugter af sokker. Nej tak.'],'Gryden','🍲'); break;
+    case 'loeg': say(['Et løg. Du får tårer i øjnene.'],'Løget','🧅'); break;
+    case 'vask': say(['Vandhanen drypper. Drip. Drip. Drip.'],'Vasken','🚰'); break;
+    case 'lys': say(['Et stearinlys. Det blafrer, selvom der ikke er vind.'],'Lyset','🕯️'); break;
+    case 'seng': say(['Sengen er redt. Nogen har lige ligget her...','Dynen er stadig varm.'],'Sengen','🛏️'); break;
+    case 'spejl': say(['Du kigger i spejlet.','Dit spejlbillede vinker – men det gjorde du ikke.'],'Spejlet','🪞'); break;
+    case 'sok': say(['En enkelt sok. Den anden er nok i kælderen.'],'Sokken','🧦'); break;
+    case 'spind': say(['Et stort spindelvæv. Ingen hjemme.'],'Spindelvævet','🕸️'); break;
+    case 'kasse': say(['Kassen er fuld af gamle julepynt.','Forkert højtid!'],'Kassen','📦'); break;
+    case 'rotte': say(['Pip! siger rotten.','Den løber ind under en tønde.'],'Rotten','🐀'); break;
+    case 'toende': say(['En tom tønde. Den runger, når du banker.'],'Tønden','🛢️'); break;
+    case 'trae': case 'trae2': say(['Et træ uden blade.','Grenene ligner lange fingre.'],'Træet','🌳'); break;
+    case 'grav': say(['På stenen står: "Her hviler Hansi – god hund".'],'Gravstenen','🪦'); break;
+    case 'svamp': say(['En lysende paddehat. Rør den hellere ikke.'],'Svampen','🍄'); break;
+    case 'ugle': say(['Uhu! Uglen kigger på dig.','"Kælderen er mørk," siger den. "Tag lys med."'],'Uglen','🦉'); break;
+    case 'kikkert': say(['Gennem kikkerten ser du hele byen.','Alle vinduer lyser – kun jeres hus er mørkt.'],'Kikkerten','🔭'); break;
+    case 'oldemor': say(['Jeg er husets ældste spøgelse.','Jeg har ventet 100 år på lys i tårnet.','Skynd dig, lille ven!'],'Oldemor Spøgelse','👻'); break;
+    default:
+      if(EXTRA[o.id]){
+        var x = EXTRA[o.id].slice();
+        var emo = x.pop(), who = x.pop();
+        say(x, who, emo);
+      } else say(['Der sker ikke noget.'],'Hmm','❓');
+  }
+}
+
+function win(){
+  playing = false; sfxWin();
+  document.getElementById('winText').innerHTML =
+    NAMES.pige + ' t&aelig;ndte t&aring;rnet, fik s&oslash;lvn&oslash;glen og kom ud i haven.<br>' +
+    'Hun fandt ' + NAMES.lille + ' under &aelig;bletr&aelig;et, og hunden gravede guldn&oslash;glen op.<br>' +
+    'Bag den gyldne d&oslash;r stod hele sp&oslash;gelseshuset klar med lagkage, balloner og gaver &ndash;<br>' +
+    '<b>' + NAMES.lille + ' fylder 5 &aring;r i dag!</b> &#127874;';
+  document.getElementById('winStats').innerHTML =
+    'Tid: ' + Math.floor(timeSec/60) + ' min ' + (Math.floor(timeSec)%60) + ' sek &nbsp;·&nbsp; skridt: ' + Math.floor(steps) +
+    '<br>I halen: <b>' + (followers.length ? followers.map(function(f){return f.name;}).join(', ') : 'ingen') + '</b>' +
+    '<br>Sp&oslash;gelsesk&aelig;ledyr fundet: <b>' + pets + ' af ' + PETS + '</b>' +
+    (pets >= PETS ? ' &ndash; alle sammen! &#127881;' : ' &ndash; pr&oslash;v igen og find resten!');
+  document.getElementById('winTitle').innerHTML = '&#127874; TILLYKKE, ' + NAMES.lille.toUpperCase() + '! &#127881;';
+  clearSave();
+  document.getElementById('winScreen').classList.remove('hidden');
+}
+
+/* ================= bevægelse ================= */
+function doorLocked(d){
+  if(d.lock && !has(d.lock)) return true;
+  if(d.flag && !flags[d.flag]) return true;
+  if(d.need && !flags[d.need]) return true;
+  return false;
+}
+function lockLines(d){
+  if(d.need && !flags[d.need] && (!d.lock || has(d.lock)))
+    return ['Du har guldnøglen – men vent!', 'Vi kan da ikke holde fødselsdag uden ' + NAMES.lille + '.', 'Find hende først.'];
+  if(d.flag) return [d.lockMsg, 'Måske kan man åbne den med musik?'];
+  if(d.lock === 'soelv') return [d.lockMsg, 'Måske findes der en sølvnøgle et sted?'];
+  if(d.lock === 'guld') return [d.lockMsg, 'Der må findes en guldnøgle et sted i haven.'];
+  return [d.lockMsg, 'Måske ligger nøglen gemt et sted.'];
+}
+function tileAt(r, tx, ty){
+  if(ty<0||ty>=ROWS||tx<0||tx>=COLS) return '#';
+  return r.map[ty].charAt(tx);
+}
+function solidAt(r, px, py){
+  var tx = Math.floor(px/TS), ty = Math.floor(py/TS);
+  var c = tileAt(r, tx, ty);
+  if(c === '#') return true;
+  if(r.doors[c] && doorLocked(r.doors[c])) return true;
+  for(var i=0;i<r.obj.length;i++){
+    var o = r.obj[i];
+    if(o.solid && !o.gone && o.x===tx && o.y===ty) return true;
+  }
+  return false;
+}
+function canMove(r, nx, ny){
+  var hw = 11;
+  return !solidAt(r,nx-hw,ny-hw) && !solidAt(r,nx+hw,ny-hw) &&
+         !solidAt(r,nx-hw,ny+hw) && !solidAt(r,nx+hw,ny+hw);
+}
+function nearest(){
+  var r = room(), best=null, bd=1e9;
+  for(var i=0;i<r.obj.length;i++){
+    var o = r.obj[i]; if(o.gone) continue;
+    var wb = wobOf(o);
+    var ox = o.x*TS+TS/2 + wb.x, oy = o.y*TS+TS/2 + wb.y;
+    var d = Math.hypot(ox-player.x, oy-player.y);
+    if(o.seen && !pending(o)) d += 26;
+    if(pending(o)) d -= 14;
+    if(d < 62 && d < bd){ bd=d; best=o; }
+  }
+  return best;
+}
+function lockedAhead(r){
+  var fx = player.x, fy = player.y;
+  if(player.dir === 'left') fx -= 22; else if(player.dir === 'right') fx += 22;
+  else if(player.dir === 'up') fy -= 22; else fy += 22;
+  var c = tileAt(r, Math.floor(fx/TS), Math.floor(fy/TS));
+  var d = r.doors[c];
+  return (d && doorLocked(d)) ? d : null;
+}
+
+function unstick(r){
+  if(canMove(r, player.x, player.y)) return;
+  var btx = Math.floor(player.x/TS), bty = Math.floor(player.y/TS);
+  for(var rad=1; rad<14; rad++){
+    for(var dy=-rad; dy<=rad; dy++){
+      for(var dx=-rad; dx<=rad; dx++){
+        var tx = btx+dx, ty = bty+dy;
+        if(tx<0 || ty<0 || tx>=COLS || ty>=ROWS) continue;
+        var px = tx*TS+TS/2, py = ty*TS+TS/2;
+        if(canMove(r, px, py)){
+          player.x = px; player.y = py; player.tx = px;
+          snapFollowers(); return;
+        }
+      }
+    }
+  }
+  player.x = player.tx = W/2; player.y = FLOORH/2; snapFollowers();
+}
+
+function tryDoor(){
+  var r = room();
+  var tx = Math.floor(player.x/TS), ty = Math.floor(player.y/TS);
+  var c = tileAt(r, tx, ty);
+  var d = r.doors[c];
+  if(!d) return;
+  if(doorLocked(d)) return;
+  if(r.dark && !has('lommelygte')){ /* stadig lov at gå ud */ }
+  cur = d.to;
+  flags['visit_'+cur] = true;
+  var t = rooms[cur];
+  player.x = d.x*TS+TS/2; player.y = d.y*TS+TS/2;
+  banner = t.title; bannerT = 2.0;
+  snapFollowers();
+  sfxDoor();
+  saveGame();
+  bubble = null;
+  setTimeout(function(){ if(cur === d.to) roomTalk(); }, 900);
+  if(cur === 'festsal' && !flags.fest){
+    flags.fest = true;
+    sfxWin();
+    var l = ['Døren går op...',
+             'TILLYKKE, ' + NAMES.lille + '!!! 🎉',
+             'Hele huset råber i kor.',
+             'Der står lagkage, balloner og gaver.',
+             '"Vi har øvet os i 100 år," hvisker Bertha.',
+             NAMES.lille + ' bliver 5 år i dag – og hun griner højt.'];
+    if(has('blomst')) l.push('Du giver hende tulipanen. Hun krammer dig.');
+    l.push('Snak med gæsterne – og tryk så E ved lagkagen.');
+    banner = t.title; bannerT = 2.0; snapFollowers();
+    say(l, 'SURPRISE!', '🎂');
+    return;
+  }
+  if(t.dark && !has('lommelygte') && !flags.darkSeen){
+    flags.darkSeen = true;
+    say(['Uh, her er helt mørkt!','Du kan næsten ingenting se.','Du må hellere finde en lygte først.'],'Kælderen','🌑');
+  }
+}
+
+function update(dt){
+  timeSec += dt;
+  if(playing){
+    saveT += dt;
+    if(saveT > 5){ saveT = 0; saveGame(); }
+  }
+  if(toastT>0) toastT -= dt;
+  if(bannerT>0) bannerT -= dt;
+  if(dlg){ dlg.t += dt; return; }
+  if(mapOpen) return;
+  if(!playing) return;
+
+  var sp = 175, dx=0, dy=0;
+  if(keys.left) dx-=1; if(keys.right) dx+=1;
+  if(keys.up) dy-=1; if(keys.down) dy+=1;
+  if(dx&&dy){ dx*=0.707; dy*=0.707; }
+  player.walking = !!(dx||dy);
+  if(dx<0){ player.dir='left'; player.face=-1; } else if(dx>0){ player.dir='right'; player.face=1; }
+  else if(dy<0) player.dir='up'; else if(dy>0) player.dir='down';
+
+  var r = room();
+  unstick(r);
+  var blocked = false;
+  var nx = player.x + dx*sp*dt;
+  if(canMove(r, nx, player.y)) player.x = nx; else if(dx) blocked = true;
+  var ny = player.y + dy*sp*dt;
+  if(canMove(r, player.x, ny)) player.y = ny; else if(dy) blocked = true;
+
+  if(lockT > 0) lockT -= dt;
+  if(blocked && lockT <= 0){
+    var ld = lockedAhead(r);
+    if(ld){ lockT = 5; sfxLocked(); say(lockLines(ld), 'Lukket dør', '🔒'); }
+  }
+
+  updateTrail();
+  if(player.walking){ player.bob += dt*10; steps += Math.abs(dx)+Math.abs(dy); }
+  else player.bob = 0;
+
+  tryDoor();
+}
+
+/* ================= tegning ================= */
+function emoji(e,x,y,size,alpha){
+  ctx.save(); if(alpha!==undefined) ctx.globalAlpha=alpha;
+  ctx.font = size+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(e,x,y); ctx.restore();
+}
+
+function seedRnd(seed){
+  var x = Math.sin(seed) * 43758.5453;
+  return x - Math.floor(x);
+}
+function ensureDecor(r, rid){
+  if(r._decor) return r._decor;
+  var d = {tufts:[], patches:[], stones:[], petals:[]}, n = 0;
+  var base = 0;
+  for(var i=0;i<rid.length;i++) base += rid.charCodeAt(i)*(i+3);
+  for(var t=0;t<150;t++){
+    var a = seedRnd(base + t*1.7), b = seedRnd(base + t*3.1 + 7);
+    d.tufts.push({x: a*W, y: 26 + b*(FLOORH-52), s: 0.7 + seedRnd(base+t*5.3)*0.8,
+                  c: seedRnd(base+t*2.3)});
+  }
+  for(var q=0;q<18;q++){
+    d.patches.push({x: seedRnd(base+q*11.3)*W, y: 20 + seedRnd(base+q*7.9)*(FLOORH-40),
+                    rx: 40 + seedRnd(base+q*13.7)*90, ry: 22 + seedRnd(base+q*17.1)*40,
+                    l: seedRnd(base+q*19.3) > 0.5});
+  }
+  for(var k=0;k<14;k++){
+    d.stones.push({x: seedRnd(base+k*23.1)*W, y: 24 + seedRnd(base+k*29.7)*(FLOORH-48),
+                   r: 2 + seedRnd(base+k*31.3)*3.5});
+  }
+  r._decor = d;
+  return d;
+}
+
+function drawGrass(r, rid){
+  var g = ctx.createLinearGradient(0,0,0,FLOORH);
+  g.addColorStop(0,'#31603a'); g.addColorStop(0.55,'#2a5432'); g.addColorStop(1,'#22452a');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,FLOORH);
+  var d = ensureDecor(r, rid);
+  ctx.save();
+  for(var i=0;i<d.patches.length;i++){
+    var p2 = d.patches[i];
+    ctx.globalAlpha = p2.l ? 0.035 : 0.055;
+    ctx.fillStyle = p2.l ? '#a8dc96' : '#0f2b17';
+    ctx.beginPath(); ctx.ellipse(p2.x, p2.y, p2.rx, p2.ry, 0, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  for(var j=0;j<d.stones.length;j++){
+    var st = d.stones[j];
+    ctx.fillStyle='rgba(150,150,140,.16)';
+    ctx.beginPath(); ctx.ellipse(st.x, st.y, st.r, st.r*0.7, 0, 0, 6.283); ctx.fill();
+  }
+  ctx.lineCap='round';
+  for(var t=0;t<d.tufts.length;t++){
+    var tu = d.tufts[t];
+    var sway = Math.sin(timeSec*1.1 + tu.x*0.05)*1.6;
+    ctx.strokeStyle = tu.c > 0.66 ? 'rgba(158,210,138,.22)'
+                    : (tu.c > 0.33 ? 'rgba(112,172,102,.20)' : 'rgba(52,108,58,.30)');
+    ctx.lineWidth = 1.15*tu.s;
+    for(var bl=-1; bl<=1; bl++){
+      var lean = bl*0.9 + (tu.c - 0.5)*1.3;
+      ctx.beginPath();
+      ctx.moveTo(tu.x + bl*1.9, tu.y);
+      ctx.quadraticCurveTo(tu.x + bl*1.9 + lean*2.2 + sway*0.3, tu.y - 3.6*tu.s,
+                           tu.x + bl*1.6 + lean*5.2 + sway, tu.y - 7.0*tu.s);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+function drawGlassFloor(){
+  var g = ctx.createLinearGradient(0,0,0,FLOORH);
+  g.addColorStop(0,'#7b7263'); g.addColorStop(1,'#5f5749');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,FLOORH);
+  ctx.strokeStyle='rgba(0,0,0,.10)'; ctx.lineWidth=1.4;
+  for(var y=0;y<ROWS;y++){
+    ctx.beginPath(); ctx.moveTo(0,y*TS); ctx.lineTo(W,y*TS); ctx.stroke();
+  }
+  for(var x=0;x<COLS;x++){
+    ctx.beginPath(); ctx.moveTo(x*TS,0); ctx.lineTo(x*TS,FLOORH); ctx.stroke();
+  }
+  // plantebede med muld
+  var beds = [[0, 60, W, 76], [0, FLOORH-160, W, 76]];
+  for(var b=0;b<beds.length;b++){
+    var bd = beds[b];
+    ctx.fillStyle='#4b3524'; ctx.fillRect(bd[0], bd[1], bd[2], bd[3]);
+    ctx.fillStyle='rgba(255,255,255,.05)'; ctx.fillRect(bd[0], bd[1], bd[2], 5);
+    ctx.fillStyle='rgba(0,0,0,.22)'; ctx.fillRect(bd[0], bd[1]+bd[3]-6, bd[2], 6);
+    ctx.fillStyle='rgba(120,90,60,.5)';
+    for(var d2=0; d2<90; d2++){
+      var dx2 = (d2*97 + b*37) % W, dy2 = bd[1] + 8 + ((d2*53 + b*11) % (bd[3]-16));
+      ctx.fillRect(dx2, dy2, 2, 2);
+    }
+    ctx.strokeStyle='rgba(90,150,90,.55)'; ctx.lineWidth=2; ctx.lineCap='round';
+    for(var pl=0; pl<26; pl++){
+      var px2 = 16 + pl*30 + (b*14);
+      var sw2 = Math.sin(timeSec*0.9 + pl)*2;
+      ctx.beginPath();
+      ctx.moveTo(px2, bd[1]+bd[3]-12);
+      ctx.quadraticCurveTo(px2-3+sw2, bd[1]+bd[3]-26, px2+2+sw2, bd[1]+bd[3]-36);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(px2, bd[1]+bd[3]-12);
+      ctx.quadraticCurveTo(px2+5+sw2, bd[1]+bd[3]-24, px2+9+sw2, bd[1]+bd[3]-31);
+      ctx.stroke();
+    }
+  }
+  // måneskin gennem glastaget
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  for(var st2=0; st2<5; st2++){
+    var g2 = ctx.createLinearGradient(st2*180-60, 0, st2*180+40, FLOORH);
+    g2.addColorStop(0,'rgba(220,240,255,.09)');
+    g2.addColorStop(1,'rgba(220,240,255,0)');
+    ctx.fillStyle=g2; ctx.fillRect(st2*180-60, 0, 100, FLOORH);
+  }
+  ctx.restore();
+}
+
+function drawFloor(r){
+  if(r.glass){ drawGlassFloor(); return; }
+  if(r.floor === 'grass'){
+    drawGrass(r, cur);
+    if(r.outdoor){
+      var mg = ctx.createRadialGradient(W*0.78, -60, 40, W*0.78, -60, 520);
+      mg.addColorStop(0,'rgba(215,230,255,.16)');
+      mg.addColorStop(1,'rgba(215,230,255,0)');
+      ctx.fillStyle = mg; ctx.fillRect(0,0,W,FLOORH);
+    }
+    var vg2 = ctx.createRadialGradient(W/2,FLOORH/2,140,W/2,FLOORH/2,520);
+    vg2.addColorStop(0,'rgba(0,0,0,0)'); vg2.addColorStop(1,'rgba(0,0,0,.34)');
+    ctx.fillStyle=vg2; ctx.fillRect(0,0,W,FLOORH);
+    return;
+  }
+  var base = {wood:'#5a3d28', tile:'#6a5a52', carpet:'#5a2f4a', stone:'#454353', grass:'#31562f'}[r.floor] || '#4a3a55';
+  ctx.fillStyle = base; ctx.fillRect(0,0,W,FLOORH);
+  ctx.save();
+  if(r.floor==='wood'){
+    ctx.strokeStyle='rgba(0,0,0,.22)'; ctx.lineWidth=2;
+    for(var y=0;y<FLOORH;y+=20){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    ctx.strokeStyle='rgba(255,255,255,.05)';
+    for(var x=0;x<W;x+=120){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,FLOORH); ctx.stroke(); }
+  } else if(r.floor==='tile'){
+    for(var ty=0;ty<ROWS;ty++) for(var tx=0;tx<COLS;tx++){
+      if((tx+ty)%2===0){ ctx.fillStyle='rgba(255,255,255,.06)'; ctx.fillRect(tx*TS,ty*TS,TS,TS); }
+    }
+  } else if(r.floor==='carpet'){
+    ctx.strokeStyle='rgba(255,200,120,.10)'; ctx.lineWidth=3;
+    for(var i=1;i<6;i++){ ctx.strokeRect(i*22, i*16, W-i*44, FLOORH-i*32); }
+  } else if(r.floor==='stone'){
+    ctx.strokeStyle='rgba(0,0,0,.28)'; ctx.lineWidth=2;
+    for(var sy=0;sy<ROWS;sy++) for(var sx=0;sx<COLS;sx++){
+      ctx.strokeRect(sx*TS + (sy%2?20:0), sy*TS, TS, TS);
+    }
+  }
+  ctx.restore();
+  // vignette
+  var vg = ctx.createRadialGradient(W/2,FLOORH/2,120,W/2,FLOORH/2,520);
+  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.38)');
+  ctx.fillStyle=vg; ctx.fillRect(0,0,W,FLOORH);
+}
+
+function drawWalls(r){
+  for(var ty=0;ty<ROWS;ty++){
+    for(var tx=0;tx<COLS;tx++){
+      var c = r.map[ty].charAt(tx);
+      var X = tx*TS, Y = ty*TS;
+      if(c === '#'){
+        if(r.glass){
+          ctx.fillStyle='#38504a'; ctx.fillRect(X,Y,TS,TS);
+          ctx.fillStyle='rgba(190,235,255,.20)'; ctx.fillRect(X+3,Y+3,TS-6,TS-6);
+          ctx.strokeStyle='rgba(230,250,255,.35)'; ctx.lineWidth=2;
+          ctx.strokeRect(X+3,Y+3,TS-6,TS-6);
+          ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.lineWidth=1.4;
+          ctx.beginPath(); ctx.moveTo(X+7,Y+TS-7); ctx.lineTo(X+TS-7,Y+7); ctx.stroke();
+        } else if(r.outdoor){
+          ctx.fillStyle='#173219'; ctx.fillRect(X,Y,TS,TS);
+          var seedH = X*0.13 + Y*0.29;
+          ctx.fillStyle='#20441f';
+          ctx.beginPath();
+          ctx.arc(X+9, Y+13, 13, 0, 6.283);
+          ctx.arc(X+29, Y+11, 14, 0, 6.283);
+          ctx.arc(X+19, Y+29, 14, 0, 6.283);
+          ctx.fill();
+          ctx.fillStyle='#2c5c2a';
+          ctx.beginPath();
+          ctx.arc(X+11, Y+9, 8.5, 0, 6.283);
+          ctx.arc(X+30, Y+16, 7.5, 0, 6.283);
+          ctx.fill();
+          ctx.fillStyle='rgba(150,205,130,.22)';
+          for(var hb=0; hb<4; hb++){
+            var hx = X + 5 + ((seedH*37 + hb*11) % 30);
+            var hy = Y + 5 + ((seedH*53 + hb*17) % 28);
+            ctx.beginPath(); ctx.arc(hx, hy, 2.4, 0, 6.283); ctx.fill();
+          }
+          ctx.fillStyle='rgba(0,0,0,.26)'; ctx.fillRect(X,Y+TS-5,TS,5);
+        } else {
+          ctx.fillStyle = r.wall; ctx.fillRect(X,Y,TS,TS);
+          ctx.fillStyle = 'rgba(255,255,255,.10)'; ctx.fillRect(X,Y,TS,7);
+          ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(X,Y+TS-6,TS,6);
+        }
+      } else if(r.doors[c]){
+        var d = r.doors[c];
+        var locked = doorLocked(d);
+        ctx.fillStyle = locked ? '#5a3a2a' : '#7a4a22';
+        ctx.fillRect(X,Y,TS,TS);
+        ctx.fillStyle = locked ? 'rgba(0,0,0,.35)' : 'rgba(255,210,120,.28)';
+        ctx.fillRect(X+3,Y+3,TS-6,TS-6);
+        emoji(locked ? '🔒' : '🚪', X+TS/2, Y+TS/2, 24);
+      }
+    }
+  }
+}
+
+
+/* ============================================================
+   FIGURER – alt tegnes med kurver, ingen emoji
+   Alle figurer vender mod HØJRE som udgangspunkt.
+   ============================================================ */
+function norm(e){ return (e||'').replace(/[\uFE0F\u200D]/g,''); }
+var CHARMAP = {};
+[['👻','ghost'],['🦇','bat'],['🕷️','spider'],['🐈','cat'],['🐕','dog'],
+ ['👧','girl'],['🧙‍♀️','witch'],['🧚‍♀️','fairy']].forEach(function(pp){ CHARMAP[norm(pp[0])] = pp[1]; });
+function charKind(e, o){
+  if(o && o.ch) return o.ch;
+  return CHARMAP[norm(e)] || null;
+}
+
+function rr(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+var LOOK = {
+  girl:   {skin:'#f8d3b2', hair:'#e3b26a', hair2:'#caa055', dress:'#e2557f', dress2:'#b23a60',
+           legs:'#f6ceac', shoe:'#5b3b8c', style:'long'},
+  sister: {skin:'#fbdcc0', hair:'#f0cf72', hair2:'#d9b249', dress:'#7fc9e8', dress2:'#4f9dc4',
+           legs:'#fbdcc0', shoe:'#e2557f', style:'pigtails'},
+  witch:  {skin:'#f6ceac', hair:'#3c2a1e', hair2:'#2a1c14', dress:'#6a3fa8', dress2:'#432573',
+           legs:'#4a3a6a', shoe:'#241540', style:'long', hat:1},
+  fairy:  {skin:'#f6ceac', hair:'#d98a4a', hair2:'#b96f34', dress:'#8fd9a8', dress2:'#4fae7a',
+           legs:'#f6ceac', shoe:'#ffd166', style:'bun', wings:1}
+};
+
+function face2(){
+  ctx.fillStyle='#3a2a22';
+  ctx.beginPath(); ctx.arc(-2.6,-14.4, 1.25, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(2.9,-14.4, 1.25, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(-2.2,-14.9, 0.42, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(3.3,-14.9, 0.42, 0, 6.283); ctx.fill();
+  ctx.fillStyle='rgba(232,120,132,.45)';
+  ctx.beginPath(); ctx.arc(-5.0,-11.6, 1.9, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(5.2,-11.6, 1.9, 0, 6.283); ctx.fill();
+  ctx.strokeStyle='#9a5240'; ctx.lineWidth=0.85; ctx.lineCap='round';
+  ctx.beginPath(); ctx.arc(0.2,-12.9, 2.5, 0.22*Math.PI, 0.78*Math.PI); ctx.stroke();
+}
+
+function person(L, t, walking){
+  var sw = walking ? Math.sin(t*13) : 0;
+  var bob = walking ? Math.abs(Math.sin(t*13))*1.1 : Math.sin(t*1.8)*0.5;
+  ctx.save();
+  ctx.translate(0, -bob);
+
+  if(L.wings){
+    var fl = 1 + Math.sin(t*14)*0.16;
+    ctx.save(); ctx.globalAlpha = 0.5;
+    var wg = ctx.createLinearGradient(0,-14,0,4);
+    wg.addColorStop(0,'#eafcff'); wg.addColorStop(1,'#8fd9f5');
+    ctx.fillStyle = wg;
+    ctx.beginPath(); ctx.ellipse(-8.5,-7, 5.2*fl, 8.5, -0.55, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(8.5,-7, 5.2*fl, 8.5, 0.55, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+
+  /* ben */
+  ctx.fillStyle = L.legs;
+  rr(-5.4, 5.5 + sw*1.5, 4.3, 9.2 - sw*1.1, 2); ctx.fill();
+  rr(1.1, 5.5 - sw*1.5, 4.3, 9.2 + sw*1.1, 2); ctx.fill();
+  ctx.fillStyle = L.shoe;
+  rr(-6.3, 13.6 + sw*1.5, 5.8, 3.4, 1.6); ctx.fill();
+  rr(0.6, 13.6 - sw*1.5, 5.8, 3.4, 1.6); ctx.fill();
+
+  /* arme bagest */
+  ctx.strokeStyle = L.skin; ctx.lineWidth = 2.9; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-4.2,-5.5); ctx.lineTo(-8.0, 0.5 - sw*2.2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(4.2,-5.5); ctx.lineTo(8.0, 0.5 + sw*2.2); ctx.stroke();
+
+  /* kjole */
+  var g = ctx.createLinearGradient(0,-8,0,10);
+  g.addColorStop(0, L.dress); g.addColorStop(1, L.dress2);
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(-4.6,-7.5);
+  ctx.quadraticCurveTo(-10.5, 3, -9.6, 8.2);
+  ctx.quadraticCurveTo(0, 11.2, 9.6, 8.2);
+  ctx.quadraticCurveTo(10.5, 3, 4.6,-7.5);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.18)';
+  ctx.beginPath();
+  ctx.moveTo(-4.6,-7.5); ctx.quadraticCurveTo(-7.5,-1,-6.6,3); ctx.lineTo(-2.5,2.4);
+  ctx.quadraticCurveTo(-3.0,-2.5,-1.6,-7.2); ctx.closePath(); ctx.fill();
+
+  /* hals + hoved */
+  ctx.fillStyle = L.skin;
+  rr(-1.8,-9.5, 3.6, 3.4, 1.4); ctx.fill();
+
+  if(L.style === 'long'){
+    ctx.fillStyle = L.hair2;
+    ctx.beginPath(); ctx.ellipse(-7.6,-13.4, 3.5, 9.0, 0.05, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(7.6,-13.4, 3.5, 9.0, -0.05, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0,-16.4, 8.6, 7.6, 0, 0, 6.283); ctx.fill();
+  }
+  if(L.style === 'pigtails'){
+    ctx.fillStyle = L.hair2;
+    ctx.beginPath(); ctx.ellipse(0,-16.4, 8.4, 7.2, 0, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.arc(-8.6,-13.0, 4.2, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.arc(8.6,-13.0, 4.2, 0, 6.283); ctx.fill();
+    ctx.fillStyle='#e2557f';
+    ctx.beginPath(); ctx.arc(-8.6,-17.4, 1.9, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.arc(8.6,-17.4, 1.9, 0, 6.283); ctx.fill();
+  }
+
+  ctx.fillStyle = L.skin;
+  ctx.beginPath(); ctx.arc(0,-14.2, 7.7, 0, 6.283); ctx.fill();
+
+  /* pandehår */
+  ctx.fillStyle = L.hair;
+  ctx.beginPath();
+  ctx.arc(0,-15.0, 7.9, Math.PI*1.02, Math.PI*2.02);
+  ctx.quadraticCurveTo(4.5,-12.5, 7.7,-13.6);
+  ctx.lineTo(7.7,-15.0);
+  ctx.closePath(); ctx.fill();
+  if(L.style === 'bun'){
+    ctx.fillStyle = L.hair2;
+    ctx.beginPath(); ctx.arc(-6.5,-20.5, 4.2, 0, 6.283); ctx.fill();
+  }
+
+  face2();
+
+  if(L.hat){
+    ctx.fillStyle='#4b2a7a';
+    ctx.beginPath();
+    ctx.moveTo(-8.5,-19.5);
+    ctx.quadraticCurveTo(-3,-31, 1.5,-33.5);
+    ctx.quadraticCurveTo(6,-28, 8.5,-19.5);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#3a1f61';
+    ctx.beginPath(); ctx.ellipse(0,-19.4, 12.5, 3.4, 0, 0, 6.283); ctx.fill();
+    ctx.fillStyle='#ffd166';
+    rr(-7.4,-22.4, 14.4, 2.9, 1.2); ctx.fill();
+    ctx.fillStyle='#ff8a1e';
+    ctx.beginPath(); ctx.arc(4.6,-21.0, 1.5, 0, 6.283); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function ghostBody(t, alpha, tone, glasses){
+  var fl = Math.sin(t*1.9)*1.8;
+  ctx.save();
+  ctx.globalAlpha = alpha === undefined ? 0.93 : alpha;
+  ctx.translate(0, fl);
+  var g = ctx.createLinearGradient(0,-19,0,12);
+  g.addColorStop(0,'#ffffff'); g.addColorStop(1, tone || '#c7cfe8');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(-10.5, 6.5);
+  ctx.lineTo(-10.5,-4);
+  ctx.arc(0,-4, 10.5, Math.PI, 0, false);
+  ctx.lineTo(10.5, 6.5);
+  ctx.quadraticCurveTo(8.0, 11.5 + Math.sin(t*3)*0.8, 5.2, 6.5);
+  ctx.quadraticCurveTo(2.6, 2.4, 0.0, 6.5);
+  ctx.quadraticCurveTo(-2.6, 11.5 - Math.sin(t*3)*0.8, -5.2, 6.5);
+  ctx.quadraticCurveTo(-8.0, 2.4, -10.5, 6.5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle='rgba(120,110,160,.16)';
+  ctx.beginPath(); ctx.ellipse(4.5,-2, 4.5, 9, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#332a4d';
+  ctx.beginPath(); ctx.ellipse(-3.7,-6.2, 2.0, 2.7, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(3.7,-6.2, 2.0, 2.7, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(-3.2,-7.1, 0.7, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(4.2,-7.1, 0.7, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#332a4d';
+  ctx.beginPath(); ctx.ellipse(0,-0.6, 2.5, 3.1, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='rgba(255,150,170,.42)';
+  ctx.beginPath(); ctx.arc(-7.0,-2.0, 2.3, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(7.0,-2.0, 2.3, 0, 6.283); ctx.fill();
+  if(glasses){
+    ctx.strokeStyle='#8a7a5a'; ctx.lineWidth=0.9;
+    ctx.beginPath(); ctx.arc(-3.7,-6.2, 3.4, 0, 6.283); ctx.stroke();
+    ctx.beginPath(); ctx.arc(3.7,-6.2, 3.4, 0, 6.283); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-0.3,-6.2); ctx.lineTo(0.3,-6.2); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function catBody(t, walking, col, col2){
+  var sw = walking ? Math.sin(t*14) : 0;
+  var wag = Math.sin(t*5);
+  ctx.strokeStyle = col; ctx.lineWidth = 3.0; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-7.5, 2);
+  ctx.quadraticCurveTo(-13.5, 0 + wag*2.5, -12.5,-7 + wag*2);
+  ctx.stroke();
+  ctx.fillStyle = col;
+  rr(-5.5, 5.5 + sw*1.2, 3.0, 6.5, 1.4); ctx.fill();
+  rr(2.6, 5.5 - sw*1.2, 3.0, 6.5, 1.4); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-0.5, 3, 8.5, 5.6, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = col2;
+  ctx.beginPath(); ctx.ellipse(-0.5, 5.4, 6.4, 3.0, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = col;
+  ctx.beginPath();
+  ctx.moveTo(3.4,-6.4); ctx.lineTo(2.6,-12.6); ctx.lineTo(7.6,-8.6); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(10.4,-7.4); ctx.lineTo(12.4,-12.4); ctx.lineTo(13.4,-6.0); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(8.2,-4.2, 6.3, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#ffd94a';
+  ctx.beginPath(); ctx.ellipse(6.2,-5.2, 1.5, 2.0, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(10.8,-5.2, 1.5, 2.0, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#241a2e';
+  ctx.beginPath(); ctx.ellipse(6.3,-5.2, 0.6, 1.7, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(10.9,-5.2, 0.6, 1.7, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#e8909f';
+  ctx.beginPath(); ctx.moveTo(8.5,-1.6); ctx.lineTo(7.3,-2.9); ctx.lineTo(9.7,-2.9); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.65)'; ctx.lineWidth=0.7;
+  ctx.beginPath(); ctx.moveTo(11.5,-2.4); ctx.lineTo(16.5,-3.4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(11.5,-1.4); ctx.lineTo(16.5,-0.4); ctx.stroke();
+}
+
+function dogBody(t, walking){
+  var sw = walking ? Math.sin(t*13) : 0;
+  var wag = Math.sin(t*11);
+  var body='#c98a4e', body2='#e8b785', dark='#a96c36';
+  ctx.strokeStyle = body; ctx.lineWidth=3.4; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-8, 1);
+  ctx.quadraticCurveTo(-13,-3 + wag*2, -11.5,-9 + wag*3.5);
+  ctx.stroke();
+  ctx.fillStyle = body;
+  rr(-6.4, 5.5 + sw*1.3, 3.4, 7.2, 1.6); ctx.fill();
+  rr(2.8, 5.5 - sw*1.3, 3.4, 7.2, 1.6); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-1, 2.6, 9.2, 6.2, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = body2;
+  ctx.beginPath(); ctx.ellipse(-1, 5.4, 6.6, 3.2, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = body;
+  ctx.beginPath(); ctx.arc(8, -4, 6.6, 0, 6.283); ctx.fill();
+  ctx.fillStyle = dark;
+  ctx.beginPath(); ctx.ellipse(4.6,-4.4, 3.0, 5.4, 0.18, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(12.0,-4.9, 2.6, 4.8, -0.18, 0, 6.283); ctx.fill();
+  ctx.fillStyle = body2;
+  ctx.beginPath(); ctx.ellipse(11.4, 0.4, 4.6, 3.4, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#2c2029';
+  ctx.beginPath(); ctx.ellipse(14.0,-0.6, 1.7, 1.4, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(6.6,-5.6, 1.3, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(10.8,-5.9, 1.3, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(7.0,-6.1, 0.45, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(11.2,-6.4, 0.45, 0, 6.283); ctx.fill();
+  ctx.strokeStyle='#2c2029'; ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.arc(12.6, 1.6, 1.8, 0.1*Math.PI, 0.9*Math.PI); ctx.stroke();
+}
+
+function batBody(t){
+  var fl = Math.sin(t*7.5);
+  ctx.fillStyle='#57407a';
+  ctx.beginPath();
+  ctx.moveTo(-1,-2);
+  ctx.quadraticCurveTo(-9,-9 - fl*4, -16,-2 + fl*3);
+  ctx.quadraticCurveTo(-12, 0, -9, 3.5);
+  ctx.quadraticCurveTo(-5, 1, -1, 3);
+  ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(1,-2);
+  ctx.quadraticCurveTo(9,-9 + fl*4, 16,-2 - fl*3);
+  ctx.quadraticCurveTo(12, 0, 9, 3.5);
+  ctx.quadraticCurveTo(5, 1, 1, 3);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#6d51963';
+  ctx.fillStyle='#6d5196';
+  ctx.beginPath(); ctx.ellipse(0, 0.5, 5.4, 6.4, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#57407a';
+  ctx.beginPath(); ctx.moveTo(-4.6,-4.6); ctx.lineTo(-5.4,-10.4); ctx.lineTo(-1.2,-6.4); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(4.6,-4.6); ctx.lineTo(5.4,-10.4); ctx.lineTo(1.2,-6.4); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(-2.2,-1.4, 2.0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(2.2,-1.4, 2.0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#2b2039';
+  ctx.beginPath(); ctx.arc(-1.9,-1.2, 1.05, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(2.5,-1.2, 1.05, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.moveTo(-1.8, 2.6); ctx.lineTo(-0.6, 2.6); ctx.lineTo(-1.2, 4.4); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(0.6, 2.6); ctx.lineTo(1.8, 2.6); ctx.lineTo(1.2, 4.4); ctx.closePath(); ctx.fill();
+}
+
+function spiderBody(t){
+  ctx.strokeStyle='#3a2f4d'; ctx.lineWidth=1.7; ctx.lineCap='round';
+  for(var i=0;i<4;i++){
+    var yy = -3.5 + i*2.9;
+    var w = Math.sin(t*4.5 + i*0.8)*1.5;
+    ctx.beginPath(); ctx.moveTo(-3.5, yy);
+    ctx.quadraticCurveTo(-9.5, yy-4+w, -12.5, yy+3.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(3.5, yy);
+    ctx.quadraticCurveTo(9.5, yy-4-w, 12.5, yy+3.5); ctx.stroke();
+  }
+  ctx.fillStyle='#463a5c';
+  ctx.beginPath(); ctx.ellipse(0, 2.5, 7.2, 6.4, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.10)';
+  ctx.beginPath(); ctx.ellipse(-2, 1, 3.2, 2.6, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#574769';
+  ctx.beginPath(); ctx.arc(0,-5.4, 4.8, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(-1.9,-6.2, 1.7, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(1.9,-6.2, 1.7, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#2b2039';
+  ctx.beginPath(); ctx.arc(-1.7,-6.0, 0.9, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(2.1,-6.0, 0.9, 0, 6.283); ctx.fill();
+  ctx.fillStyle='rgba(255,150,170,.4)';
+  ctx.beginPath(); ctx.arc(-4.0,-3.6, 1.5, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(4.0,-3.6, 1.5, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#e05a86';
+  ctx.beginPath(); ctx.moveTo(-6.6,-8.6); ctx.lineTo(-3.4,-9.6); ctx.lineTo(-5.4,-11.4); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-2.4,-10.4); ctx.lineTo(-5.6,-9.2); ctx.lineTo(-3.0,-12.4); ctx.closePath(); ctx.fill();
+}
+
+function treeChar(t, kind){
+  var sway = Math.sin(t*0.9)*1.4;
+  ctx.fillStyle='#4a3020';
+  ctx.beginPath();
+  ctx.moveTo(-4.5, 17); ctx.quadraticCurveTo(-2.6, 4, -3.2,-3);
+  ctx.lineTo(3.2,-3); ctx.quadraticCurveTo(2.6, 4, 4.5, 17);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#3a2417'; ctx.lineWidth=2.4; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-1,-1); ctx.lineTo(-6+sway,-7); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(1,-1); ctx.lineTo(6+sway,-7); ctx.stroke();
+  var base = kind === 'appletree' ? '#2d6b33' : '#2a6030';
+  var hi   = kind === 'appletree' ? '#3f8c46' : '#3a7c40';
+  ctx.fillStyle = base;
+  ctx.beginPath(); ctx.arc(-8.5+sway,-10, 8.6, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(8.5+sway,-10, 8.6, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(0+sway,-15, 7.6, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(-4+sway,-19, 8.4, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(5+sway,-19, 8.0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = hi;
+  ctx.beginPath(); ctx.arc(-5.5+sway,-21, 5.0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(4+sway,-13.5, 4.4, 0, 6.283); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,.14)';
+  ctx.beginPath(); ctx.arc(9.5+sway,-8, 5.4, 0, 6.283); ctx.fill();
+  if(kind === 'appletree'){
+    var ap = [[-9,-6],[7,-6.5],[-2,-12],[10,-13],[-6,-16]];
+    for(var i=0;i<ap.length;i++){
+      ctx.fillStyle='#c9314a';
+      ctx.beginPath(); ctx.arc(ap[i][0]+sway, ap[i][1], 2.5, 0, 6.283); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.5)';
+      ctx.beginPath(); ctx.arc(ap[i][0]-0.8+sway, ap[i][1]-0.9, 0.8, 0, 6.283); ctx.fill();
+    }
+  }
+}
+
+function drawChar(kind, x, y, o){
+  o = o || {};
+  var t = (o.t === undefined) ? timeSec : o.t;
+  var sc = o.scale || 1;
+  var fc = o.face || 1;
+  var walking = !!o.walking;
+  if(!o.noShadow){
+    ctx.save(); ctx.globalAlpha = 0.30; ctx.fillStyle='#000';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 16.5*sc, 10.5*sc, 3.8*sc, 0, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+  ctx.save();
+  if(o.alpha !== undefined) ctx.globalAlpha = o.alpha;
+  ctx.translate(x, y);
+  ctx.scale(fc*sc, sc);
+  ctx.lineJoin = 'round';
+  switch(kind){
+    case 'girl':   person(LOOK.girl, t, walking); break;
+    case 'sister': ctx.scale(0.84,0.84); ctx.translate(0,4); person(LOOK.sister, t, walking); break;
+    case 'witch':  person(LOOK.witch, t, walking); break;
+    case 'fairy':  person(LOOK.fairy, t, walking); break;
+    case 'ghostkid': ghostBody(t, 0.95, '#d8def0'); break;
+    case 'ghost':  ctx.scale(1.08,1.08); ghostBody(t, 0.93, '#c7cfe8'); break;
+    case 'ghost2': ghostBody(t, 0.9, '#e6dcf0', true); break;
+    case 'cat':    catBody(t, walking, '#4a4350', '#6d6478'); break;
+    case 'dog':    dogBody(t, walking); break;
+    case 'bat':    batBody(t); break;
+    case 'spider': spiderBody(t); break;
+    case 'tree': case 'appletree': treeChar(t, kind); break;
+  }
+  ctx.restore();
+}
+
+function wobOf(o){
+  if(!o.w) return {x:0,y:0};
+  var ph = (o.x*7 + o.y*13);
+  return {x:Math.sin(timeSec*0.9 + ph)*11, y:Math.cos(timeSec*0.7 + ph*1.3)*7};
+}
+
+function drawMotes(){
+  var out = !!room().outdoor;
+  ctx.save();
+  for(var i=0;i<motes.length;i++){
+    var m = motes[i];
+    m.y -= m.v*0.016; m.x += Math.sin(timeSec*0.6 + m.d)*0.35;
+    if(m.y < -6){ m.y = FLOORH+6; m.x = Math.random()*W; }
+    if(out){
+      var pulse = Math.pow(Math.abs(Math.sin(timeSec*1.8 + m.d)), 3);
+      m.x += Math.cos(timeSec*0.5 + m.d*2)*0.5;
+      ctx.globalAlpha = 0.10 + 0.75*pulse;
+      var fg = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 7);
+      fg.addColorStop(0,'#f6ffb0'); fg.addColorStop(0.35,'rgba(210,255,120,.6)');
+      fg.addColorStop(1,'rgba(180,255,90,0)');
+      ctx.fillStyle = fg;
+      ctx.beginPath(); ctx.arc(m.x, m.y, 7, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = 0.25 + 0.7*pulse;
+      ctx.fillStyle = '#fbffd8';
+      ctx.beginPath(); ctx.arc(m.x, m.y, 1.5, 0, 6.283); ctx.fill();
+    } else {
+      ctx.globalAlpha = 0.10 + 0.10*Math.abs(Math.sin(timeSec*1.5 + m.d));
+      ctx.fillStyle = '#fff3d0';
+      ctx.beginPath(); ctx.arc(m.x, m.y, m.s, 0, 6.283); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+function checkRoomDone(){
+  if(flags['done_' + cur]) return;
+  var rp = roomProgress();
+  if(rp.total > 0 && rp.seen >= rp.total){
+    flags['done_' + cur] = true;
+    celebrate();
+  }
+}
+
+function talkLines(f){
+  if(f.ch === 'sister') return [
+    '"Jeg bliver FEM år. Ikke fire. FEM."',
+    '"Må jeg godt holde lommelygten?"',
+    '"Er du helt sikker på, at spøgelserne er søde?"',
+    '"Jeg kan tælle til tyve nu. Vil du høre?"',
+    '"Jeg er lidt sulten. Er der kage bagefter?"',
+    '"Du er den bedste storesøster, ' + NAMES.pige + '."',
+    '"Jeg holder i din hånd, okay?"',
+    '"Hvis der kommer et monster, så gemmer jeg mig bag dig."'
+  ];
+  if(f.ch === 'cat') return [
+    'Miav! ' + f.name + ' maser sig ind om dine ben.',
+    f.name + ' spinder så højt, at det kilder i foden.',
+    f.name + ' slikker sig om munden.',
+    f.name + ' stirrer på noget, du overhovedet ikke kan se. Uha.',
+    f.name + ' strækker sig langt og gaber.'
+  ];
+  if(f.ch === 'dog') return [
+    'Vov! Halen går som en propel.',
+    f.name + ' snuser grundigt til dine sko.',
+    f.name + ' lægger en stor pote oven på din fod.',
+    f.name + ' gaber, så man kan se helt ned i halsen.',
+    f.name + ' vender sig tre gange rundt og sætter sig.'
+  ];
+  return ['...'];
+}
+function talkFollower(f){
+  var L = talkLines(f);
+  f.li = ((f.li || 0) + 1) % L.length;
+  sfxTalk();
+  say([L[f.li]], f.name, f.e, null, f.ch);
+}
+function nearestFollower(){
+  var best = null, bd = 1e9;
+  for(var i=0;i<followers.length;i++){
+    var d = Math.hypot(followers[i].x - player.x, followers[i].y - player.y);
+    if(d < 95 && d < bd){ bd = d; best = followers[i]; }
+  }
+  return best;
+}
+
+var ROOMTALK = {
+  hall:        [['sister','"Sikke et stort hus," hvisker %L%.']],
+  koekken:     [['sister','%L% kigger sultent på gryden.'],['dog','%N% snuser ivrigt efter mad.']],
+  badevaerelse:[['dog','%N% kigger tørstigt på badekarret.'],['sister','"Uh, her dryppet det."']],
+  bibliotek:   [['sister','"Der er ALT for mange bøger her."']],
+  musikstue:   [['sister','"Må jeg også spille på klaveret?"']],
+  sovevaerelse:[['sister','%L% gaber. "Må jeg lægge mig lidt?"']],
+  loft:        [['sister','"Her lugter af gammelt tøj."'],['cat','%N% forsvinder ind bag en kasse.']],
+  kaelder:     [['sister','%L% holder ekstra fast i din hånd.'],['cat','%N% kan tydeligvis se i mørke.']],
+  taarn:       [['sister','"Man kan se hele byen herfra!"']],
+  hemmelig:    [['sister','"En HEMMELIG dør! Hvor er du sej."']],
+  have:        [['cat','%N% strækker sig i det våde græs.'],['sister','"Se, ildfluer!"']],
+  koekkenhave: [['dog','%N% vil helt vildt gerne grave i bedet.']],
+  aeblelund:   [['cat','%N% kigger længselsfuldt op i æbletræet.'],['sister','"Jeg sad her og ventede på dig."']],
+  drivhus:     [['sister','"Her er varmt som om sommeren."']],
+  festsal:     [['sister','%L% kan slet ikke stå stille.']]
+};
+var bubble = null;
+var confetti = [], celebT = 0;
+function celebrate(){
+  celebT = 2.6;
+  var cols = ['#ff8a1e','#ffd166','#8be0a0','#9be2ff','#e2557f','#c39bff'];
+  for(var i=0;i<70;i++){
+    confetti.push({
+      x: player.x + (Math.random()-0.5)*90,
+      y: player.y - 10 + (Math.random()-0.5)*40,
+      vx: (Math.random()-0.5)*260,
+      vy: -120 - Math.random()*220,
+      rot: Math.random()*6.28, vrot: (Math.random()-0.5)*11,
+      w: 4 + Math.random()*5, h: 6 + Math.random()*7,
+      c: cols[Math.floor(Math.random()*cols.length)],
+      life: 1.5 + Math.random()*1.1
+    });
+  }
+  [660,880,1050,1320].forEach(function(f,i){ tone(f,0.20,'triangle',0.13,i*0.09); });
+}
+function drawConfetti(dt){
+  for(var i=confetti.length-1;i>=0;i--){
+    var c = confetti[i];
+    c.vy += 460*dt; c.x += c.vx*dt; c.y += c.vy*dt;
+    c.rot += c.vrot*dt; c.life -= dt;
+    if(c.life <= 0 || c.y > FLOORH+20){ confetti.splice(i,1); continue; }
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, c.life));
+    ctx.translate(c.x, c.y); ctx.rotate(c.rot);
+    ctx.fillStyle = c.c; ctx.fillRect(-c.w/2, -c.h/2, c.w, c.h);
+    ctx.restore();
+  }
+  if(celebT > 0){
+    var k = Math.min(1, (2.6 - celebT)*4);
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, celebT*1.3);
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    var sc = 0.6 + 0.4*Math.min(1,k) + Math.sin(timeSec*7)*0.02;
+    ctx.translate(W/2, FLOORH*0.34); ctx.scale(sc, sc);
+    ctx.font='bold 46px "Trebuchet MS",sans-serif';
+    ctx.lineWidth=8; ctx.strokeStyle='#2a1240'; ctx.lineJoin='round';
+    ctx.strokeText('ALT SET HER!', 0, 0);
+    ctx.fillStyle='#9be89b'; ctx.fillText('ALT SET HER!', 0, 0);
+    ctx.font='bold 20px "Trebuchet MS",sans-serif';
+    ctx.strokeText('Du har kigget p\u00e5 hver eneste ting i rummet', 0, 40);
+    ctx.fillStyle='#ffd166'; ctx.fillText('Du har kigget p\u00e5 hver eneste ting i rummet', 0, 40);
+    ctx.restore();
+  }
+}
+function roomTalk(){
+  var list = ROOMTALK[cur]; if(!list || !followers.length) return;
+  var ok = [];
+  for(var i=0;i<list.length;i++){
+    for(var j=0;j<followers.length;j++){
+      if(followers[j].ch === list[i][0]) ok.push({fi:j, txt:list[i][1], f:followers[j]});
+    }
+  }
+  if(!ok.length) return;
+  if(Math.random() > 0.72) return;
+  var pick = ok[Math.floor(Math.random()*ok.length)];
+  bubble = {fi:pick.fi, t:4.2,
+    text: pick.txt.replace('%L%', NAMES.lille).replace('%N%', pick.f.name)};
+}
+function drawBubble(){
+  if(!bubble || bubble.t <= 0) return;
+  var f = followers[bubble.fi]; if(!f) return;
+  ctx.save();
+  ctx.globalAlpha = Math.min(1, bubble.t*1.6);
+  ctx.font='bold 15px "Trebuchet MS",sans-serif';
+  var w = Math.min(330, ctx.measureText(bubble.text).width + 24);
+  var bxx = Math.max(w/2+8, Math.min(W-w/2-8, f.x));
+  var byy = Math.max(30, f.y - 46);
+  ctx.fillStyle='rgba(252,248,255,.95)';
+  rr(bxx-w/2, byy-15, w, 30, 12); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(bxx-6, byy+13); ctx.lineTo(bxx+6, byy+13); ctx.lineTo(bxx, byy+23);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#3a2a50'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(bubble.text, bxx, byy);
+  ctx.restore();
+}
+
+function addFollower(e, name, size, ch){
+  followers.push({e:e, name:name, size:size||28, ch:ch||null,
+                  x:player.x-30, y:player.y+16, b:0, face:1});
+}
+function snapFollowers(){
+  trail = [];
+  for(var i=0;i<followers.length;i++){
+    followers[i].x = player.x - 22 - i*16;
+    followers[i].y = player.y + 14 + i*8;
+  }
+}
+function updateTrail(){
+  var h = trail[0];
+  if(!h || Math.hypot(player.x-h.x, player.y-h.y) > 3.5){
+    trail.unshift({x:player.x, y:player.y});
+    if(trail.length > 300) trail.pop();
+  }
+}
+function drawFollowers(){
+  for(var i=0;i<followers.length;i++){
+    var f = followers[i];
+    var idx = Math.min(trail.length-1, (i+1)*13);
+    var t = trail[idx] || {x:player.x-30, y:player.y+16};
+    var dx = t.x - f.x, dy = t.y - f.y;
+    f.x += dx*0.14; f.y += dy*0.14;
+    var moving = Math.hypot(dx,dy) > 2.5;
+    if(dx < -1.2) f.face = -1; else if(dx > 1.2) f.face = 1;
+    var fk = charKind(f.e, f);
+    if(fk){
+      drawChar(fk, f.x, f.y, {t: timeSec + i*0.7, face: f.face, walking: moving,
+                              scale: fk === 'dog' ? 0.9 : (fk === 'cat' ? 0.88 : 0.95)});
+    } else {
+      f.b = moving ? Math.sin(timeSec*10 + i)*3 : 0;
+      ctx.save(); ctx.globalAlpha=0.3; ctx.fillStyle='#000';
+      ctx.beginPath(); ctx.ellipse(f.x, f.y+11, f.size*0.38, 4, 0, 0, 6.283); ctx.fill(); ctx.restore();
+      emoji(f.e, f.x, f.y + f.b, f.size);
+    }
+  }
+}
+
+function drawObjects(r){
+  var list = r.obj.slice().sort(function(a,b){ return a.y-b.y; });
+  for(var i=0;i<list.length;i++){
+    var o = list[i]; if(o.gone) continue;
+    var wb = wobOf(o);
+    var ox = o.x*TS+TS/2 + wb.x, oy = o.y*TS+TS/2 + wb.y;
+    var fl = 0;
+    if(o.e === '🕯️'){
+      var fk = 0.5 + 0.16*Math.sin(timeSec*9 + o.x) + 0.08*Math.sin(timeSec*23 + o.y);
+      ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha = 0.20*fk;
+      var cg = ctx.createRadialGradient(ox,oy,4,ox,oy,80);
+      cg.addColorStop(0,'#ffd9a0'); cg.addColorStop(1,'rgba(255,180,80,0)');
+      ctx.fillStyle=cg; ctx.fillRect(ox-80,oy-80,160,160); ctx.restore();
+    }
+    if(o.key){
+      ctx.save();
+      ctx.fillStyle='#f3ead8';
+      ctx.fillRect(ox-17, oy-22, 34, 46);
+      ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fillRect(ox-17, oy+18, 34, 6);
+      ctx.strokeStyle='#4a3a2a'; ctx.lineWidth=2; ctx.strokeRect(ox-17, oy-22, 34, 46);
+      ctx.restore();
+    }
+    if(o.pet){
+      ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.22+0.10*Math.sin(timeSec*3+o.x);
+      var pg = ctx.createRadialGradient(ox,oy,2,ox,oy,34);
+      pg.addColorStop(0,'#dff3ff'); pg.addColorStop(1,'rgba(180,220,255,0)');
+      ctx.fillStyle=pg; ctx.fillRect(ox-34,oy-34,68,68); ctx.restore();
+    }
+    if(o.lantern){
+      ctx.save(); ctx.globalAlpha=0.35;
+      ctx.fillStyle='#ffb03a';
+      ctx.beginPath(); ctx.arc(ox,oy,24+Math.sin(timeSec*4)*3,0,6.283); ctx.fill(); ctx.restore();
+    }
+    if(!charKind(o.e, o)){
+      ctx.save(); ctx.globalAlpha=0.3; ctx.fillStyle='#000';
+      ctx.beginPath(); ctx.ellipse(ox, oy+15, 13, 5, 0, 0, 6.283); ctx.fill(); ctx.restore();
+    }
+    var ck = charKind(o.e, o);
+    if(ck){
+      drawChar(ck, ox, oy, {t: timeSec + o.x*0.4, face: o.face || -1, walking: false,
+                            scale: o.cs || 0.95});
+    } else {
+      emoji(o.e, ox, oy + fl, o.pet ? 27 : 34, o.pet ? 0.8 : ((o.seen && !pending(o)) ? 0.72 : undefined));
+    }
+    var pend = pending(o);
+    if(o.seen || pend){
+      var kx = ox + 13, ky = oy - 13;
+      ctx.save();
+      ctx.globalAlpha = 0.92;
+      ctx.fillStyle = pend ? '#e8a92e' : '#3aa657';
+      ctx.beginPath(); ctx.arc(kx, ky, 7.4, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 1.7; ctx.stroke();
+      if(pend){
+        ctx.fillStyle='#fff';
+        rr(kx-1.2, ky-4.4, 2.4, 5.4, 1.1); ctx.fill();
+        ctx.beginPath(); ctx.arc(kx, ky+3.1, 1.35, 0, 6.283); ctx.fill();
+      } else {
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.3; ctx.lineCap='round'; ctx.lineJoin='round';
+        ctx.beginPath();
+        ctx.moveTo(kx-3.2, ky+0.1); ctx.lineTo(kx-0.9, ky+2.7); ctx.lineTo(kx+3.4, ky-2.7);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+  }
+}
+
+function playerKind(){
+  if(norm(costume) === norm('\uD83D\uDC7B')) return 'ghostkid';
+  return charKind(costume, null) || 'girl';
+}
+function drawPlayer(){
+  drawChar(playerKind(), player.x, player.y, {
+    t: timeSec, face: player.face || 1, walking: player.walking, scale: 1.05
+  });
+  if(has('lommelygte') && room().dark){
+    // lille lyskegle-glimt
+  }
+}
+
+function drawDark(){
+  var r = room();
+  if(!r.dark) return;
+  var rad = has('lommelygte') ? 175 : 66;
+  if(!drawDark.buf){ drawDark.buf = document.createElement('canvas'); drawDark.buf.width=W; drawDark.buf.height=FLOORH; }
+  var bc = drawDark.buf.getContext('2d');
+  bc.globalCompositeOperation='source-over';
+  bc.clearRect(0,0,W,FLOORH);
+  bc.fillStyle = has('lommelygte') ? 'rgba(4,2,12,.93)' : 'rgba(2,1,8,.97)';
+  bc.fillRect(0,0,W,FLOORH);
+  bc.globalCompositeOperation='destination-out';
+  var g = bc.createRadialGradient(player.x, player.y, rad*0.18, player.x, player.y, rad);
+  g.addColorStop(0,'rgba(0,0,0,1)');
+  g.addColorStop(0.55,'rgba(0,0,0,.92)');
+  g.addColorStop(0.85,'rgba(0,0,0,.45)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  bc.fillStyle=g;
+  bc.beginPath(); bc.arc(player.x, player.y, rad, 0, 6.283); bc.fill();
+  bc.globalCompositeOperation='source-over';
+  ctx.drawImage(drawDark.buf, 0, 0);
+  // varmt skær fra lommelygten
+  if(has('lommelygte')){
+    ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.10;
+    var g2 = ctx.createRadialGradient(player.x, player.y, 8, player.x, player.y, rad*0.9);
+    g2.addColorStop(0,'#ffd9a0'); g2.addColorStop(1,'rgba(255,180,90,0)');
+    ctx.fillStyle=g2; ctx.fillRect(player.x-rad, player.y-rad, rad*2, rad*2);
+    ctx.restore();
+  }
+  // dørene gløder svagt, så man altid kan finde ud
+  for(var ty=0;ty<ROWS;ty++) for(var tx=0;tx<COLS;tx++){
+    var c = r.map[ty].charAt(tx);
+    if(r.doors[c]){
+      ctx.save(); ctx.globalAlpha=0.55;
+      ctx.fillStyle='rgba(255,170,60,.35)'; ctx.fillRect(tx*TS,ty*TS,TS,TS);
+      emoji('🚪', tx*TS+TS/2, ty*TS+TS/2, 22, 0.75);
+      ctx.restore();
+    }
+  }
+}
+
+
+function questLabel(){
+  if(!flags.taarn) return 'Find de ' + TOTAL + ' græskarlygter';
+  if(!flags.soester) return 'Find ' + NAMES.lille + ' ude i haven';
+  if(!has('guld')) return 'Find guldnøglen';
+  if(!flags.fest) return 'Find den gyldne dør';
+  return 'Pust lysene ud sammen med ' + NAMES.lille;
+}
+
+function hint(){
+  if(!flags.quest) return 'Tip: gå hen til spøgelset i entréen og tryk E.';
+  if(flags.fest) return 'Tip: snak med gæsterne – og tryk så E ved lagkagen.';
+  if(flags.taarn){
+    if(!has('soelv')) return 'Tip: snak med Bertha i entréen.';
+    if(!flags.soester && !flags.hund) return 'Tip: sølvnøglen åbner havelågen i haven.';
+    if(!flags.soester) return 'Tip: ' + NAMES.lille + ' sidder i æblelunden bag køkkenhaven.';
+    if(!flags.hund && !has('koedben')) return 'Tip: hunden i køkkenhaven er sulten. Kig i picnickurven.';
+    if(!flags.hund) return 'Tip: giv kødbenet til hunden i køkkenhaven.';
+    return 'Tip: den gyldne dør er øverst i drivhuset. Af sted!';
+  }
+  if(lanterns >= TOTAL) return 'Tip: løb op i tårnet og tænd lygterne!';
+  var koek = rooms.koekken.obj;
+  function taken(id){ for(var i=0;i<koek.length;i++) if(koek[i].id===id) return !!koek[i].gone; return true; }
+  if(!taken('lygte1')) return 'Tip: der står noget og lyser i køkkenet.';
+  if(!flags.lygte2 && !has('kage')) return 'Tip: Frank Flagermus i biblioteket er sulten.';
+  if(!flags.lygte2 && has('kage')) return 'Tip: giv kagen til Frank i biblioteket.';
+  if(!flags.lygte4 && !has('sloejfe')) return 'Tip: Spindeline i haven har tabt noget rødt.';
+  if(!flags.lygte4 && has('sloejfe')) return 'Tip: giv sløjfen til Spindeline i haven.';
+  if(!has('lommelygte') && !has('noegle')) return 'Tip: led efter en nøgle bag bøgerne i biblioteket.';
+  if(!has('lommelygte')) return 'Tip: nøglen passer til døren øverst i biblioteket.';
+  var kael = rooms.kaelder.obj;
+  for(var i=0;i<kael.length;i++) if(kael[i].id==='lygte3' && !kael[i].gone)
+    return 'Tip: kælderen er mørk – nu har du en lommelygte.';
+  if(!has('noder') && !flags.melodi) return 'Tip: der er en luge op til loftet i soveværelset.';
+  if(!flags.melodi) return 'Tip: spil grøn – rød – blå på klaveret i musikstuen.';
+  return 'Tip: gå ind ad den hemmelige dør i musikstuen.';
+}
+
+var MAPPOS = {
+  taarn:[2,0], loft:[3,0],
+  sovevaerelse:[3,1], hemmelig:[4,1],
+  badevaerelse:[0,2], koekken:[1,2], hall:[2,2], bibliotek:[3,2], musikstue:[4,2],
+  kaelder:[1,3], have:[2,3], koekkenhave:[3,3], aeblelund:[4,3],
+  drivhus:[4,4], festsal:[3,4]
+};
+var mapOpen = false;
+
+function drawMap(){
+  ctx.save();
+  ctx.fillStyle='rgba(10,4,22,.93)';
+  ctx.fillRect(0,0,W,FLOORH);
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='#ff8a1e'; ctx.font='bold 26px "Trebuchet MS",sans-serif';
+  ctx.fillText('KORT OVER HUSET', W/2, 30);
+  ctx.textAlign='right'; ctx.font='bold 14px "Trebuchet MS",sans-serif';
+  ctx.fillStyle='#c9b6e8';
+  ctx.fillText('M eller E lukker kortet', W-20, 30);
+  ctx.textAlign='center';
+
+  var cw = 128, ch = 62, gx = 74, gy = 62, gapx = 142, gapy = 76;
+  function cell(id){
+    var mp = MAPPOS[id];
+    return mp ? {x: gx + mp[0]*gapx, y: gy + mp[1]*gapy} : null;
+  }
+
+  // forbindelser fra de rigtige d\u00f8re
+  for(var rid in rooms){
+    var a = cell(rid); if(!a) continue;
+    if(!flags['visit_'+rid]) continue;
+    var rm = rooms[rid];
+    for(var dc in rm.doors){
+      var d = rm.doors[dc], b2 = cell(d.to); if(!b2) continue;
+      var locked = doorLocked(d);
+      ctx.strokeStyle = locked ? 'rgba(255,140,60,.85)' : 'rgba(160,140,200,.55)';
+      ctx.lineWidth = locked ? 3 : 2.5;
+      ctx.setLineDash(locked ? [6,5] : []);
+      ctx.beginPath();
+      ctx.moveTo(a.x + cw/2, a.y + ch/2);
+      ctx.lineTo(b2.x + cw/2, b2.y + ch/2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if(locked){
+        var mx = (a.x + b2.x)/2 + cw/2, my = (a.y + b2.y)/2 + ch/2;
+        ctx.fillStyle='rgba(10,4,22,.95)';
+        ctx.beginPath(); ctx.arc(mx, my, 11, 0, 6.283); ctx.fill();
+        emoji('\uD83D\uDD12', mx, my, 15);
+      }
+    }
+  }
+
+  // rummene
+  for(var rid2 in MAPPOS){
+    var c2 = cell(rid2); if(!c2 || !rooms[rid2]) continue;
+    var seenIt = !!flags['visit_'+rid2];
+    var rp2 = roomProgress(rid2);
+    var done = seenIt && rp2.seen >= rp2.total;
+    var here = (rid2 === cur);
+    ctx.fillStyle = !seenIt ? 'rgba(255,255,255,.05)'
+                  : (done ? 'rgba(58,166,87,.22)' : 'rgba(122,90,180,.28)');
+    rr(c2.x, c2.y, cw, ch, 10); ctx.fill();
+    ctx.lineWidth = here ? 4 : 2;
+    ctx.strokeStyle = here ? '#ffb03a'
+                    : (!seenIt ? 'rgba(255,255,255,.14)'
+                    : (done ? 'rgba(155,232,155,.8)' : 'rgba(200,180,240,.45)'));
+    rr(c2.x, c2.y, cw, ch, 10); ctx.stroke();
+
+    if(!seenIt){
+      ctx.fillStyle='rgba(255,255,255,.22)'; ctx.font='bold 26px "Trebuchet MS",sans-serif';
+      ctx.fillText('?', c2.x + cw/2, c2.y + ch/2);
+    } else {
+      ctx.fillStyle = here ? '#ffd166' : '#efe6ff';
+      ctx.font='bold 15px "Trebuchet MS",sans-serif';
+      var ttl = rooms[rid2].title;
+      if(ctx.measureText(ttl).width > cw-14){ ctx.font='bold 13px "Trebuchet MS",sans-serif'; }
+      ctx.fillText(ttl, c2.x + cw/2, c2.y + 22);
+      ctx.font='bold 13px "Trebuchet MS",sans-serif';
+      ctx.fillStyle = done ? '#9be89b' : '#b9a6dc';
+      ctx.fillText(done ? '\u2713 alt set' : (rp2.seen + ' af ' + rp2.total + ' set'), c2.x + cw/2, c2.y + 44);
+      if(here){
+        var pulse = 4 + Math.sin(timeSec*5)*1.5;
+        ctx.fillStyle='#ffb03a';
+        ctx.beginPath(); ctx.arc(c2.x + cw - 14, c2.y + 14, pulse, 0, 6.283); ctx.fill();
+      }
+    }
+  }
+
+  // signaturforklaring
+  ctx.textAlign='left'; ctx.font='bold 14px "Trebuchet MS",sans-serif';
+  var ly = FLOORH - 26;
+  ctx.fillStyle='#ffb03a'; ctx.beginPath(); ctx.arc(84, ly, 5, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#e9d8ff'; ctx.fillText('her er du', 96, ly);
+  ctx.fillStyle='#9be89b'; ctx.fillText('\u2713 alt set i rummet', 200, ly);
+  ctx.fillStyle='#ffb03a'; ctx.fillText('\uD83D\uDD12 l\u00e5st d\u00f8r', 370, ly);
+  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.fillText('?  ikke fundet endnu', 510, ly);
+  ctx.restore();
+}
+
+function drawUI(){
+  // panel
+  ctx.fillStyle='#1b1030'; ctx.fillRect(0,FLOORH,W,H-FLOORH);
+  ctx.fillStyle='#ff8a1e'; ctx.fillRect(0,FLOORH,W,4);
+
+  // opgave
+  ctx.font='bold 22px "Trebuchet MS",sans-serif'; ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillStyle='#ffd166';
+  ctx.fillText(questLabel(), 18, FLOORH+16);
+  if(!flags.taarn){
+    for(var i=0;i<TOTAL;i++) emoji('🎃', 24 + i*32, FLOORH+62, 26, i < lanterns ? 1 : 0.22);
+    ctx.font='bold 20px "Trebuchet MS",sans-serif'; ctx.fillStyle='#e9d8ff';
+    ctx.fillText(lanterns + ' / ' + TOTAL, 24 + TOTAL*32 + 6, FLOORH+50);
+  } else {
+    var steps3 = [['🔑', has('soelv'), '#cfd8e3'], ['👧', !!flags.soester, null],
+                  ['🔑', has('guld'), '#ffcc33'], ['🎂', !!flags.fest, null]];
+    for(var q=0;q<steps3.length;q++){
+      var cx = 28 + q*40;
+      if(steps3[q][2]){
+        ctx.globalAlpha = steps3[q][1] ? 1 : 0.16;
+        ctx.fillStyle = steps3[q][2];
+        ctx.beginPath(); ctx.arc(cx, FLOORH+62, 17, 0, 6.283); ctx.fill();
+        ctx.strokeStyle='rgba(0,0,0,.45)'; ctx.lineWidth=2; ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      if(steps3[q][0] === '👧'){
+        ctx.save(); ctx.globalAlpha = steps3[q][1] ? 1 : 0.22;
+        drawChar('sister', cx, FLOORH+64, {t:timeSec, face:1, walking:false, scale:0.8, noShadow:true});
+        ctx.restore();
+      } else emoji(steps3[q][0], cx, FLOORH+62, steps3[q][2] ? 19 : 25, steps3[q][1] ? 1 : 0.22);
+      if(q < steps3.length-1){ ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(cx+17, FLOORH+60, 6, 3); }
+    }
+  }
+
+  // taske
+  ctx.font='bold 16px "Trebuchet MS",sans-serif'; ctx.fillStyle='#c9b6e8';
+  ctx.fillText('Taske:', 330, FLOORH+16);
+  var items = [];
+  if(has('noegle')) items.push(['🗝️', null]);
+  if(has('lommelygte')) items.push(['🔦', null]);
+  if(has('kage')) items.push(['🍪', null]);
+  if(has('sloejfe')) items.push(['🎀', null]);
+  if(has('noder')) items.push(['🎼', null]);
+  if(has('koedben')) items.push(['🦴', null]);
+  if(has('blomst')) items.push(['🌷', null]);
+  if(has('soelv')) items.push(['🔑', '#cfd8e3']);
+  if(has('guld')) items.push(['🔑', '#ffcc33']);
+  if(items.length===0){
+    ctx.fillStyle='#6f5d92'; ctx.font='16px "Trebuchet MS",sans-serif';
+    ctx.fillText('(tom)', 332, FLOORH+46);
+  } else {
+    for(var k=0;k<items.length;k++){
+      ctx.fillStyle='rgba(255,255,255,.08)';
+      ctx.fillRect(330+k*40, FLOORH+38, 36, 38);
+      if(items[k][1]){
+        ctx.fillStyle=items[k][1];
+        ctx.beginPath(); ctx.arc(348+k*40, FLOORH+57, 17, 0, 6.283); ctx.fill();
+        ctx.strokeStyle='rgba(0,0,0,.45)'; ctx.lineWidth=2; ctx.stroke();
+      }
+      emoji(items[k][0], 348+k*40, FLOORH+57, items[k][1] ? 19 : 24);
+    }
+  }
+
+  // rum + hjælp
+  ctx.textAlign='right'; ctx.fillStyle='#ffd166';
+  ctx.font='bold 20px "Trebuchet MS",sans-serif';
+  ctx.fillText(room().title, W-18, FLOORH+16);
+  ctx.font='bold 15px "Trebuchet MS",sans-serif'; ctx.fillStyle='#9b86c4';
+  ctx.fillText('M = kort', W-18, FLOORH+46);
+  var rp = roomProgress();
+  var alt = rp.seen >= rp.total;
+  ctx.save();
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(16,7,34,.62)';
+  ctx.fillRect(62, 10, 172, 34);
+  ctx.strokeStyle = alt ? 'rgba(155,232,155,.75)' : 'rgba(255,209,102,.5)';
+  ctx.lineWidth=2; ctx.strokeRect(62, 10, 172, 34);
+  ctx.fillStyle = alt ? '#3aa657' : '#6b5a86';
+  ctx.beginPath(); ctx.arc(80, 27, 7.4, 0, 6.283); ctx.fill();
+  ctx.strokeStyle='#fff'; ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.beginPath();
+  ctx.moveTo(76.8, 27.1); ctx.lineTo(79.1, 29.7); ctx.lineTo(83.4, 24.4);
+  ctx.stroke();
+  ctx.fillStyle = alt ? '#9be89b' : '#e9d8ff';
+  ctx.font='bold 16px "Trebuchet MS",sans-serif';
+  ctx.fillText(alt ? 'Alt set her!' : ('Set ' + rp.seen + ' af ' + rp.total), 94, 28);
+  ctx.restore();
+  ctx.textAlign='left';
+  ctx.fillStyle='#c9b6e8'; ctx.font='bold 16px "Trebuchet MS",sans-serif';
+  ctx.fillText('I halen:', 574, FLOORH+16);
+  if(followers.length === 0){
+    ctx.fillStyle='#6f5d92'; ctx.font='16px "Trebuchet MS",sans-serif';
+    ctx.fillText('(ingen endnu)', 576, FLOORH+46);
+  } else {
+    for(var fi=0; fi<followers.length; fi++){
+      ctx.fillStyle='rgba(255,255,255,.08)';
+      ctx.fillRect(574+fi*40, FLOORH+38, 36, 38);
+      var pk2 = charKind(followers[fi].e, followers[fi]);
+      if(pk2){
+        ctx.save();
+        ctx.beginPath(); ctx.rect(574+fi*40, FLOORH+38, 36, 38); ctx.clip();
+        drawChar(pk2, 592+fi*40, FLOORH+62, {t:timeSec+fi, face:1, walking:false, scale:0.95, noShadow:true});
+        ctx.restore();
+      } else emoji(followers[fi].e, 592+fi*40, FLOORH+57, 25);
+    }
+  }
+  ctx.textAlign='right';
+
+  // kæledyrs-rækken oppe i rummet
+  ctx.save();
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  var slot = 21, rowX = W - 10 - PET_LIST.length*slot, rowY = 10;
+  var panX = rowX - 88;
+  ctx.fillStyle='rgba(16,7,34,.7)';
+  rr(panX, rowY - 2, (W - 10) - panX, 32, 8); ctx.fill();
+  ctx.strokeStyle = (pets >= PETS) ? 'rgba(155,232,155,.8)' : 'rgba(255,209,102,.45)';
+  ctx.lineWidth=2; ctx.stroke();
+  drawChar('ghost', panX + 16, rowY + 15, {t:timeSec, face:1, walking:false, scale:0.5, noShadow:true});
+  ctx.fillStyle = (pets >= PETS) ? '#9be89b' : '#e9d8ff';
+  ctx.font='bold 15px "Trebuchet MS",sans-serif';
+  ctx.fillText(pets + '/' + PETS, panX + 30, rowY + 14);
+  for(var pi=0; pi<PET_LIST.length; pi++){
+    var sx = rowX + pi*slot, sy = rowY + 2;
+    var got = petsFound[PET_LIST[pi][0]];
+    ctx.fillStyle = got ? 'rgba(180,220,255,.18)' : 'rgba(255,255,255,.05)';
+    rr(sx, sy, slot-3, 24, 5); ctx.fill();
+    if(got){
+      emoji(got, sx + (slot-3)/2, sy + 12, 15, 0.95);
+    } else {
+      ctx.fillStyle='rgba(255,255,255,.15)';
+      ctx.beginPath(); ctx.arc(sx + (slot-3)/2, sy + 12, 2.4, 0, 6.283); ctx.fill();
+    }
+  }
+  ctx.restore();
+
+  // d\u00f8rskilt: hvor f\u00f8rer d\u00f8ren hen?
+  if(playing && !dlg && !mapOpen){
+    var rr2 = room(), bestD = null, bestDist = 1e9;
+    for(var dty=0; dty<ROWS; dty++){
+      for(var dtx=0; dtx<COLS; dtx++){
+        var dch = rr2.map[dty].charAt(dtx);
+        var dd = rr2.doors[dch];
+        if(!dd) continue;
+        var dcx = dtx*TS + TS/2, dcy = dty*TS + TS/2;
+        var dist = Math.hypot(dcx - player.x, dcy - player.y);
+        if(dist < 104 && dist < bestDist){ bestDist = dist; bestD = {d:dd, x:dcx, y:dcy}; }
+      }
+    }
+    if(bestD){
+      var lock2 = doorLocked(bestD.d);
+      var lbl = (lock2 ? '\uD83D\uDD12 ' : '\u2192 ') + (bestD.d.name || 'et andet rum');
+      ctx.font='bold 16px "Trebuchet MS",sans-serif';
+      var lw = ctx.measureText(lbl).width + 26;
+      var lx = Math.max(lw/2 + 6, Math.min(W - lw/2 - 6, bestD.x));
+      var ly2 = bestD.y < 60 ? bestD.y + 40 : bestD.y - 34;
+      ctx.save();
+      ctx.globalAlpha = Math.min(1, (104 - bestDist)/40);
+      ctx.fillStyle='rgba(20,8,40,.9)';
+      rr(lx - lw/2, ly2 - 14, lw, 28, 8); ctx.fill();
+      ctx.strokeStyle = lock2 ? '#ffb03a' : '#8be0a0';
+      ctx.lineWidth=2; rr(lx - lw/2, ly2 - 14, lw, 28, 8); ctx.stroke();
+      ctx.fillStyle = lock2 ? '#ffd166' : '#c8f5d4';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(lbl, lx, ly2);
+      ctx.restore();
+    }
+  }
+
+  // tip-linje
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font='bold 16px "Trebuchet MS",sans-serif'; ctx.fillStyle='#9be89b';
+  ctx.fillText(hint(), W/2, H-16);
+
+  // "tryk E"-prompt
+  var n = nearest();
+  if(!n && !dlg && playing && !mapOpen && !(room().dark && !has('lommelygte'))){
+    var fw2 = player.walking ? null : nearestFollower();
+    if(fw2){
+      var fpw = 0;
+      ctx.font='bold 15px "Trebuchet MS",sans-serif';
+      var ftxt = 'Tryk E – snak med ' + fw2.name;
+      fpw = ctx.measureText(ftxt).width + 20;
+      ctx.save(); ctx.globalAlpha=0.8;
+      ctx.fillStyle='rgba(20,8,40,.85)';
+      ctx.fillRect(fw2.x-fpw/2, fw2.y-46, fpw, 24);
+      ctx.strokeStyle='#8be0a0'; ctx.lineWidth=2;
+      ctx.strokeRect(fw2.x-fpw/2, fw2.y-46, fpw, 24);
+      ctx.fillStyle='#c8f5d4'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(ftxt, fw2.x, fw2.y-34);
+      ctx.restore();
+    }
+  }
+  if(n && !dlg && playing && !(room().dark && !has('lommelygte'))){
+    var ox = n.x*TS+TS/2, oy = n.y*TS+TS/2;
+    var nPend = pending(n);
+    var alreadySeen = !!n.seen && !nPend;
+    var pw = nPend ? 116 : (alreadySeen ? 96 : 74);
+    ctx.save();
+    if(alreadySeen) ctx.globalAlpha = 0.62;
+    ctx.fillStyle='rgba(20,8,40,.85)';
+    ctx.fillRect(ox-pw/2, oy-46, pw, 24);
+    ctx.strokeStyle = nPend ? '#ffb03a' : (alreadySeen ? '#7fb98c' : '#ffd166');
+    ctx.lineWidth=2; ctx.strokeRect(ox-pw/2, oy-46, pw, 24);
+    ctx.fillStyle = nPend ? '#ffd166' : (alreadySeen ? '#9be89b' : '#ffd166');
+    ctx.font='bold 15px "Trebuchet MS",sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(nPend ? 'Tryk E \u2013 mere her!' : (alreadySeen ? '\u2713 set f\u00f8r' : 'Tryk E'), ox, oy-34);
+    ctx.restore();
+  }
+
+  // rum-banner
+  if(bannerT > 0 && !dlg){
+    ctx.save(); ctx.globalAlpha = Math.min(1, bannerT);
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='rgba(20,8,40,.82)'; ctx.fillRect(W/2-152, FLOORH-60, 304, 48);
+    ctx.strokeStyle='#ff8a1e'; ctx.lineWidth=3; ctx.strokeRect(W/2-152, FLOORH-60, 304, 48);
+    var rpb = roomProgress();
+    ctx.fillStyle='#ffd166'; ctx.font='bold 22px "Trebuchet MS",sans-serif';
+    ctx.fillText(banner, W/2, FLOORH-42);
+    ctx.font='bold 14px "Trebuchet MS",sans-serif';
+    ctx.fillStyle = rpb.seen >= rpb.total ? '#9be89b' : '#c9b6e8';
+    ctx.fillText(rpb.seen >= rpb.total ? '\u2713 du har set det hele her'
+      : ('der er ' + (rpb.total - rpb.seen) + ' ting du ikke har kigget p\u00e5'), W/2, FLOORH-24);
+    ctx.restore();
+  }
+}
+
+function wrapText(txt, maxw){
+  var words = txt.split(' '), lines=[], line='';
+  for(var i=0;i<words.length;i++){
+    var t = line ? line+' '+words[i] : words[i];
+    if(ctx.measureText(t).width > maxw && line){ lines.push(line); line=words[i]; }
+    else line = t;
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+
+function drawDialog(){
+  if(!dlg) return;
+  var bx=40, by=FLOORH-160, bw=W-80, bh=136;
+  ctx.fillStyle='rgba(16,7,34,.94)';
+  ctx.fillRect(bx,by,bw,bh);
+  ctx.strokeStyle='#ff8a1e'; ctx.lineWidth=4; ctx.strokeRect(bx,by,bw,bh);
+  var pk = dlg.ch || charKind(dlg.e, dlg);
+  if(pk){
+    ctx.save();
+    ctx.beginPath(); ctx.arc(bx+46, by+56, 30, 0, 6.283);
+    ctx.fillStyle='rgba(255,255,255,.07)'; ctx.fill();
+    ctx.clip();
+    drawChar(pk, bx+46, by+62, {t:timeSec, face:1, walking:false, scale:1.35, noShadow:true});
+    ctx.restore();
+  } else emoji(dlg.e || '💬', bx+46, by+52, 44);
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillStyle='#ffd166'; ctx.font='bold 20px "Trebuchet MS",sans-serif';
+  ctx.fillText(dlg.who, bx+90, by+16);
+  ctx.fillStyle='#fff'; ctx.font='22px "Trebuchet MS",sans-serif';
+  var full = dlg.lines[dlg.i] || '';
+  var shown = full.slice(0, Math.floor(dlg.t*TYPE_SPEED));
+  var lines = wrapText(shown, bw-120);
+  for(var i=0;i<lines.length && i<3;i++) ctx.fillText(lines[i], bx+90, by+48+i*28);
+  var done = dlg.t * TYPE_SPEED >= full.length;
+  ctx.textAlign='right'; ctx.fillStyle='#c9b6e8'; ctx.font='15px "Trebuchet MS",sans-serif';
+  ctx.fillText(!done ? 'E = vis hele linjen'
+    : (dlg.i < dlg.lines.length-1 ? 'E = videre \u25b6' : 'E = luk'), bx+bw-16, by+bh-26);
+  if(done && dlg.i < dlg.lines.length-1){
+    var ay = by+bh-26 + Math.sin(timeSec*6)*2;
+    ctx.fillStyle='#ffd166';
+    ctx.beginPath(); ctx.moveTo(bx+bw-8, ay-4); ctx.lineTo(bx+bw-8, ay+4); ctx.lineTo(bx+bw-3, ay); ctx.closePath(); ctx.fill();
+  }
+}
+
+function render(){
+  var r = room();
+  drawFloor(r);
+  drawWalls(r);
+  drawObjects(r);
+  if(cur === 'festsal' && flags.fest){
+    var pl2 = [];
+    for(var pp=0; pp<PET_LIST.length; pp++) if(petsFound[PET_LIST[pp][0]]) pl2.push(PET_LIST[pp][1]);
+    for(var pq=0; pq<pl2.length; pq++){
+      var pxx = 120 + pq*52, pyy = 300 + Math.sin(timeSec*2 + pq)*3;
+      ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.22;
+      var pg2 = ctx.createRadialGradient(pxx,pyy,2,pxx,pyy,26);
+      pg2.addColorStop(0,'#dff3ff'); pg2.addColorStop(1,'rgba(180,220,255,0)');
+      ctx.fillStyle=pg2; ctx.fillRect(pxx-26,pyy-26,52,52); ctx.restore();
+      emoji(pl2[pq], pxx, pyy, 24, 0.85);
+    }
+  }
+  drawFollowers();
+  drawPlayer();
+  drawMotes();
+  drawConfetti(Math.min(0.05, 1/60));
+  drawBubble();
+  drawDark();
+  drawUI();
+  if(mapOpen) drawMap();
+  drawDialog();
+}
+
+/* ================= loop ================= */
+var last=0;
+function loop(ts){
+  var dt = Math.min(0.05, (ts-last)/1000 || 0); last = ts;
+  if(window.__paradeOn && window.__drawParade){ window.__drawParade(window.__paradeOn); }
+  else { update(dt); render(); }
+  requestAnimationFrame(loop);
+}
+
+/* ================= input ================= */
+function action(){
+  ensureAudio();
+  if(dlg){ advance(); if(!dlg) saveGame(); return; }
+  if(!playing) return;
+  var n = nearest();
+  if(n){ interact(n); saveGame(); return; }
+  var fw = nearestFollower();
+  if(fw){ talkFollower(fw); return; }
+  say(['Der er ikke noget her.','Gå tættere på en ting og tryk E.'],'Hmm','❓');
+}
+window.addEventListener('keydown', function(e){
+  if(e.target && e.target.tagName === 'INPUT') return;
+  var k = e.key;
+  if(k==='ArrowLeft'||k==='a'||k==='A') keys.left=true;
+  if(k==='ArrowRight'||k==='d'||k==='D') keys.right=true;
+  if(k==='ArrowUp'||k==='w'||k==='W') keys.up=true;
+  if(k==='ArrowDown'||k==='s'||k==='S') keys.down=true;
+  if(k==='m'||k==='M'){ e.preventDefault(); if(playing && !dlg) mapOpen = !mapOpen; }
+  if(k==='e'||k==='E'||e.code==='Space'||k==='Enter'){
+    e.preventDefault();
+    if(mapOpen){ mapOpen = false; return; }
+    action();
+  }
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].indexOf(k)>=0) e.preventDefault();
+});
+window.addEventListener('keyup', function(e){
+  if(e.target && e.target.tagName === 'INPUT') return;
+  var k = e.key;
+  if(k==='ArrowLeft'||k==='a'||k==='A') keys.left=false;
+  if(k==='ArrowRight'||k==='d'||k==='D') keys.right=false;
+  if(k==='ArrowUp'||k==='w'||k==='W') keys.up=false;
+  if(k==='ArrowDown'||k==='s'||k==='S') keys.down=false;
+});
+Array.prototype.forEach.call(document.querySelectorAll('#dpad button'), function(b){
+  var d = b.getAttribute('data-d');
+  function on(e){ e.preventDefault(); keys[d]=true; ensureAudio(); }
+  function off(e){ e.preventDefault(); keys[d]=false; }
+  b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off);
+  b.addEventListener('pointerleave',off); b.addEventListener('pointercancel',off);
+});
+document.getElementById('actbtn').addEventListener('pointerdown', function(e){ e.preventDefault(); action(); });
+cv.addEventListener('pointerdown', function(){ ensureAudio(); if(dlg) advance(); });
+
+document.getElementById('sound').addEventListener('click', function(){
+  soundOn = !soundOn; this.innerHTML = soundOn ? '&#128266;' : '&#128263;';
+  if(soundOn){ ensureAudio(); tone(660,0.1,'triangle',0.14); }
+});
+Array.prototype.forEach.call(document.querySelectorAll('#costumes .pick'), function(b){
+  b.addEventListener('click', function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#costumes .pick'), function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    costume = b.getAttribute('data-c');
+  });
+});
+function renderCostumeButtons(){
+  Array.prototype.forEach.call(document.querySelectorAll('#costumes .pick'), function(b){
+    var kind = b.getAttribute('data-k');
+    if(!kind || b.querySelector('canvas')) return;
+    var c = document.createElement('canvas');
+    c.width = 112; c.height = 112;
+    var old = ctx;
+    ctx = c.getContext('2d');
+    ctx.scale(2,2);
+    drawChar(kind, 28, 37, {t:0.7, face:1, walking:false, scale:1.05, noShadow:true});
+    ctx = old;
+    b.insertBefore(c, b.firstChild);
+  });
+}
+
+function start(){
+  ensureAudio();
+  function nv(id, fb){ var el = document.getElementById(id); var v = el ? el.value.trim() : ''; return v || fb; }
+  NAMES = {pige:nv('n1','Edith'), lille:nv('n2','Willa'), kat:nv('n3','Sokke'), hund:nv('n4','Bums')};
+  newGame();
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('winScreen').classList.add('hidden');
+  setTimeout(function(){
+    say(['Velkommen i det gamle hus, ' + NAMES.pige + '!','Din lillesøster ' + NAMES.lille + ' er her et sted.','Gå hen til spøgelset og tryk E.'],'Spøgelseshuset','🏚️');
+  }, 500);
+}
+document.getElementById('startBtn').addEventListener('click', function(){ clearSave(); start(); });
+
+function refreshContinue(){
+  var d = loadSave();
+  var cb = document.getElementById('contBtn'), ci = document.getElementById('contInfo');
+  var sb = document.getElementById('startBtn');
+  if(d){
+    cb.style.display = ''; ci.style.display = '';
+    var rt = (BASE[d.cur] && BASE[d.cur].title) || 'huset';
+    ci.innerHTML = '<b>' + (d.names ? d.names.pige : 'Edith') + '</b> er i <b>' + rt + '</b> &middot; ' +
+      (d.lanterns||0) + '/' + TOTAL + ' lygter &middot; ' + (d.pets||0) + '/' + PETS + ' k&aelig;ledyr' +
+      ((d.followers && d.followers.length) ? ' &middot; i halen: ' + d.followers.map(function(f){return f.name;}).join(', ') : '');
+    sb.textContent = 'Start forfra';
+  } else {
+    cb.style.display = 'none'; ci.style.display = 'none';
+    sb.textContent = 'Ind i huset!';
+  }
+}
+document.getElementById('contBtn').addEventListener('click', function(){
+  var d = loadSave();
+  if(!d){ start(); return; }
+  ensureAudio();
+  applySave(d);
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('winScreen').classList.add('hidden');
+});
+document.getElementById('againBtn').addEventListener('click', function(){ clearSave(); start(); });
+
+/* lille udviklerhook (usynlig i spillet) */
+window.__gs=function(){return {cur:cur,lanterns:lanterns,inv:JSON.parse(JSON.stringify(inv)),
+  flags:JSON.parse(JSON.stringify(flags)),px:Math.round(player.x),py:Math.round(player.y),
+  dlg:dlg?dlg.lines[dlg.i]:null,playing:playing,fol:followers.length,foldist:followers.map(function(f){return Math.round(Math.hypot(f.x-player.x,f.y-player.y));})};};
+window.__tp=function(id,x,y){cur=id;flags['visit_'+id]=true;player.x=x*40+20;player.y=y*40+20;banner=rooms[id].title;bannerT=1;};
+window.__act=function(){action();};
+window.__skip=function(){while(dlg)advance();};
+window.__save=function(){saveGame();};
+window.__paradeOn=0;
+window.__parade=function(sc){ window.__paradeOn = sc||2.6; playing=false; dlg=null; };
+window.__drawParade=function(sc){
+  timeSec += 0.016;
+  ctx.fillStyle='#efe6d8'; ctx.fillRect(0,0,W,H);
+  var ks=['girl','sister','witch','fairy','ghostkid','ghost','ghost2','cat','dog','bat','spider'];
+  ctx.fillStyle='#3a2a44'; ctx.font='bold 15px sans-serif'; ctx.textAlign='center';
+  for(var i=0;i<ks.length;i++){
+    var cx=90+(i%4)*205, cy=110+Math.floor(i/4)*175;
+    drawChar(ks[i], cx, cy, {t:0.8, face:1, walking:true, scale:sc||2.6});
+    ctx.fillStyle='#3a2a44'; ctx.fillText(ks[i], cx, cy+66);
+  }
+};
+
+newGame(); playing=false;
+renderCostumeButtons();
+refreshContinue();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

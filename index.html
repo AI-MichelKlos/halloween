@@ -556,6 +556,7 @@ function newGame(){
   inv = {}; flags = {}; lanterns = 0; pets = 0; melodi = []; petsFound = {};
   flags['visit_hall'] = true;
   followers = []; trail = []; lockT = 0; saveT = 0; confetti = []; celebT = 0; bubble = null;
+  flying = []; landPops = [];
   motes = [];
   for(var mi=0; mi<46; mi++) motes.push({x:Math.random()*W, y:Math.random()*FLOORH,
     v:6+Math.random()*14, d:Math.random()*6.28, s:0.8+Math.random()*1.8});
@@ -566,6 +567,73 @@ function newGame(){
 function room(){ return rooms[cur]; }
 function has(k){ return !!inv[k]; }
 function give(k){ inv[k]=true; }
+
+/* ================= flyv-til-taske animation ================= */
+var flying = [], landPops = [];
+var BAG_SLOTS = [
+  ['noegle','🗝️'], ['lommelygte','🔦'], ['kage','🍪'], ['sloejfe','🎀'],
+  ['noder','🎼'], ['koedben','🦴'], ['blomst','🌷'], ['soelv','🔑'], ['guld','🔑']
+];
+function bagIcon(key){
+  for(var i=0;i<BAG_SLOTS.length;i++) if(BAG_SLOTS[i][0]===key) return BAG_SLOTS[i][1];
+  return '❔';
+}
+function bagSlotPos(key){
+  var idx = 0;
+  for(var i=0;i<BAG_SLOTS.length;i++){
+    if(BAG_SLOTS[i][0] === key) break;
+    if(has(BAG_SLOTS[i][0])) idx++;
+  }
+  return {x: 348 + idx*40, y: FLOORH + 57};
+}
+function stepSlotPos(q){ return {x: 28 + q*40, y: FLOORH + 62}; }
+function petSlotPos(id){
+  var slot = 21, rowX = W - 10 - PET_LIST.length*slot, rowY = 10;
+  for(var i=0;i<PET_LIST.length;i++){
+    if(PET_LIST[i][0] === id) return {x: rowX + i*slot + (slot-3)/2, y: rowY + 14};
+  }
+  return {x: W-20, y: 20};
+}
+function objPos(o){
+  var wb = wobOf(o);
+  return {x: o.x*TS + TS/2 + wb.x, y: o.y*TS + TS/2 + wb.y};
+}
+function spawnFly(e, x1, y1, x2, y2, opts){
+  opts = opts || {};
+  flying.push({e:e, x1:x1, y1:y1, x2:x2, y2:y2, t:0, dur: opts.dur || 0.6,
+               size: opts.size || 26, arc: opts.arc !== undefined ? opts.arc : 66, landed:false});
+}
+function spawnLandPop(x,y){ landPops.push({x:x, y:y, t:0, dur:0.45}); }
+function drawFlying(dt){
+  for(var i=flying.length-1;i>=0;i--){
+    var f = flying[i];
+    f.t += dt;
+    var k = Math.min(1, f.t / f.dur);
+    var ek = 1 - Math.pow(1-k, 3);
+    var x = f.x1 + (f.x2-f.x1)*ek;
+    var y = f.y1 + (f.y2-f.y1)*ek - Math.sin(Math.PI*k)*f.arc;
+    var sc = 1 + 0.3*Math.sin(Math.PI*k);
+    ctx.save();
+    ctx.globalAlpha = k > 0.82 ? Math.max(0, (1-k)/0.18) : 1;
+    emoji(f.e, x, y, f.size*sc);
+    ctx.restore();
+    if(k >= 1){
+      if(!f.landed){ f.landed = true; spawnLandPop(f.x2, f.y2); }
+      flying.splice(i,1);
+    }
+  }
+  for(var j=landPops.length-1;j>=0;j--){
+    var p = landPops[j];
+    p.t += dt;
+    var pk = Math.min(1, p.t/p.dur);
+    ctx.save();
+    ctx.globalAlpha = (1-pk)*0.85;
+    ctx.strokeStyle = '#ffe9a8'; ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.arc(p.x, p.y, 6 + pk*18, 0, 6.283); ctx.stroke();
+    ctx.restore();
+    if(p.t >= p.dur) landPops.splice(j,1);
+  }
+}
 
 /* ================= dialog ================= */
 function say(lines, who, emo, onEnd, ch){
@@ -591,12 +659,16 @@ function popup(txt){ toast = txt; toastT = 2.6; }
 function takeLantern(o){
   o.gone = true; lanterns++;
   sfxLantern();
+  var op = objPos(o), lp = {x: 24 + (lanterns-1)*32, y: FLOORH+62};
+  spawnFly('🎃', op.x, op.y, lp.x, lp.y, {size:26});
   say(['Du fandt en græskarlygte! 🎃',
        'Nu har du ' + lanterns + ' af ' + TOTAL + '.',
        lanterns >= TOTAL ? 'Skynd dig op i tårnet!' : 'Der er flere gemt i huset.'], 'Du fandt noget', '🎃');
 }
 function takeItem(o, key, lines, who, emo){
   o.gone = true; give(key); sfxPick(); say(lines, who||'Du fandt noget', emo||o.e);
+  var op = objPos(o), bp = bagSlotPos(key);
+  spawnFly(bagIcon(key), op.x, op.y, bp.x, bp.y, {size:24});
 }
 
 var EXTRA = {
@@ -667,6 +739,8 @@ var EXTRA = {
 
 function takePet(o){
   o.gone = true; pets++; petsFound[o.id] = o.e;
+  var op = objPos(o), pp = petSlotPos(o.id);
+  spawnFly(o.e, op.x, op.y, pp.x, pp.y, {size:20, arc:50});
   tone(880,0.09,'sine',0.12); tone(1175,0.12,'sine',0.10,0.07);
   var navne = {pet1:'en spøgelsesmus', pet2:'en spøgelseskylling', pet3:'en spøgelsesskildpadde',
     pet4:'en spøgelseskanin', pet5:'en spøgelsesfrø', pet6:'et spøgelsespindsvin',
@@ -824,6 +898,8 @@ function interact(o){
     case 'kurv':
       if(!has('koedben')){
         o.gone = true; give('koedben'); sfxPick();
+        var kop = objPos(o), kbp = bagSlotPos('koedben');
+        spawnFly('🦴', kop.x, kop.y, kbp.x, kbp.y, {size:24});
         say(['En picnickurv med en dug over.','Indeni ligger et stort kødben! 🦴','Mon nogen er sulten?'],'Picnickurven','🧺');
       } else say(['Kurven er tom nu.'],'Picnickurven','🧺');
       break;
@@ -845,6 +921,8 @@ function interact(o){
       else if(has('koedben')){
         flags.hund = true; inv.koedben = false; give('guld'); o.gone = true;
         addFollower('🐕', NAMES.hund, 30, 'dog');
+        var hop = objPos(o), hsp = stepSlotPos(2);
+        spawnFly('🔑', hop.x, hop.y, hsp.x, hsp.y, {size:24});
         sfxLantern();
         say(['Vov! Hunden snupper kødbenet.',
              'Så begynder den at grave i hullet...',
@@ -865,6 +943,8 @@ function interact(o){
 
     case 'blomst':
       if(!has('blomst')){ o.gone = true; give('blomst'); sfxPick();
+        var flop = objPos(o), flbp = bagSlotPos('blomst');
+        spawnFly('🌷', flop.x, flop.y, flbp.x, flbp.y, {size:24});
         say(['En smuk tulipan.','Den ville være en fin gave til en fødselar.'],'Du plukkede en blomst','🌷');
       }
       break;
@@ -878,6 +958,8 @@ function interact(o){
     case 'reol': case 'reol2':
       if(!flags.noegle){
         flags.noegle = true; give('noegle'); sfxPick();
+        var rop = objPos(o), rbp = bagSlotPos('noegle');
+        spawnFly('🗝️', rop.x, rop.y, rbp.x, rbp.y, {size:24});
         say(['Du kigger bag de støvede bøger...','Der ligger en lille messingnøgle! 🗝️','Mon den passer til en dør heroppe?'],'Reolen','📚');
       } else say(['Bare gamle bøger om græskar og tåge.'],'Reolen','📚');
       break;
@@ -887,6 +969,8 @@ function interact(o){
       if(flags.lygte2){ say(['Mums. Tak for kagen!','Held og lykke med tårnet.'],'Frank Flagermus','🦇'); }
       else if(has('kage')){
         flags.lygte2 = true; inv.kage = false; lanterns++;
+        var fop = objPos(o), flp = {x: 24 + (lanterns-1)*32, y: FLOORH+62};
+        spawnFly('🎃', fop.x, fop.y, flp.x, flp.y, {size:26});
         sfxLantern();
         say(['En kage! Til MIG?','Så må du få min lygte.','Jeg har passet godt på den.',
              'Du har nu ' + lanterns + ' af ' + TOTAL + ' lygter.'],'Frank Flagermus','🦇');
@@ -899,6 +983,8 @@ function interact(o){
       if(flags.lygte4){ say(['Min sløjfe sidder så fint!','Tak for hjælpen, lille ven.'],'Spindeline','🕷️'); }
       else if(has('sloejfe')){
         flags.lygte4 = true; inv.sloejfe = false; lanterns++;
+        var sop = objPos(o), slp = {x: 24 + (lanterns-1)*32, y: FLOORH+62};
+        spawnFly('🎃', sop.x, sop.y, slp.x, slp.y, {size:26});
         sfxLantern();
         say(['Min sløjfe! Jeg har ledt hele natten.','Værsgo – tag min græskarlygte.',
              'Du har nu ' + lanterns + ' af ' + TOTAL + ' lygter.'],'Spindeline Edderkop','🕷️');
@@ -912,6 +998,8 @@ function interact(o){
         say(['Tårnet lyser ud over hele byen.','Skynd dig ud i haven, ' + NAMES.pige + '!'],'Tårnets alter','✨');
       } else if(lanterns >= TOTAL){
         flags.taarn = true; give('soelv'); sfxWin();
+        var aop = objPos(o), asp = stepSlotPos(0);
+        spawnFly('🔑', aop.x, aop.y, asp.x, asp.y, {size:24});
         say(['Du sætter den sidste lygte på plads...',
              'PLING! Hele tårnet lyser op! ✨',
              'Bertha kommer flyvende: "Tak, ' + NAMES.pige + '!"',
@@ -1071,6 +1159,7 @@ function tryDoor(){
   sfxDoor();
   saveGame();
   bubble = null;
+  celebT = 0; confetti = [];
   setTimeout(function(){ if(cur === d.to) roomTalk(); }, 900);
   if(cur === 'festsal' && !flags.fest){
     flags.fest = true;
@@ -2113,6 +2202,28 @@ function hint(){
   return 'Tip: gå ind ad den hemmelige dør i musikstuen.';
 }
 
+var LANTERN_INFO = [
+  {id:'lygte1', room:'koekken', obj:true},
+  {id:'lygte2', room:'bibliotek', obj:false},
+  {id:'lygte3', room:'kaelder', obj:true},
+  {id:'lygte4', room:'have', obj:false},
+  {id:'lygte5', room:'hemmelig', obj:true}
+];
+function lanternPendingInRoom(rid){
+  if(flags.taarn) return false;
+  for(var i=0;i<LANTERN_INFO.length;i++){
+    var L = LANTERN_INFO[i];
+    if(L.room !== rid) continue;
+    if(L.obj){
+      var arr = rooms[rid] && rooms[rid].obj; if(!arr) continue;
+      for(var j=0;j<arr.length;j++) if(arr[j].id===L.id) return !arr[j].gone;
+    } else {
+      return !flags[L.id];
+    }
+  }
+  return false;
+}
+
 var MAPPOS = {
   taarn:[2,0], loft:[3,0],
   sovevaerelse:[3,1], hemmelig:[4,1],
@@ -2198,17 +2309,29 @@ function drawMap(){
         ctx.fillStyle='#ffb03a';
         ctx.beginPath(); ctx.arc(c2.x + cw - 14, c2.y + 14, pulse, 0, 6.283); ctx.fill();
       }
+      if(lanternPendingInRoom(rid2)){
+        var lk = 0.65 + 0.35*Math.sin(timeSec*4.5);
+        var lx2 = c2.x + 16, ly2b = c2.y + 15;
+        ctx.save();
+        ctx.globalAlpha = 0.30*lk;
+        ctx.fillStyle = '#ffb03a';
+        ctx.beginPath(); ctx.arc(lx2, ly2b, 13 + 2*lk, 0, 6.283); ctx.fill();
+        ctx.globalAlpha = 1;
+        emoji('🎃', lx2, ly2b, 20 + 2*lk);
+        ctx.restore();
+      }
     }
   }
 
   // signaturforklaring
   ctx.textAlign='left'; ctx.font='bold 14px "Trebuchet MS",sans-serif';
-  var ly = FLOORH - 26;
-  ctx.fillStyle='#ffb03a'; ctx.beginPath(); ctx.arc(84, ly, 5, 0, 6.283); ctx.fill();
-  ctx.fillStyle='#e9d8ff'; ctx.fillText('her er du', 96, ly);
-  ctx.fillStyle='#9be89b'; ctx.fillText('\u2713 alt set i rummet', 200, ly);
-  ctx.fillStyle='#ffb03a'; ctx.fillText('\uD83D\uDD12 l\u00e5st d\u00f8r', 370, ly);
-  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.fillText('?  ikke fundet endnu', 510, ly);
+  var ly1 = FLOORH - 42, ly2 = FLOORH - 18;
+  ctx.fillStyle='#ffb03a'; ctx.beginPath(); ctx.arc(84, ly1, 5, 0, 6.283); ctx.fill();
+  ctx.fillStyle='#e9d8ff'; ctx.fillText('her er du', 96, ly1);
+  ctx.fillStyle='#9be89b'; ctx.fillText('\u2713 alt set i rummet', 220, ly1);
+  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.fillText('?  ikke fundet endnu', 440, ly1);
+  ctx.fillStyle='#ffb03a'; ctx.fillText('\uD83D\uDD12 l\u00e5st d\u00f8r', 84, ly2);
+  ctx.fillStyle='#ffd166'; ctx.fillText('\uD83C\uDF83 der er en lygte her', 220, ly2);
   ctx.restore();
 }
 
@@ -2510,6 +2633,7 @@ function render(){
   drawUI();
   if(mapOpen) drawMap();
   drawDialog();
+  drawFlying(Math.min(0.05, 1/60));
 }
 
 /* ================= loop ================= */

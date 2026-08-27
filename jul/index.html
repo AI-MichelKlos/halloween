@@ -113,7 +113,7 @@ function load(){try{return JSON.parse(localStorage.getItem('borgenJulV1')||'null
 function countTasks(){return Object.keys(state.tasks).filter(k=>state.tasks[k]).length}
 function countResidents(){return Object.keys(state.residents).filter(k=>state.residents[k]).length}
 function allReady(){return countTasks()===13&&countResidents()===13}
-function reset(){localStorage.removeItem('borgenJulV1');state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},visited:{slotsplads:true},name:$('#playerName').value.trim()||'Michel',won:false,rocketFound:false};const preview=new URLSearchParams(location.search).get('preview');if(preview==='church'||preview==='rocket'){state.room='slotskirke';state.visited.slotskirke=true;state.x=preview==='rocket'?174:430;state.y=preview==='rocket'?430:355}updateHUD()}
+function reset(){localStorage.removeItem('borgenJulV1');state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},visited:{slotsplads:true},name:$('#playerName').value.trim()||'Michel',won:false,rocketFound:false};updateHUD()}
 function showOverlay(id){overlays.forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));playing=false}
 function hideOverlays(){overlays.forEach(x=>$('#'+x).classList.add('hidden'));playing=true}
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}

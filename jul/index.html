@@ -77,7 +77,9 @@
     <div class="overlay hidden" id="mission"><div class="panel"><div id="missionIcon" class="crest"></div><h2 id="missionTitle"></h2><p id="missionText" class="lead"></p><div id="missionBody"></div><div id="missionError" class="error"></div><div class="row"><button class="secondary" id="missionClose">Tilbage</button></div></div></div>
     <div class="overlay hidden" id="rocketStory"><div class="panel historyPanel"><div class="crest">🚀</div><h2>Den vildfarne raket</h2><p class="lead">Godt du fandt den. Raketter og Slotskirken er en meget dårlig kombination.</p><p class="factText">Under det københavnske pinsekarneval i 1992 satte en vildfaren raket ild til Slotskirken. Branden ødelagde tag og kuppel, og da kuplen styrtede ned, blev de fleste kirkebænke knust. Kirken blev genopbygget og genindviet i 1997.</p><div class="sourceLinks"><a href="https://slks.dk/omraader/kulturarv/bygningsfredning/gode-raad-om-vedligeholdelse/restaureringsseminar/2006/referat/referat-af-oplaeg-om-christiansborg-slotskirke/" target="_blank" rel="noopener">Kilde: Slots- og Kulturstyrelsen</a></div><div class="row"><button class="primary" id="rocketClose">Raketten er sikret</button></div></div></div>
     <div class="overlay hidden" id="residentStory"><div class="panel residentPanel"><div class="residentPortrait" id="residentStoryIcon">🐭</div><h2 id="residentStoryName"></h2><div class="residentRole" id="residentStoryRole"></div><p class="residentTale" id="residentStoryText"></p><div class="row"><button class="primary" id="residentStoryClose"></button></div></div></div>
-    <div class="overlay hidden" id="info"><div class="panel" id="factBox"><h2>Om stederne</h2><p class="factText">Spillets 14 steder findes på eller ved Christiansborg. Dørene og afstandene er gjort enklere, så huset fungerer som en overskuelig spilleverden. De små historiske fakta er baseret på Folketingets og Den Kongelige Samlings beskrivelser.</p><p class="factText">De skjulte beboeres fornavne deles med nuværende medlemmer af Folketinget. Musene og nisserne er fantasifigurer og forestiller ikke bestemte politikere.</p><div class="sourceLinks"><a href="https://www.ft.dk/folkestyret/folketinget-og-christiansborg/folketingets-lokaler" target="_blank" rel="noopener">Folketingets lokaler</a><a href="https://www.ft.dk/medlemmer/medlemmernes-kontaktoplysninger" target="_blank" rel="noopener">Folketingets medlemmer</a><a href="https://denkongeligesamling.dk/christiansborg-slot/" target="_blank" rel="noopener">Christiansborg Slot</a><a href="https://denkongeligesamling.dk/christiansborg-slot/sale-rum/ruinerne-under-christiansborg-slot/" target="_blank" rel="noopener">Ruinerne under Christiansborg</a></div><div class="row"><button class="primary" id="infoClose">Tilbage til spillet</button></div></div></div>
+    <div class="overlay hidden" id="lookout"><div class="panel historyPanel"><div class="crest" id="lookoutIcon">🔭</div><h2 id="lookoutTitle"></h2><p class="lead" id="lookoutLead"></p><p class="factText" id="lookoutText"></p><div class="sourceLinks" id="lookoutSource"></div><p class="hint" id="lookoutCount"></p><div class="row"><button class="primary" id="lookoutClose">Videre</button></div></div></div>
+    <div class="overlay hidden" id="chapter"><div class="panel"><div class="crest" id="chapterIcon">🕯️</div><h2 id="chapterTitle"></h2><p class="lead" id="chapterText"></p><div class="row"><button class="primary" id="chapterClose">Videre</button></div></div></div>
+    <div class="overlay hidden" id="info"><div class="panel" id="factBox"><h2>Om stederne</h2><p class="factText">Spillets 14 steder findes på eller ved Christiansborg. Dørene og afstandene er gjort enklere, så huset fungerer som en overskuelig spilleverden. De små historiske fakta er baseret på Folketingets og Den Kongelige Samlings beskrivelser.</p><p class="factText">De skjulte beboeres fornavne deles med nuværende medlemmer af Folketinget. Musene og nisserne er fantasifigurer og forestiller ikke bestemte politikere.</p><div class="sourceLinks"><a href="https://www.ft.dk/folkestyret/folketinget-og-christiansborg/folketingets-lokaler" target="_blank" rel="noopener">Folketingets lokaler</a><a href="https://www.ft.dk/medlemmer/medlemmernes-kontaktoplysninger" target="_blank" rel="noopener">Folketingets medlemmer</a><a href="https://denkongeligesamling.dk/christiansborg-slot/" target="_blank" rel="noopener">Christiansborg Slot</a><a href="https://denkongeligesamling.dk/christiansborg-slot/sale-rum/ruinerne-under-christiansborg-slot/" target="_blank" rel="noopener">Ruinerne under Christiansborg</a><a href="https://taarnet.dk/taarnet/?lang=en" target="_blank" rel="noopener">Tårnet på Christiansborg</a></div><div class="row"><button class="primary" id="infoClose">Tilbage til spillet</button></div></div></div>
     <div class="overlay hidden" id="win"><div class="panel"><div class="crest">🔔✨🎄</div><h1>Det bliver jul<br>på hele Borgen!</h1><p class="lead" id="winText"></p><div id="winStats"><div class="winStat"><b>179</b><span>folkevalgte klar</span></div><div class="winStat"><b>✓</b><span>personalet klar</span></div><div class="winStat"><b>7</b><span>hemmelige beboere</span></div></div><div class="row"><button class="primary" id="againBtn">Spil igen</button><button class="secondary" id="stayBtn">Bliv i Tårnet</button></div></div></div>
   </section>
 </main>
@@ -86,7 +88,7 @@
 const cv=document.getElementById('game'),ctx=cv.getContext('2d');
 const W=860,H=620,EDGE={x1:66,x2:794,y1:80,y2:532};
 const riddersalArt=new Image();riddersalArt.src='riddersalen-jul.webp';
-const $=s=>document.querySelector(s), overlays=['start','mission','info','win','rocketStory','residentStory'];
+const $=s=>document.querySelector(s), overlays=['start','mission','info','win','rocketStory','residentStory','lookout','chapter'];
 const rooms=[
  {id:'slotsplads',name:'Slotspladsen',abbr:'SP',icon:'🚜',theme:['#315c65','#d9e7df','#7693a2'],fact:'Slotspladsen ligger foran Christiansborg og er stedet med Frederik 7.s rytterstatue.',resident:'mus',residentName:'Mette',residentRole:'Statuens snevagt',residentStory:'Hun bor i rytterstatuens sokkel og bruger hestens fodspor som kælkebane.',task:{type:'snowmaze',icon:'🚜',title:'Sneploven på Slotspladsen',text:'Kør nissens røde sneplov gennem pladsen og ryd alle 24 snedriver. Pas på den levende fygesne. Varm kakao gør ploven uovervindelig i fem træk.'},exits:{N:'rigsdagsgaard',E:'slotskirke'}},
  {id:'rigsdagsgaard',name:'Rigsdagsgården',abbr:'RG',icon:'📯',theme:['#62433d','#e6d2b3','#9f6a53'],fact:'Rigsdagsgården er den indre gård ved Folketinget.',resident:null,task:{type:'sequence',icon:'📯',title:'Fordel den vigtige julepost',text:'Postnissen hvisker rækkefølgen: brev, gave, lovmappe.',options:['✉️','🎁','📕'],answer:['✉️','🎁','📕']},exits:{S:'slotsplads',N:'vandrehallen',E:'stalde'}},
@@ -101,12 +103,13 @@ const rooms=[
  {id:'slotskirke',name:'Christiansborg Slotskirke',abbr:'SK',icon:'🎼',theme:['#d8d0c3','#fffaf0','#8d7b68'],fact:'Slotskirken bruges blandt andet til gudstjenesten ved Folketingets åbning.',resident:'mus',residentName:'Anna',residentRole:'Orgelmusen',residentStory:'Hun bor bag den dybeste orgelpibe og kender alle toner, bortset fra den stille.',task:{type:'organ',icon:'🎼',title:'Den forsvundne julemelodi',text:'Fang 12 gyldne toner ved orglet. Flyt nissen mellem tangenterne, spil i det lysende felt og undgå de grå falske toner.'},exits:{W:'slotsplads',N:'riddersalen'}},
  {id:'stalde',name:'De Kongelige Stalde',abbr:'ST',icon:'🐴',theme:['#4f3a2b','#d7c29a','#856b4c'],fact:'De Kongelige Stalde har huset kongelige heste siden 1740. I dag står de hvide køreheste blandt marmorsøjler.',resident:'nisse',residentName:'Søren',residentRole:'Hestenes nattevagt',residentStory:'Han kender hver hest på lyden af dens tyggen og gemmer altid en ekstra gulerod.',task:{type:'stable',icon:'🐴',title:'Julegulerødder til de kongelige heste',text:'Gå hen til kurven og tag seks gulerødder. Nissen bærer tre i hver hånd. Besøg derefter alle seks heste.'},exits:{W:'rigsdagsgaard',N:'riddersalen',S:'ruiner',E:'snapstinget'}},
  {id:'ruiner',name:'Ruinerne under Christiansborg',abbr:'RU',icon:'🗝️',theme:['#2c3435','#93866c','#4d5552'],fact:'Under slottet ligger rester af Absalons Borg og Københavns Slot med fundamentet fra Blåtårn.',resident:'mus',residentName:'Christian',residentRole:'Nøglevogteren',residentStory:'Han bærer en rusten nøgle til en dør, der forsvandt for flere hundrede år siden.',task:{type:'sequence',icon:'🗝️',title:'Find den gamle julemekanisme',text:'På muren står koden: vand, nøgle, borg, stjerne.',options:['🌊','🗝️','🏰','⭐'],answer:['🌊','🗝️','🏰','⭐']},exits:{N:'stalde'}},
- {id:'taarn',name:'Tårnet',abbr:'TÅ',icon:'🔔',theme:['#233f47','#b9c8c7','#526d72'],fact:'Fra Tårnets udsigtsplatform 44 meter over jorden kan man se over København og i klart vejr til Sverige.',resident:null,task:null,exits:{S:'samtale'}}
+ {id:'taarn',name:'Tårnet',abbr:'TÅ',icon:'🔔',theme:['#233f47','#b9c8c7','#526d72'],fact:'Tårnet er 106 meter højt og Københavns højeste. Fra udsigtsplatformen 44 meter over jorden kan man se ud over byen og i klart vejr helt til Sverige — prøv kikkerten.',resident:null,task:null,exits:{S:'samtale'}}
 ];
 const byId=Object.fromEntries(rooms.map(r=>[r.id,r]));
-let state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]}};
+let state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]},lookout:[],chapters:{}};
 let keys={up:false,down:false,left:false,right:false},playing=false,last=0,time=0,toastTimer=0,sound=true,confetti=[],playerFacing='down',stepPhase=0;
 let trail=[],trailDistance=0,newFollowerId='',newFollowerUntil=0;
+let roomFade=0;
 let stableCarrotFlights=[],stableFeedLockUntil=0,stableResidentRevealStart=0,stableFinishTimer=0;
 let residentStoryRoom=null;
 let missionCleanup=()=>{};
@@ -135,7 +138,7 @@ function allReady(){return countTasks()===13&&countResidents()===7}
 function followerIds(){const ordered=Array.isArray(state.residentOrder)?state.residentOrder.filter(id=>state.residents[id]&&byId[id]&&byId[id].resident):[];Object.keys(state.residents).filter(id=>state.residents[id]&&byId[id]&&byId[id].resident&&!ordered.includes(id)).forEach(id=>ordered.push(id));return ordered}
 function seedTrail(){trail=[];for(let i=0;i<220;i++){const reach=Math.min(125,i*.75),angle=i*.16;trail.push({x:Math.max(72,Math.min(788,state.x+Math.sin(angle)*reach)),y:Math.max(92,Math.min(520,state.y+35+Math.cos(angle)*reach*.62)),room:state.room})}trailDistance=0}
 function recordTrail(distance=0){trailDistance+=distance;if(trailDistance<7&&trail.length)return;trailDistance=0;trail.unshift({x:state.x,y:state.y,room:state.room});if(trail.length>1800)trail.length=1800}
-function reset(){localStorage.removeItem('borgenJulV1');clearTimeout(stableFinishTimer);stableFinishTimer=0;stableCarrotFlights=[];stableFeedLockUntil=0;stableResidentRevealStart=0;state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]}};seedTrail();updateHUD()}
+function reset(){localStorage.removeItem('borgenJulV1');clearTimeout(stableFinishTimer);stableFinishTimer=0;stableCarrotFlights=[];stableFeedLockUntil=0;stableResidentRevealStart=0;state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]},lookout:[],chapters:{}};seedTrail();updateHUD()}
 function showOverlay(id){overlays.forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));playing=false}
 function hideOverlays(){overlays.forEach(x=>$('#'+x).classList.add('hidden'));playing=true}
 function toast(msg,duration=2600){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),duration)}
@@ -156,7 +159,7 @@ function drawFloorDepth(room){
 function drawWindow(x,y,w,h){ctx.save();roundRect(x-7,y-7,w+14,h+14,8,'#665a48','#e5cf91');const sky=ctx.createLinearGradient(0,y,0,y+h);sky.addColorStop(0,'#0b2439');sky.addColorStop(1,'#4f6d77');ctx.fillStyle=sky;ctx.fillRect(x,y,w,h);ctx.strokeStyle='#d8c59a';ctx.lineWidth=4;ctx.strokeRect(x,y,w,h);ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();for(let i=0;i<10;i++){ctx.globalAlpha=.4+(i%3)*.2;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+8+(i*31)%w,y+7+(i*19)%h,1.2+(i%2),0,7);ctx.fill()}ctx.restore()}
 function drawGarland(y,lit=true){ctx.save();ctx.strokeStyle='#154d35';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(62,y);ctx.bezierCurveTo(220,y+38,310,y-5,430,y+24);ctx.bezierCurveTo(560,y+52,655,y-4,798,y+20);ctx.stroke();for(let i=0;i<17;i++){const x=75+i*44,yy=y+15+Math.sin(i*.95)*15;ctx.fillStyle=i%3===0?'#b52531':'#214f38';ctx.beginPath();ctx.ellipse(x,yy,7,3.5,i,0,7);ctx.fill();if(lit){ctx.shadowColor=i%2?'#ffd76a':'#ef4d58';ctx.shadowBlur=12;ctx.fillStyle=i%2?'#ffe08a':'#ff7b7e';ctx.beginPath();ctx.arc(x,yy+5,2.8,0,7);ctx.fill();ctx.shadowBlur=0}}ctx.restore()}
 function drawSconce(x,y,lit=true){ctx.save();ctx.strokeStyle='#69522b';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+24);ctx.stroke();ctx.fillStyle='#a77a31';ctx.fillRect(x-9,y+20,18,6);if(lit){ctx.shadowColor='#ffd56b';ctx.shadowBlur=18;ctx.fillStyle='#ffe6a1';ctx.beginPath();ctx.moveTo(x,y-4);ctx.quadraticCurveTo(x-10,y+13,x,y+20);ctx.quadraticCurveTo(x+10,y+13,x,y-4);ctx.fill();ctx.shadowBlur=0}ctx.restore()}
-function snow(){for(let i=0;i<58;i++){const x=(i*137+time*18*(1+i%3))%W,y=(i*83+time*24*(1+i%2))%H;ctx.globalAlpha=.3+(i%5)/10;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,1+(i%3),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+function snow(count){count=count||78;ctx.save();for(let i=0;i<count;i++){const depth=(i%3)+1,drift=Math.sin(time*.55+i*.63)*(17/depth),x=((i*113+time*(10+depth*9))%(W+70))-35+drift,y=((i*67+time*(16+depth*16))%(H+50))-25;ctx.globalAlpha=.15+depth*.15;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(x,y,.85+depth*.7,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;ctx.restore()}
 function drawArchitecture(room){
   const [dark,light,mid]=room.theme,g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,dark);g.addColorStop(.42,light);g.addColorStop(1,mid);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
   if(room.id==='slotsplads'){drawFacade(room);snow()}
@@ -167,8 +170,14 @@ function drawArchitecture(room){
   else if(room.id==='riddersalen')drawRiddersalen(room);
   else if(room.id==='snapstinget')drawSnapstinget(room);
   else if(room.id==='landstingssalen')drawLandstingssalen(room);
+  else if(room.id==='folketingssalen')drawFolketingssalen(room);
+  else if(room.id==='vandrehallen')drawVandrehallen(room);
+  else if(room.id==='finans')drawFinans(room);
+  else if(room.id==='udvalg')drawUdvalg(room);
+  else if(room.id==='samtale')drawSamtale(room);
+  else if(room.id==='taarn'){drawTaarn(room);drawTelescope()}
   else drawHall(room);
-  if(!['slotsplads','rigsdagsgaard','ruiner','stalde','slotskirke','riddersalen','snapstinget'].includes(room.id)){drawGarland(70,!!state.tasks[room.id]);drawSconce(97,126,true);drawSconce(763,126,true)}
+  if(!['slotsplads','rigsdagsgaard','ruiner','stalde','slotskirke','riddersalen','snapstinget','folketingssalen','vandrehallen','finans','udvalg','samtale','taarn'].includes(room.id)){drawGarland(70,!!state.tasks[room.id]);drawSconce(97,126,true);drawSconce(763,126,true)}
   drawDoors(room);
 }
 function drawFacade(room){const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#0b2439');sky.addColorStop(.62,'#526f79');sky.addColorStop(1,'#b8c6c0');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);ctx.fillStyle='#d9d1bf';ctx.fillRect(70,96,720,360);ctx.fillStyle='#8a806f';ctx.fillRect(60,446,740,18);ctx.fillStyle='#5d6865';poly([[54,98],[90,68],[770,68],[806,98]],'#4b5756');for(let i=0;i<9;i++){ctx.fillStyle=i%2?'#a19887':'#b1a896';ctx.fillRect(82+i*84,112,68,118);drawWindow(94+i*84,125,44,71)}ctx.fillStyle='#b9ad97';ctx.fillRect(334,82,192,374);poly([[318,84],[352,54],[508,54],[542,84]],'#465352');ctx.fillStyle='#4d4439';ctx.fillRect(365,267,130,189);ctx.strokeStyle='#dfc56f';ctx.lineWidth=3;ctx.strokeRect(373,276,114,180);ctx.fillStyle='#e4c665';ctx.beginPath();ctx.arc(430,338,11,0,7);ctx.fill();drawGarland(236,true);ctx.fillStyle='#f0f5f2';for(let i=0;i<10;i++){ctx.beginPath();ctx.ellipse(58+i*91,493+(i%2)*9,72,22,0,0,7);ctx.fill()}if(room.id==='slotsplads')drawPalaceEntrance();else{ctx.fillStyle='#775f3e';roundRect(155,386,112,38,8,'#775f3e');roundRect(593,386,112,38,8,'#775f3e')}}
@@ -197,6 +206,1411 @@ function drawLandstingssalen(room){
   for(let row=0;row<3;row++){const y=386+row*61,spread=row*25,w=214+row*35;const oak=ctx.createLinearGradient(0,y,0,y+40);oak.addColorStop(0,'#8a5837');oak.addColorStop(1,'#3e261d');roundRect(86-spread,y,w,34,10,oak,'#d0a65c');roundRect(560-spread*.35,y,w,34,10,oak,'#d0a65c');ctx.fillStyle='#7e1f2b';roundRect(101-spread,y+6,w-30,12,4,'#7e1f2b','#b78b4b');roundRect(575-spread*.35,y+6,w-30,12,4,'#7e1f2b','#b78b4b')}
   drawRoyalChandelier(430,150,.9,true);ctx.save();ctx.globalAlpha=done?1:.8;ctx.strokeStyle='#18503a';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(91,173);ctx.bezierCurveTo(247,203,334,163,430,190);ctx.bezierCurveTo(532,216,630,163,770,184);ctx.stroke();for(let i=0;i<17;i++){const x=98+i*42,yy=184+Math.sin(i*.9)*12;ctx.shadowColor='#ffd66d';ctx.shadowBlur=done?14:7;ctx.fillStyle=i%4===0?'#d84249':'#ffe28e';ctx.beginPath();ctx.arc(x,yy,2.7,0,7);ctx.fill()}ctx.restore();const glow=ctx.createRadialGradient(430,260,20,430,280,390);glow.addColorStop(0,done?'#ffd98531':'#ffd98518');glow.addColorStop(1,'#0000');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
 }
+/* ===== fælles stemningsværktøj ===== */
+function flick(seed){return .84+.16*Math.sin(time*(3.05+seed*.41)+seed*2.7)}
+function glowPatch(x,y,rad,alpha,rgb){ctx.save();ctx.globalCompositeOperation='screen';const g=ctx.createRadialGradient(x,y,2,x,y,rad);g.addColorStop(0,'rgba('+rgb+','+alpha+')');g.addColorStop(.42,'rgba('+rgb+','+(alpha*.38)+')');g.addColorStop(1,'rgba('+rgb+',0)');ctx.fillStyle=g;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);ctx.restore()}
+function candle(x,y,s,seed,tall){tall=tall||16;const f=flick(seed);ctx.save();ctx.translate(x,y);ctx.scale(s,s);roundRect(-3.4,0,6.8,tall,2,'#f6ecd4','#cbb98f');ctx.fillStyle='#8e7c56';ctx.fillRect(-.7,-3,1.4,4);ctx.shadowColor='#ffd36b';ctx.shadowBlur=16*f;ctx.fillStyle='#ffeeb6';ctx.beginPath();ctx.moveTo(0,-13*f);ctx.quadraticCurveTo(-4.1,-4.2,0,-.6);ctx.quadraticCurveTo(4.1,-4.2,0,-13*f);ctx.fill();ctx.shadowBlur=0;ctx.restore();glowPatch(x,y-6*s,34*s*f,.45,'255,206,110')}
+function paintFloor(topY,c1,c2){const g=ctx.createLinearGradient(0,topY,0,H);g.addColorStop(0,c1);g.addColorStop(1,c2);ctx.fillStyle=g;ctx.fillRect(0,topY,W,H-topY)}
+function snowPile(x,y,w,h){ctx.save();ctx.fillStyle='#f6fbfd';ctx.beginPath();ctx.ellipse(x,y,w,h,0,0,7);ctx.fill();ctx.globalAlpha=.45;ctx.fillStyle='#cfe2ea';ctx.beginPath();ctx.ellipse(x,y+h*.45,w*.85,h*.5,0,0,7);ctx.fill();ctx.restore()}
+
+/* ===== Folketingssalen ===== */
+function drawFtSeat(x,y,s,lit,i){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.fillStyle='#00000033';ctx.beginPath();ctx.ellipse(0,12,16,4,0,0,7);ctx.fill();roundRect(-16,1,32,7,2,'#7c4f32','#c99757');roundRect(-11,-17,22,19,6,i%2?'#6c3f2a':'#7b4a30','#c9a05d');roundRect(-8,-14,16,13,4,lit?'#2c6d4a':'#8d2531',lit?'#93d6ab':'#dfae61');if(lit){ctx.fillStyle='#ffe8ab';ctx.font='8px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('♥',0,-7)}ctx.restore()}
+function drawFolketingssalen(room){
+  const done=!!state.tasks[room.id];
+  const wall=ctx.createLinearGradient(0,0,0,H);wall.addColorStop(0,'#33200f');wall.addColorStop(.26,'#7d5734');wall.addColorStop(.55,'#c3a074');wall.addColorStop(1,'#3f2a1c');ctx.fillStyle=wall;ctx.fillRect(0,0,W,H);
+  const ceil=ctx.createLinearGradient(0,0,0,152);ceil.addColorStop(0,'#241509');ceil.addColorStop(1,'#7b5533');poly([[0,0],[860,0],[792,152],[68,152]],ceil,'#c6a05a');
+  const sky=ctx.createLinearGradient(0,16,0,134);sky.addColorStop(0,'#b9d3e2');sky.addColorStop(.55,'#8fb0c4');sky.addColorStop(1,'#e2eff5');
+  roundRect(266,16,328,118,16,sky,'#e2c47f');
+  ctx.save();ctx.beginPath();ctx.roundRect(266,16,328,118,16);ctx.clip();
+  ctx.strokeStyle='#a98d61';ctx.lineWidth=3;
+  for(let i=1;i<6;i++){ctx.beginPath();ctx.moveTo(266+i*55,16);ctx.lineTo(266+i*55,134);ctx.stroke()}
+  for(let i=1;i<3;i++){ctx.beginPath();ctx.moveTo(266,16+i*39);ctx.lineTo(594,16+i*39);ctx.stroke()}
+  for(let i=0;i<6;i++)snowPile(279+i*55,44+(i%2)*38,25,6);
+  ctx.restore();
+  glowPatch(430,112,250,.22,'216,236,247');
+  for(let i=0;i<6;i++){ctx.fillStyle='#8c6438';ctx.fillRect(58+i*148,150,26,96);ctx.fillStyle='#c8a163';ctx.fillRect(58+i*148,150,26,5);ctx.fillStyle='#00000022';ctx.fillRect(78+i*148,155,6,91)}
+  ctx.save();ctx.shadowColor='#000000aa';ctx.shadowBlur=16;const crest=ctx.createLinearGradient(0,140,0,208);crest.addColorStop(0,'#8c1f2b');crest.addColorStop(1,'#5d121d');
+  ctx.beginPath();ctx.moveTo(388,140);ctx.lineTo(472,140);ctx.lineTo(472,180);ctx.quadraticCurveTo(430,208,388,180);ctx.closePath();ctx.fillStyle=crest;ctx.fill();ctx.strokeStyle='#eccc78';ctx.lineWidth=3;ctx.stroke();ctx.restore();
+  ctx.fillStyle='#f3d581';ctx.font='700 13px Georgia,serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  for(let i=0;i<3;i++)ctx.fillText('♞',430,159+i*15);
+  ctx.save();ctx.translate(112,198);ctx.fillStyle='#f6e2a4';ctx.beginPath();ctx.arc(0,0,16,0,7);ctx.fill();ctx.strokeStyle='#8c6c2e';ctx.lineWidth=3;ctx.stroke();ctx.strokeStyle='#3a2a12';ctx.lineWidth=2.4;const hh=time*.1;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(hh-1.57)*8,Math.sin(hh-1.57)*8);ctx.moveTo(0,0);ctx.lineTo(Math.cos(hh*12-1.57)*12,Math.sin(hh*12-1.57)*12);ctx.stroke();ctx.restore();
+  for(const sx of [710]){ctx.save();ctx.translate(sx,206);roundRect(-24,10,48,8,3,'#8a6a34','#d5b168');ctx.restore();candle(sx-12,196,1.1,sx*.011);candle(sx,192,1.25,sx*.013);candle(sx+12,196,1.1,sx*.017)}
+  paintFloor(298,'#946a3f','#2a1a10');
+  drawFloorDepth(room);
+  const cx=430,cy=360,ryf=.44,rows=[{rx:158,n:29,s:.42},{rx:206,n:33,s:.48},{rx:254,n:37,s:.54},{rx:302,n:39,s:.6},{rx:350,n:41,s:.66}];
+  let seatNo=0;
+  for(let row=rows.length-1;row>=0;row--){
+    const cfg=rows[row],a0=Math.PI*1.12,a1=Math.PI*1.88;
+    ctx.save();ctx.strokeStyle='#3d2617aa';ctx.lineWidth=16*cfg.s;ctx.beginPath();ctx.ellipse(cx,cy,cfg.rx+7,(cfg.rx+7)*ryf,0,a0,a1);ctx.stroke();ctx.restore();
+    for(let i=0;i<cfg.n;i++){
+      const a=a0+(a1-a0)*(i/(cfg.n-1)),x=cx+Math.cos(a)*cfg.rx,y=cy+Math.sin(a)*cfg.rx*ryf;
+      drawFtSeat(x,y,cfg.s,done,seatNo++);
+    }
+  }
+  ctx.save();ctx.globalAlpha=done?1:.82;ctx.strokeStyle='#17513a';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(62,152);ctx.bezierCurveTo(220,194,320,144,430,170);ctx.bezierCurveTo(548,198,650,144,798,166);ctx.stroke();
+  for(let i=0;i<18;i++){const x=72+i*41,yy=165+Math.sin(i*.92)*13;ctx.shadowColor='#ffd66d';ctx.shadowBlur=done?14:7;ctx.fillStyle=i%3?'#ffe08b':'#e2454f';ctx.beginPath();ctx.arc(x,yy,2.7,0,7);ctx.fill()}ctx.restore();
+  glowPatch(430,306,330,done?.22:.12,'255,214,124');
+}
+
+/* ===== Vandrehallen ===== */
+function drawBust(x,y,s,i){ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+  ctx.fillStyle='#00000055';ctx.beginPath();ctx.ellipse(0,74,26,8,0,0,7);ctx.fill();
+  const plinth=ctx.createLinearGradient(-16,8,16,72);plinth.addColorStop(0,'#5c4630');plinth.addColorStop(.5,'#3b2b1e');plinth.addColorStop(1,'#241a12');
+  roundRect(-21,66,42,9,3,'#4a3624','#b08c4e');roundRect(-15,12,30,56,3,plinth,'#a3803f');roundRect(-19,4,38,10,3,'#5d452e','#b58d4a');
+  const marble=ctx.createLinearGradient(-20,-52,20,4);marble.addColorStop(0,'#fff6e4');marble.addColorStop(.55,'#e6d6bb');marble.addColorStop(1,'#a5947a');
+  ctx.fillStyle=marble;ctx.beginPath();ctx.moveTo(-20,4);ctx.quadraticCurveTo(-15,-16,-7,-21);ctx.lineTo(7,-21);ctx.quadraticCurveTo(15,-16,20,4);ctx.closePath();ctx.fill();
+  ctx.fillStyle=marble;ctx.fillRect(-5,-27,10,10);ctx.beginPath();ctx.ellipse(0,-38,11.5,14.5,0,0,7);ctx.fill();
+  ctx.fillStyle='#c3b298';ctx.beginPath();ctx.ellipse(0,-47,12,8,0,Math.PI,0);ctx.fill();
+  ctx.fillStyle='#c3b298';ctx.beginPath();ctx.ellipse(-9,-34,3.5,5,0,0,7);ctx.fill();
+  ctx.fillStyle='#7d6d58';ctx.beginPath();ctx.arc(-4,-39,1.4,0,7);ctx.arc(4.5,-39,1.4,0,7);ctx.fill();
+  ctx.strokeStyle='#8d7c65';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(9,-38);ctx.quadraticCurveTo(11,-33,8,-29);ctx.stroke();
+  ctx.strokeStyle='#b0a087';ctx.lineWidth=1.1;for(const dy of [-8,-2,4]){ctx.beginPath();ctx.moveTo(-14,dy);ctx.quadraticCurveTo(0,dy+5,14,dy);ctx.stroke()}
+  ctx.strokeStyle='#1f5c3f';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-18,8);ctx.quadraticCurveTo(0,17,18,8);ctx.stroke();
+  ctx.fillStyle='#b52a35';for(const bx of [-9,0,9]){ctx.beginPath();ctx.arc(bx,13,2.4,0,7);ctx.fill()}
+  ctx.restore()}
+
+/* ===== Vandrehallen ===== */
+function drawVandrehallen(room){
+  const done = !!state.tasks[room.id];
+  const wall = ctx.createLinearGradient(0,0,0,H);
+  wall.addColorStop(0,'#33241a');
+  wall.addColorStop(.32,'#95784f');
+  wall.addColorStop(.64,'#cbb28b');
+  wall.addColorStop(1,'#3a2a1d');
+  ctx.fillStyle = wall;
+  ctx.fillRect(0,0,W,H);
+
+  const VPX = 430, VPY = 268;
+
+  const far = ctx.createLinearGradient(0,VPY-80,0,VPY+90);
+  far.addColorStop(0,'#e0cca2');
+  far.addColorStop(1,'#7a6244');
+  ctx.fillStyle = far;
+  ctx.fillRect(VPX-104,VPY-84,208,170);
+  const farWin = ctx.createLinearGradient(0,VPY-58,0,VPY+16);
+  farWin.addColorStop(0,'#12324a');
+  farWin.addColorStop(1,'#63838f');
+  roundRect(VPX-42,VPY-58,84,76,28,farWin,'#e0c583');
+  ctx.save();
+  ctx.globalAlpha = .8;
+  ctx.fillStyle = '#ffffff';
+  for(let i=0;i<12;i++){
+    ctx.beginPath();
+    ctx.arc(VPX-36+((i*23)%72), VPY-52+((i*19)%66), 1.2, 0, 7);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  const depths = [.28,.4,.54,.7,.86,1];
+  for(let d=0; d<depths.length; d++){
+    const q = depths[d];
+    const hw = 400*q, ht = 208*q, top = VPY-ht, bot = VPY+ht*1.22, pw = 30*q+8;
+    ctx.save();
+    ctx.globalAlpha = .58 + q*.42;
+    const col = ctx.createLinearGradient(VPX-hw,0,VPX+hw,0);
+    col.addColorStop(0,'#4d3823');
+    col.addColorStop(.16,'#b39769');
+    col.addColorStop(.5,'#dcc7a0');
+    col.addColorStop(.84,'#b39769');
+    col.addColorStop(1,'#4d3823');
+    ctx.fillStyle = col;
+    ctx.fillRect(VPX-hw, top-26*q, hw*2, 19*q+6);
+    ctx.fillRect(VPX-hw, top, pw, bot-top);
+    ctx.fillRect(VPX+hw-pw, top, pw, bot-top);
+    ctx.strokeStyle = '#e7d09a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(VPX-hw, top, pw, bot-top);
+    ctx.strokeRect(VPX+hw-pw, top, pw, bot-top);
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.moveTo(VPX-hw+pw, top+46*q);
+    ctx.quadraticCurveTo(VPX, top-18*q, VPX+hw-pw, top+46*q);
+    ctx.lineTo(VPX+hw-pw, top);
+    ctx.lineTo(VPX-hw+pw, top);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#e0c797';
+    ctx.lineWidth = 3*q+1.4;
+    ctx.beginPath();
+    ctx.moveTo(VPX-hw+pw, top+46*q);
+    ctx.quadraticCurveTo(VPX, top-18*q, VPX+hw-pw, top+46*q);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  paintFloor(300,'#8d6c46','#241a12');
+  drawFloorDepth(room);
+
+  ctx.save();
+  ctx.globalAlpha = .17;
+  ctx.strokeStyle = '#f0ddb8';
+  ctx.lineWidth = 1.5;
+  for(let i=-6;i<20;i++){
+    ctx.beginPath();
+    ctx.moveTo(VPX,VPY+70);
+    ctx.lineTo(i*62,H);
+    ctx.stroke();
+  }
+  for(let y=320; y<H; y+=26+(y-300)*.09){
+    ctx.beginPath();
+    ctx.moveTo(0,y);
+    ctx.lineTo(W,y);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  const busts = [
+    {x:82,y:486,s:.94},{x:186,y:424,s:.74},{x:272,y:382,s:.58},
+    {x:778,y:486,s:.94},{x:674,y:424,s:.74},{x:588,y:382,s:.58}
+  ];
+  busts.forEach(function(b,i){ drawBust(b.x,b.y,b.s,i) });
+
+  ctx.save();
+  ctx.globalAlpha = done ? 1 : .82;
+  ctx.strokeStyle = '#17513a';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(40,138);
+  ctx.bezierCurveTo(210,190,320,150,430,178);
+  ctx.bezierCurveTo(548,208,650,150,820,150);
+  ctx.stroke();
+  for(let i=0;i<19;i++){
+    const x = 52+i*42, yy = 172+Math.sin(i*.88)*16;
+    ctx.shadowColor = '#ffd66d';
+    ctx.shadowBlur = done ? 14 : 6;
+    ctx.fillStyle = i%3 ? '#ffe08b' : '#e2454f';
+    ctx.beginPath();
+    ctx.arc(x,yy,2.8,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  const lamps = [
+    {x:132,y:196,s:1},{x:218,y:210,s:.92},{x:304,y:222,s:.84},{x:390,y:232,s:.76},
+    {x:470,y:232,s:.76},{x:556,y:222,s:.84},{x:642,y:210,s:.92},{x:728,y:196,s:1}
+  ];
+  lamps.forEach(function(l,i){
+    ctx.save();
+    ctx.translate(l.x,l.y);
+    ctx.scale(l.s,l.s);
+    ctx.strokeStyle = '#3b2b22';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0,-96);
+    ctx.lineTo(0,-16);
+    ctx.stroke();
+    const brass = ctx.createLinearGradient(-18,0,18,0);
+    brass.addColorStop(0,'#6d4a1c');
+    brass.addColorStop(.5,'#e6c477');
+    brass.addColorStop(1,'#6d4a1c');
+    ctx.fillStyle = brass;
+    ctx.beginPath();
+    ctx.moveTo(-19,-16);
+    ctx.quadraticCurveTo(0,-34,19,-16);
+    ctx.lineTo(13,0);
+    ctx.lineTo(-13,0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#f2d68a';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    if(done){
+      ctx.shadowColor = '#ffd47a';
+      ctx.shadowBlur = 24;
+      ctx.fillStyle = '#ffeab0';
+      ctx.beginPath();
+      ctx.ellipse(0,3,11,5,0,0,7);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }else{
+      ctx.fillStyle = '#5c5344';
+      ctx.beginPath();
+      ctx.ellipse(0,3,10,4.5,0,0,7);
+      ctx.fill();
+    }
+    ctx.restore();
+    if(done) glowPatch(l.x, l.y+6, 96*l.s*flick(i), .34, '255,206,110');
+  });
+
+  glowPatch(430, 300, 340, done ? .2 : .1, '255,214,124');
+}
+
+/* ===== Finansudvalgets værelse i Tårnet: azurblå kuppel og krystallysekrone ===== */
+function drawVenetianChandelier(x,y,s,lit){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(s,s);
+  ctx.strokeStyle = '#c7a64d';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0,-120);
+  ctx.lineTo(0,-34);
+  ctx.stroke();
+  const glass = ctx.createLinearGradient(-40,-30,40,50);
+  glass.addColorStop(0,'#dff3f7');
+  glass.addColorStop(.5,'#a8d6e2');
+  glass.addColorStop(1,'#6fa9bd');
+  for(let ring=0; ring<2; ring++){
+    const rad = 46 - ring*16, yy = -14 + ring*26, arms = 8 - ring*2;
+    for(let i=0;i<arms;i++){
+      const a = (i/arms)*Math.PI*2 + ring*.4;
+      const ex = Math.cos(a)*rad, ey = yy + Math.sin(a)*rad*.34;
+      ctx.strokeStyle = '#bfe0e8';
+      ctx.lineWidth = 3.4;
+      ctx.beginPath();
+      ctx.moveTo(0,-24+ring*18);
+      ctx.quadraticCurveTo(ex*.55, ey+16, ex, ey);
+      ctx.stroke();
+      ctx.fillStyle = glass;
+      ctx.beginPath();
+      ctx.ellipse(ex, ey, 7, 4.5, 0, 0, 7);
+      ctx.fill();
+      if(lit){
+        const f = flick(i+ring*3);
+        ctx.shadowColor = '#ffd77b';
+        ctx.shadowBlur = 15*f;
+        ctx.fillStyle = '#fff0bd';
+        ctx.beginPath();
+        ctx.moveTo(ex, ey-16*f);
+        ctx.quadraticCurveTo(ex-4, ey-6, ex, ey-3);
+        ctx.quadraticCurveTo(ex+4, ey-6, ex, ey-16*f);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      ctx.fillStyle = '#f0a9b8';
+      ctx.beginPath();
+      ctx.ellipse(ex*.72, ey+9, 5, 7, a, 0, 7);
+      ctx.fill();
+      ctx.fillStyle = '#8fd0b0';
+      ctx.beginPath();
+      ctx.ellipse(ex*.5, ey+15, 4, 5.5, a, 0, 7);
+      ctx.fill();
+    }
+  }
+  ctx.fillStyle = glass;
+  ctx.beginPath();
+  ctx.ellipse(0,-24,16,12,0,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#e7f6f9';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#d8b355';
+  ctx.beginPath();
+  ctx.arc(0,34,7,0,7);
+  ctx.fill();
+  ctx.restore();
+  if(lit) glowPatch(x, y+2, 190*s, .3, '255,215,130');
+}
+function drawFinans(room){
+  const done = !!state.tasks[room.id];
+
+  const wall = ctx.createLinearGradient(0,0,0,H);
+  wall.addColorStop(0,'#0d2c46');
+  wall.addColorStop(.36,'#2f6f95');
+  wall.addColorStop(.66,'#cbd7d9');
+  wall.addColorStop(1,'#3c3227');
+  ctx.fillStyle = wall;
+  ctx.fillRect(0,0,W,H);
+
+  // Den azurblå kuppel
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(430,250,340,236,0,Math.PI,Math.PI*2);
+  ctx.lineTo(770,262);
+  ctx.lineTo(90,262);
+  ctx.closePath();
+  ctx.clip();
+  const dome = ctx.createRadialGradient(430,236,20,430,236,352);
+  dome.addColorStop(0,'#7fc7e6');
+  dome.addColorStop(.42,'#2f7fb4');
+  dome.addColorStop(.78,'#134c78');
+  dome.addColorStop(1,'#0a2c4c');
+  ctx.fillStyle = dome;
+  ctx.fillRect(60,0,740,270);
+  ctx.strokeStyle = '#d8b45e';
+  ctx.lineWidth = 3;
+  for(let i=0;i<13;i++){
+    const a = Math.PI + i*Math.PI/12;
+    ctx.beginPath();
+    ctx.moveTo(430,252);
+    ctx.lineTo(430+Math.cos(a)*350, 252+Math.sin(a)*246);
+    ctx.stroke();
+  }
+  for(const rr of [86,158,232,306]){
+    ctx.beginPath();
+    ctx.ellipse(430,252,rr,rr*.7,0,Math.PI,Math.PI*2);
+    ctx.stroke();
+  }
+  // Gyldne stjerner i kuplen
+  ctx.fillStyle = '#f7dd93';
+  for(let i=0;i<26;i++){
+    const a = Math.PI + (i*0.121)%1 * Math.PI;
+    const rr = 60 + ((i*97)%250);
+    const sx = 430+Math.cos(a)*rr, sy = 252+Math.sin(a)*rr*.7;
+    const tw = .65+.35*Math.sin(time*2.2+i);
+    ctx.globalAlpha = tw;
+    drawStar(sx, sy, 4.4*tw+1.4, 1.8);
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  ctx.strokeStyle = '#c19a4f';
+  ctx.lineWidth = 9;
+  ctx.beginPath();
+  ctx.ellipse(430,252,342,238,0,Math.PI,Math.PI*2);
+  ctx.stroke();
+  ctx.strokeStyle = '#f4e2ab';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.ellipse(430,252,326,222,0,Math.PI,Math.PI*2);
+  ctx.stroke();
+
+  // Rund væg med tårnvinduer og udsigt til sne
+  const curve = ctx.createLinearGradient(66,0,794,0);
+  curve.addColorStop(0,'#7d7360');
+  curve.addColorStop(.22,'#ded4c0');
+  curve.addColorStop(.5,'#efe7d5');
+  curve.addColorStop(.78,'#ded4c0');
+  curve.addColorStop(1,'#7d7360');
+  ctx.fillStyle = curve;
+  ctx.fillRect(66,252,728,116);
+  ctx.fillStyle = '#c3b69e';
+  ctx.fillRect(66,252,728,10);
+  const winXs = [128,286,574,732];
+  for(let i=0;i<winXs.length;i++){
+    const x = winXs[i];
+    ctx.save();
+    roundRect(x-38,272,76,92,[34,34,4,4],'#6b5b45','#e6cb87');
+    const view = ctx.createLinearGradient(0,278,0,358);
+    view.addColorStop(0,'#0a2136');
+    view.addColorStop(.62,'#274a60');
+    view.addColorStop(1,'#8fa7ae');
+    ctx.fillStyle = view;
+    ctx.beginPath();
+    ctx.moveTo(x-31,358);
+    ctx.lineTo(x-31,308);
+    ctx.quadraticCurveTo(x,272,x+31,308);
+    ctx.lineTo(x+31,358);
+    ctx.closePath();
+    ctx.fill();
+    ctx.save();
+    ctx.clip();
+    ctx.fillStyle = '#101f2c';
+    for(let k=0;k<4;k++){
+      ctx.fillRect(x-30+k*17, 330+((k*7)%12), 14, 30);
+    }
+    ctx.fillStyle = '#ffe6a8';
+    for(let k=0;k<7;k++){
+      ctx.globalAlpha = .5+.5*Math.sin(time*1.6+k+i);
+      ctx.fillRect(x-27+k*8, 336+((k*11)%16), 3, 4);
+    }
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#ffffff';
+    for(let k=0;k<14;k++){
+      const sx = x-30+((k*37+time*11)%62);
+      const sy = 278+((k*29+time*23)%80);
+      ctx.globalAlpha = .35+(k%3)*.2;
+      ctx.beginPath();
+      ctx.arc(sx,sy,1.2,0,7);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+    ctx.strokeStyle = '#d8c197';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x,274);
+    ctx.lineTo(x,358);
+    ctx.moveTo(x-31,322);
+    ctx.lineTo(x+31,322);
+    ctx.stroke();
+    snowPile(x, 360, 33, 7);
+    ctx.restore();
+  }
+
+  ctx.fillStyle = '#6a5336';
+  ctx.fillRect(66,362,728,12);
+  paintFloor(368,'#8a6a44','#241a12');
+  drawFloorDepth(room);
+
+  // Mødebord med grønt klæde og bilag
+  ctx.save();
+  ctx.translate(430,428);
+  ctx.fillStyle = '#00000055';
+  ctx.beginPath();
+  ctx.ellipse(0,62,214,30,0,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#4a3021';
+  ctx.fillRect(-176,18,26,56);
+  ctx.fillRect(150,18,26,56);
+  const cloth = ctx.createLinearGradient(0,-30,0,40);
+  cloth.addColorStop(0,'#2c6a4c');
+  cloth.addColorStop(1,'#14402f');
+  ctx.fillStyle = cloth;
+  ctx.beginPath();
+  ctx.ellipse(0,4,204,50,0,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#d3ab5c';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+  ctx.fillStyle = '#f6eeda';
+  for(let i=0;i<6;i++){
+    ctx.save();
+    ctx.translate(-150+i*60, -6+((i%2)*12));
+    ctx.rotate((i-3)*.1);
+    roundRect(-20,-13,40,26,2,'#f6eeda','#bfae86');
+    ctx.strokeStyle = '#b9a682';
+    ctx.lineWidth = 1.2;
+    for(let l=0;l<3;l++){
+      ctx.beginPath();
+      ctx.moveTo(-14,-6+l*6);
+      ctx.lineTo(14,-6+l*6);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  ctx.restore();
+  candle(340,412,1.1,3);
+  candle(520,412,1.1,7);
+
+  drawVenetianChandelier(430,212,1.25,true);
+
+  ctx.save();
+  ctx.globalAlpha = done ? 1 : .82;
+  ctx.strokeStyle = '#17513a';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(70,258);
+  ctx.bezierCurveTo(226,296,326,252,430,278);
+  ctx.bezierCurveTo(540,306,644,252,792,272);
+  ctx.stroke();
+  for(let i=0;i<18;i++){
+    const x = 82+i*41, yy = 272+Math.sin(i*.9)*13;
+    ctx.shadowColor = '#ffd66d';
+    ctx.shadowBlur = done ? 14 : 6;
+    ctx.fillStyle = i%3 ? '#ffe08b' : '#e2454f';
+    ctx.beginPath();
+    ctx.arc(x,yy,2.7,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  glowPatch(430,300,340, done ? .22 : .12, '255,214,124');
+}
+
+/* ===== Udvalgsværelset ===== */
+function drawCommitteeChair(x,y,s,back){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(s, s*(back?.9:1));
+  ctx.fillStyle = '#00000033';
+  ctx.beginPath();
+  ctx.ellipse(0,26,20,6,0,0,7);
+  ctx.fill();
+  const oak = ctx.createLinearGradient(-18,-46,18,26);
+  oak.addColorStop(0,'#8a5837');
+  oak.addColorStop(1,'#3a231a');
+  roundRect(-17,-48,34,50,9,oak,'#c99f5c');
+  roundRect(-12,-42,24,36,7,'#2c6247','#8ec5a4');
+  roundRect(-19,-2,38,10,4,oak,'#c99f5c');
+  ctx.fillStyle = '#3a231a';
+  ctx.fillRect(-15,6,5,20);
+  ctx.fillRect(10,6,5,20);
+  ctx.restore();
+}
+function drawGift(x,y,s,i){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#00000033';
+  ctx.beginPath();
+  ctx.ellipse(0,20,20,5,0,0,7);
+  ctx.fill();
+  const cols = [['#9c2733','#f3d17e'],['#26694c','#f3d17e'],['#2b5a7d','#e9c66f'],['#7c3560','#f0cf82']];
+  const c = cols[i%cols.length];
+  roundRect(-17,-16,34,34,3,c[0],c[1]);
+  ctx.fillStyle = c[1];
+  ctx.fillRect(-3,-16,6,34);
+  ctx.fillRect(-17,-2,34,6);
+  ctx.strokeStyle = c[1];
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(-6,-19,6,0,7);
+  ctx.arc(6,-19,6,0,7);
+  ctx.stroke();
+  ctx.restore();
+}
+function drawUdvalg(room){
+  const done = !!state.tasks[room.id];
+  const wall = ctx.createLinearGradient(0,0,0,H);
+  wall.addColorStop(0,'#26301f');
+  wall.addColorStop(.3,'#5d6b4c');
+  wall.addColorStop(.62,'#c2bb9a');
+  wall.addColorStop(1,'#38301f');
+  ctx.fillStyle = wall;
+  ctx.fillRect(0,0,W,H);
+
+  const ceil = ctx.createLinearGradient(0,0,0,140);
+  ceil.addColorStop(0,'#1d2418');
+  ceil.addColorStop(1,'#6d6b4c');
+  poly([[0,0],[860,0],[796,140],[64,140]],ceil,'#bfa055');
+  ctx.strokeStyle = '#8a7440';
+  ctx.lineWidth = 7;
+  for(let i=0;i<5;i++){
+    ctx.beginPath();
+    ctx.moveTo(66+i*182,0);
+    ctx.lineTo(120+i*156,140);
+    ctx.stroke();
+  }
+  drawPendantLamp(286,150,1.15);
+  drawPendantLamp(574,150,1.15);
+  glowPatch(286,158,150,.26,'255,206,110');
+  glowPatch(574,158,150,.26,'255,206,110');
+
+  // Panelvæg med portrætter og et stort landkort
+  ctx.fillStyle = '#6d4d33';
+  ctx.fillRect(0,138,W,196);
+  ctx.fillStyle = '#82603f';
+  ctx.fillRect(0,138,W,8);
+  ctx.fillStyle = '#5a3f2a';
+  ctx.fillRect(0,266,W,68);
+  ctx.fillStyle = '#8d6743';
+  ctx.fillRect(0,264,W,7);
+  ctx.strokeStyle = '#a67f45';
+  ctx.lineWidth = 2;
+  for(let i=0;i<11;i++) ctx.strokeRect(12+i*78,278,62,46);
+  for(let i=0;i<10;i++){
+    ctx.fillStyle = i%2 ? '#5c4029' : '#6b4b31';
+    ctx.fillRect(46+i*78,148,70,104);
+    ctx.strokeStyle = '#a67f45';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(52+i*78,154,58,92);
+  }
+  ctx.save();
+  roundRect(298,150,264,108,6,'#5a3a20','#d9b269');
+  ctx.beginPath();
+  ctx.rect(306,158,248,92);
+  ctx.clip();
+  const paint = ctx.createLinearGradient(0,158,0,250);
+  paint.addColorStop(0,'#1b3550');
+  paint.addColorStop(.58,'#5c7f92');
+  paint.addColorStop(1,'#e7eef1');
+  ctx.fillStyle = paint;
+  ctx.fillRect(306,158,248,92);
+  ctx.fillStyle = '#f7fbfc';
+  ctx.beginPath();
+  ctx.moveTo(306,232);
+  ctx.quadraticCurveTo(370,208,430,228);
+  ctx.quadraticCurveTo(492,248,554,222);
+  ctx.lineTo(554,250);
+  ctx.lineTo(306,250);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#1d4433';
+  for(let t=0;t<7;t++){
+    const tx = 322+t*36, th = 20+((t*13)%16);
+    ctx.beginPath();
+    ctx.moveTo(tx-9,228);
+    ctx.lineTo(tx+9,228);
+    ctx.lineTo(tx,228-th);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.fillStyle = '#ffffff';
+  for(let k=0;k<26;k++){
+    ctx.globalAlpha = .5+(k%3)*.16;
+    ctx.beginPath();
+    ctx.arc(310+((k*47)%242), 162+((k*29)%84), 1.4, 0, 7);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  for(const sx of [176,684]){
+    ctx.save();
+    ctx.translate(sx,196);
+    roundRect(-22,10,44,7,3,'#8a6a34','#d5b168');
+    ctx.restore();
+    candle(sx-10,198,1,sx*.012);
+    candle(sx+10,198,1,sx*.015);
+  }
+
+  paintFloor(334,'#7d5b38','#241a12');
+  drawFloorDepth(room);
+
+  // Stole bagest
+  for(let i=0;i<7;i++) drawCommitteeChair(158+i*92, 356, .72, true);
+
+  // Langbordet
+  ctx.save();
+  ctx.translate(430,392);
+  ctx.fillStyle = '#00000055';
+  ctx.beginPath();
+  ctx.ellipse(0,72,300,32,0,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#3d2519';
+  ctx.fillRect(-240,26,30,62);
+  ctx.fillRect(210,26,30,62);
+  const table = ctx.createLinearGradient(0,-40,0,50);
+  table.addColorStop(0,'#a06c40');
+  table.addColorStop(.5,'#7c4d2c');
+  table.addColorStop(1,'#40261a');
+  ctx.fillStyle = table;
+  roundRect(-292,-24,584,58,16,table,'#d8ae60');
+  ctx.fillStyle = '#2c6247';
+  roundRect(-268,-14,536,32,8,'#2c6247','#8ec5a4');
+  ctx.restore();
+
+  // Pakkerne der skal sorteres
+  drawGift(272,376,.58,0);
+  drawGift(346,378,.74,1);
+  drawGift(516,380,.9,2);
+  drawGift(602,378,.66,3);
+
+  // Stole forrest
+  for(let i=0;i<6;i++) drawCommitteeChair(190+i*96, 470, .95, false);
+
+  ctx.save();
+  ctx.globalAlpha = done ? 1 : .8;
+  ctx.strokeStyle = '#17513a';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(46,146);
+  ctx.bezierCurveTo(206,190,318,146,430,172);
+  ctx.bezierCurveTo(544,200,650,146,812,164);
+  ctx.stroke();
+  for(let i=0;i<18;i++){
+    const x = 58+i*42, yy = 168+Math.sin(i*.9)*14;
+    ctx.shadowColor = '#ffd66d';
+    ctx.shadowBlur = done ? 14 : 6;
+    ctx.fillStyle = i%3 ? '#ffe08b' : '#e2454f';
+    ctx.beginPath();
+    ctx.arc(x,yy,2.7,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+  glowPatch(430,300,330, done ? .22 : .12, '255,214,124');
+}
+
+/* ===== Samtaleværelset ===== */
+function drawArmchair(x,y,s,turn){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(s*turn, s);
+  ctx.fillStyle = '#00000044';
+  ctx.beginPath();
+  ctx.ellipse(0,48,46,12,0,0,7);
+  ctx.fill();
+  const velvet = ctx.createLinearGradient(-44,-60,44,48);
+  velvet.addColorStop(0,'#8e2430');
+  velvet.addColorStop(.5,'#b03340');
+  velvet.addColorStop(1,'#5c1620');
+  roundRect(-40,-62,80,74,20,velvet,'#e6c079');
+  roundRect(-30,-52,60,52,16,'#982b36','#d9b06c');
+  roundRect(-46,-16,22,42,10,velvet,'#e6c079');
+  roundRect(24,-16,22,42,10,velvet,'#e6c079');
+  roundRect(-38,4,76,26,10,'#9d2c37','#e6c079');
+  ctx.fillStyle = '#3c2419';
+  ctx.fillRect(-32,28,9,20);
+  ctx.fillRect(23,28,9,20);
+  ctx.restore();
+}
+function drawSamtale(room){
+  const done = !!state.tasks[room.id];
+  const wall = ctx.createLinearGradient(0,0,0,H);
+  wall.addColorStop(0,'#1f2f3a');
+  wall.addColorStop(.3,'#456073');
+  wall.addColorStop(.62,'#cfd3cd');
+  wall.addColorStop(1,'#3b3128');
+  ctx.fillStyle = wall;
+  ctx.fillRect(0,0,W,H);
+
+  const ceil = ctx.createLinearGradient(0,0,0,130);
+  ceil.addColorStop(0,'#182530');
+  ceil.addColorStop(1,'#6d7f88');
+  poly([[0,0],[860,0],[800,130],[60,130]],ceil,'#c2a463');
+
+  const upper = ctx.createLinearGradient(0,128,0,308);
+  upper.addColorStop(0,'#d8d0be');
+  upper.addColorStop(.42,'#efe9db');
+  upper.addColorStop(1,'#cfc5ae');
+  ctx.fillStyle = upper;
+  ctx.fillRect(0,128,W,180);
+  for(let i=0;i<9;i++){
+    ctx.strokeStyle = '#c5ab7c';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(14+i*94,144,76,124);
+  }
+  ctx.fillStyle = '#6b4a30';
+  ctx.fillRect(0,300,W,52);
+  ctx.fillStyle = '#8e6742';
+  ctx.fillRect(0,296,W,8);
+  ctx.strokeStyle = '#a67f45';
+  ctx.lineWidth = 2;
+  for(let i=0;i<11;i++) ctx.strokeRect(12+i*78,310,62,34);
+
+  // To høje vinduer med sne udenfor
+  for(const wx of [200,660]){
+    ctx.save();
+    roundRect(wx-58,142,116,142,[48,48,5,5],'#6c5b45','#e6cb87');
+    const view = ctx.createLinearGradient(0,148,0,278);
+    view.addColorStop(0,'#0b2237');
+    view.addColorStop(.7,'#2c4e63');
+    view.addColorStop(1,'#7f97a0');
+    ctx.fillStyle = view;
+    ctx.beginPath();
+    ctx.moveTo(wx-49,278);
+    ctx.lineTo(wx-49,198);
+    ctx.quadraticCurveTo(wx,146,wx+49,198);
+    ctx.lineTo(wx+49,278);
+    ctx.closePath();
+    ctx.fill();
+    ctx.save();
+    ctx.clip();
+    ctx.fillStyle = '#ffffff';
+    for(let k=0;k<20;k++){
+      const sx = wx-48+((k*41+time*13)%98);
+      const sy = 150+((k*33+time*27)%130);
+      ctx.globalAlpha = .3+(k%3)*.22;
+      ctx.beginPath();
+      ctx.arc(sx,sy,1.3,0,7);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+    ctx.strokeStyle = '#dcc59a';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(wx,148);
+    ctx.lineTo(wx,278);
+    ctx.moveTo(wx-49,222);
+    ctx.lineTo(wx+49,222);
+    ctx.stroke();
+    snowPile(wx,282,50,8);
+    ctx.restore();
+  }
+
+  drawRoyalChandelier(430,150,1.15,true);
+  glowPatch(430,178,240,.26,'255,214,124');
+
+  paintFloor(352,'#8a6440','#241a12');
+  drawFloorDepth(room);
+
+  // Tæppe
+  ctx.save();
+  ctx.globalAlpha = .92;
+  ctx.fillStyle = '#7d2531';
+  ctx.beginPath();
+  ctx.ellipse(430,452,262,80,0,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#e2bd72';
+  ctx.lineWidth = 5;
+  ctx.stroke();
+  ctx.strokeStyle = '#e2bd7255';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.ellipse(430,452,214,60,0,0,7);
+  ctx.stroke();
+  ctx.restore();
+
+  drawArmchair(258,418,1,1);
+  drawArmchair(602,418,1,-1);
+
+  // Lille rundt bord med to kopper og en stjerne
+  ctx.save();
+  ctx.translate(430,432);
+  ctx.fillStyle = '#00000044';
+  ctx.beginPath();
+  ctx.ellipse(0,44,52,13,0,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#4b2e1e';
+  ctx.fillRect(-7,4,14,42);
+  ctx.fillStyle = '#5f3a24';
+  ctx.beginPath();
+  ctx.ellipse(0,44,30,9,0,0,7);
+  ctx.fill();
+  const top = ctx.createLinearGradient(-46,0,46,0);
+  top.addColorStop(0,'#5c3822');
+  top.addColorStop(.5,'#9d6b3f');
+  top.addColorStop(1,'#4c2e1c');
+  ctx.fillStyle = top;
+  ctx.beginPath();
+  ctx.ellipse(0,0,48,15,0,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#d9b268';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  for(const cx of [-20,20]){
+    ctx.fillStyle = '#f7f1e4';
+    ctx.beginPath();
+    ctx.ellipse(cx,-6,10,5,0,0,7);
+    ctx.fill();
+    ctx.strokeStyle = '#b9a682';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.fillStyle = '#8c5a30';
+    ctx.beginPath();
+    ctx.ellipse(cx,-6,7,3.2,0,0,7);
+    ctx.fill();
+  }
+  ctx.save();
+  ctx.shadowColor = '#ffd979';
+  ctx.shadowBlur = 16+6*Math.sin(time*3);
+  ctx.fillStyle = '#ffe08e';
+  drawStar(0,-18,10,4.4);
+  ctx.restore();
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalAlpha = done ? 1 : .8;
+  ctx.strokeStyle = '#17513a';
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(48,136);
+  ctx.bezierCurveTo(208,180,318,138,430,164);
+  ctx.bezierCurveTo(544,192,650,138,812,156);
+  ctx.stroke();
+  for(let i=0;i<18;i++){
+    const x = 60+i*42, yy = 160+Math.sin(i*.9)*14;
+    ctx.shadowColor = '#ffd66d';
+    ctx.shadowBlur = done ? 14 : 6;
+    ctx.fillStyle = i%3 ? '#ffe08b' : '#e2454f';
+    ctx.beginPath();
+    ctx.arc(x,yy,2.7,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+  glowPatch(430,320,320, done ? .2 : .12, '255,208,120');
+}
+
+/* ===== Tårnet: udsigten 44 meter over København ===== */
+function drawSpireRundetaarn(x,base,s){
+  ctx.save();
+  ctx.translate(x,base);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#101d2a';
+  ctx.fillRect(-19,-58,38,58);
+  ctx.beginPath();
+  ctx.moveTo(-22,-58);
+  ctx.lineTo(22,-58);
+  ctx.lineTo(16,-70);
+  ctx.lineTo(-16,-70);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(-11,-70);
+  ctx.lineTo(11,-70);
+  ctx.lineTo(0,-92);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#f2cf72';
+  ctx.beginPath();
+  ctx.arc(0,-95,2.6,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#ffd98c';
+  for(let i=0;i<3;i++) ctx.fillRect(-13+i*11,-42,5,8);
+  ctx.restore();
+}
+function drawSpireVorFrelser(x,base,s){
+  ctx.save();
+  ctx.translate(x,base);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#101d2a';
+  ctx.fillRect(-21,-72,42,72);
+  ctx.beginPath();
+  ctx.moveTo(-24,-72);
+  ctx.lineTo(24,-72);
+  ctx.lineTo(18,-86);
+  ctx.lineTo(-18,-86);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#e0b957';
+  ctx.beginPath();
+  ctx.moveTo(-15,-86);
+  ctx.lineTo(15,-86);
+  ctx.lineTo(0,-150);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = '#0e1a26';
+  ctx.lineWidth = 2.4;
+  for(let i=0;i<5;i++){
+    const t = i/5, y = -88-t*56, half = 14*(1-t);
+    ctx.beginPath();
+    ctx.moveTo(-half,y);
+    ctx.quadraticCurveTo(0,y-7,half,y-3);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#f6dc95';
+  ctx.beginPath();
+  ctx.arc(0,-154,3.4,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#ffd98c';
+  for(let i=0;i<3;i++) ctx.fillRect(-14+i*12,-56,5,9);
+  ctx.restore();
+}
+function drawSpireRaadhus(x,base,s){
+  ctx.save();
+  ctx.translate(x,base);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#101d2a';
+  ctx.fillRect(-17,-104,34,104);
+  ctx.beginPath();
+  ctx.moveTo(-21,-104);
+  ctx.lineTo(21,-104);
+  ctx.lineTo(15,-118);
+  ctx.lineTo(-15,-118);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(-13,-118);
+  ctx.lineTo(13,-118);
+  ctx.lineTo(0,-158);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#f4e0a6';
+  ctx.beginPath();
+  ctx.arc(0,-88,8,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#1a2430';
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(0,-88);
+  ctx.lineTo(0,-93);
+  ctx.moveTo(0,-88);
+  ctx.lineTo(4,-86);
+  ctx.stroke();
+  ctx.fillStyle = '#ffd98c';
+  for(let i=0;i<2;i++) ctx.fillRect(-8+i*11,-60,5,9);
+  ctx.restore();
+}
+function drawSpireMarmor(x,base,s){
+  ctx.save();
+  ctx.translate(x,base);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#101d2a';
+  ctx.fillRect(-34,-40,68,40);
+  ctx.beginPath();
+  ctx.ellipse(0,-40,34,38,0,Math.PI,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#22384a';
+  ctx.beginPath();
+  ctx.ellipse(0,-40,34,38,0,Math.PI*1.05,Math.PI*1.5);
+  ctx.fill();
+  ctx.fillStyle = '#101d2a';
+  ctx.beginPath();
+  ctx.moveTo(-7,-76);
+  ctx.lineTo(7,-76);
+  ctx.lineTo(0,-96);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#f2cf72';
+  ctx.beginPath();
+  ctx.arc(0,-99,2.4,0,7);
+  ctx.fill();
+  ctx.restore();
+}
+function drawSpireHolmens(x,base,s){
+  ctx.save();
+  ctx.translate(x,base);
+  ctx.scale(s,s);
+  ctx.fillStyle = '#101d2a';
+  ctx.fillRect(-15,-52,30,52);
+  ctx.beginPath();
+  ctx.moveTo(-18,-52);
+  ctx.lineTo(18,-52);
+  ctx.lineTo(0,-96);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#f2cf72';
+  ctx.beginPath();
+  ctx.arc(0,-99,2.2,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#ffd98c';
+  ctx.fillRect(-4,-36,5,8);
+  ctx.restore();
+}
+function drawTaarn(room){
+  const ready = allReady();
+
+  // Nattehimmel
+  const sky = ctx.createLinearGradient(0,0,0,320);
+  sky.addColorStop(0,'#040d1c');
+  sky.addColorStop(.42,'#0e2740');
+  sky.addColorStop(.78,'#28516b');
+  sky.addColorStop(1,'#5f8296');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0,0,W,320);
+
+  // Stjerner
+  ctx.save();
+  for(let i=0;i<60;i++){
+    const x = (i*137)%W, y = (i*71)%200;
+    ctx.globalAlpha = .25+.5*Math.abs(Math.sin(time*.9+i));
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(x,y,1+(i%3)*.35,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Måne
+  ctx.save();
+  ctx.shadowColor = '#e9f3ff';
+  ctx.shadowBlur = 34;
+  ctx.fillStyle = '#f4f8ff';
+  ctx.beginPath();
+  ctx.arc(766,186,22,0,7);
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#0e2740';
+  ctx.globalAlpha = .5;
+  ctx.beginPath();
+  ctx.arc(757,180,19,0,7);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Øresund og den svenske kyst i horisonten
+  ctx.fillStyle = '#123145';
+  ctx.fillRect(0,268,W,22);
+  ctx.fillStyle = '#f6d98e';
+  ctx.globalAlpha = .55;
+  for(let i=0;i<26;i++){
+    ctx.fillRect((i*39+11)%W, 266, 5, 2);
+  }
+  ctx.globalAlpha = 1;
+
+  // Silhuetter af byen
+  ctx.fillStyle = '#0d1a27';
+  for(let i=0;i<34;i++){
+    const bx = i*27-8, bh = 24+((i*53)%46), bw = 22+((i*17)%16);
+    ctx.fillRect(bx,290-bh,bw,bh+12);
+  }
+  ctx.fillStyle = '#ffe1a0';
+  for(let i=0;i<120;i++){
+    const lx = (i*31+7)%W, ly = 252+((i*23)%42);
+    ctx.globalAlpha = .3+.55*Math.abs(Math.sin(time*1.4+i*.7));
+    ctx.fillRect(lx,ly,2.6,3);
+  }
+  ctx.globalAlpha = 1;
+
+  drawSpireRundetaarn(140,294,1.3);
+  drawSpireVorFrelser(336,296,1);
+  drawSpireRaadhus(432,294,1);
+  drawSpireHolmens(566,292,1);
+  drawSpireMarmor(716,290,1);
+
+  // Sne foran byen
+  ctx.save();
+  for(let i=0;i<70;i++){
+    const depth = (i%3)+1;
+    const x = ((i*113+time*(9+depth*8))%(W+60))-30+Math.sin(time*.6+i)*(14/depth);
+    const y = ((i*67+time*(17+depth*15))%(H+40))-20;
+    ctx.globalAlpha = .16+depth*.14;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(x,y,.9+depth*.75,0,7);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Brystværn
+  const parapet = ctx.createLinearGradient(0,296,0,346);
+  parapet.addColorStop(0,'#9c9384');
+  parapet.addColorStop(1,'#4d4740');
+  ctx.fillStyle = parapet;
+  ctx.fillRect(0,300,W,46);
+  ctx.fillStyle = '#b9b0a0';
+  ctx.fillRect(0,296,W,9);
+  snowPile(0,298,W,7);
+  for(let i=0;i<19;i++){
+    ctx.fillStyle = '#6d675d';
+    ctx.fillRect(14+i*45,306,20,36);
+    ctx.fillStyle = '#8e8779';
+    ctx.fillRect(14+i*45,306,20,4);
+  }
+
+  // Tårnets arkade i forgrunden
+  const cols = [26,246,614,834];
+  for(const cx of cols){
+    const stone = ctx.createLinearGradient(cx-30,0,cx+30,0);
+    stone.addColorStop(0,'#3c3730');
+    stone.addColorStop(.42,'#8f867a');
+    stone.addColorStop(1,'#332f29');
+    ctx.fillStyle = stone;
+    ctx.fillRect(cx-30,0,60,352);
+    ctx.fillStyle = '#a49a8b';
+    ctx.fillRect(cx-36,132,72,14);
+    ctx.fillRect(cx-36,0,72,16);
+  }
+  for(const pair of [[26,246],[246,614],[614,834]]){
+    const mid = (pair[0]+pair[1])/2;
+    ctx.fillStyle = '#584f45';
+    ctx.beginPath();
+    ctx.moveTo(pair[0],150);
+    ctx.quadraticCurveTo(mid, 46, pair[1], 150);
+    ctx.lineTo(pair[1],26);
+    ctx.lineTo(pair[0],26);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#8f867a';
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.moveTo(pair[0],150);
+    ctx.quadraticCurveTo(mid, 46, pair[1], 150);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#221f1b';
+  ctx.fillRect(0,0,W,26);
+
+  paintFloor(346,'#6b6659','#171a1c');
+  drawFloorDepth(room);
+
+  // Stengulv
+  ctx.save();
+  ctx.globalAlpha = .19;
+  ctx.strokeStyle = '#d9d2c4';
+  ctx.lineWidth = 1.6;
+  for(let i=-6;i<19;i++){
+    ctx.beginPath();
+    ctx.moveTo(430,344);
+    ctx.lineTo(i*66,H);
+    ctx.stroke();
+  }
+  for(let y=372;y<H;y+=28+(y-344)*.06){
+    ctx.beginPath();
+    ctx.moveTo(0,y);
+    ctx.lineTo(W,y);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Julegran i hjørnet
+  ctx.save();
+  ctx.translate(742,470);
+  ctx.fillStyle = '#00000044';
+  ctx.beginPath();
+  ctx.ellipse(0,54,44,12,0,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#4a2f1e';
+  ctx.fillRect(-8,30,16,24);
+  for(let i=0;i<4;i++){
+    const w = 20+i*15, y = 26-i*30;
+    ctx.fillStyle = i%2 ? '#1e5a3c' : '#256848';
+    ctx.beginPath();
+    ctx.moveTo(-w,y);
+    ctx.lineTo(w,y);
+    ctx.lineTo(0,y-46);
+    ctx.closePath();
+    ctx.fill();
+  }
+  for(let i=0;i<11;i++){
+    const a = i*1.9;
+    const bx = Math.sin(a)*(30-i*1.9), by = 16-i*10;
+    ctx.fillStyle = i%2 ? '#ffe08b' : '#e2454f';
+    ctx.beginPath();
+    ctx.arc(bx,by,3.2,0,7);
+    ctx.fill();
+  }
+  ctx.shadowColor = '#ffe08b';
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = '#ffe9a7';
+  drawStar(0,-104,11,4.6);
+  ctx.shadowBlur = 0;
+  ctx.restore();
+  glowPatch(742,430,150,.24,'255,214,124');
+
+  glowPatch(430,300,360, ready ? .3 : .12, '255,214,124');
+}
+
+/* ===== Kikkerten i Tårnet ===== */
+const telescopePos = {x:196,y:452};
+const lookoutSpots = [
+  {
+    id:'raadhus',
+    icon:'🕰️',
+    title:'Rådhustårnet',
+    lead:'Byens andet store tårn — lige derovre mod vest.',
+    text:'Rådhustårnet er 105,6 meter højt. Tårnet, du står i nu, er 106 meter og dermed Københavns højeste — 40 centimeter højere end rådhusets. Fire tiendedele meter. Nissen har målt efter to gange.',
+    source:{label:'Kilde: Tårnet på Christiansborg', url:'https://taarnet.dk/taarnet/?lang=en'}
+  },
+  {
+    id:'vorfrelser',
+    icon:'🌀',
+    title:'Vor Frelsers Kirke',
+    lead:'Det snoede, forgyldte spir ovre på Christianshavn.',
+    text:'Spiret har en udvendig vindeltrappe, der snor sig hele vejen udenom tårnet op til kuglen på toppen. Musene siger, den er dejlig at kælke ned ad. Nissen siger, at det ikke passer.',
+    source:null
+  },
+  {
+    id:'rundetaarn',
+    icon:'🔭',
+    title:'Rundetårn',
+    lead:'Det brede, runde tårn mod nord.',
+    text:'Rundetårn blev bygget af Christian 4. som observatorium og stod færdigt i 1642. Indeni er der ingen trappe, men en snoet kørerampe hele vejen op. Perfekt til en kane med gaver.',
+    source:null
+  },
+  {
+    id:'marmor',
+    icon:'⛪',
+    title:'Marmorkirken',
+    lead:'Den store grønne kuppel ovre ved Amalienborg.',
+    text:'Frederiks Kirke, som alle kalder Marmorkirken, har en af Nordens største kirkekupler. I aften ligger der sne på hele den grønne halvkugle.',
+    source:null
+  },
+  {
+    id:'oeresund',
+    icon:'🌊',
+    title:'Øresund og Sverige',
+    lead:'Helt ude i horisonten, hvor lysene bliver små.',
+    text:'I klart vejr kan man se fra Tårnet og hele vejen over til Sverige. I aften er der snebyger over sundet, men når det klarer op mellem to byger, kan man ane de svenske lys på den anden side.',
+    source:{label:'Kilde: Tårnet på Christiansborg', url:'https://taarnet.dk/taarnet/?lang=en'}
+  }
+];
+function lookoutSeen(){
+  if(!Array.isArray(state.lookout)) state.lookout = [];
+  for(let i=state.lookout.length-1;i>=0;i--){
+    const id = state.lookout[i];
+    if(!lookoutSpots.some(function(s){ return s.id===id })) state.lookout.splice(i,1);
+  }
+  return state.lookout;
+}
+function nextLookout(){
+  const seen = lookoutSeen();
+  for(let i=0;i<lookoutSpots.length;i++){
+    if(seen.indexOf(lookoutSpots[i].id)<0) return lookoutSpots[i];
+  }
+  return lookoutSpots[(seen.length-1+lookoutSpots.length)%lookoutSpots.length];
+}
+function openLookout(){
+  const seen = lookoutSeen();
+  const spot = nextLookout();
+  if(seen.indexOf(spot.id)<0){ seen.push(spot.id); save() }
+  $('#lookoutIcon').textContent = spot.icon;
+  $('#lookoutTitle').textContent = spot.title;
+  $('#lookoutLead').textContent = spot.lead;
+  $('#lookoutText').textContent = spot.text;
+  const src = $('#lookoutSource');
+  src.innerHTML = '';
+  if(spot.source){
+    const a = document.createElement('a');
+    a.href = spot.source.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = spot.source.label;
+    src.appendChild(a);
+  }
+  $('#lookoutCount').textContent = seen.length + ' af ' + lookoutSpots.length + ' vartegn fundet i kikkerten.';
+  $('#lookoutClose').textContent = seen.length >= lookoutSpots.length ? 'Nok kigget' : 'Drej kikkerten videre';
+  tone(590,.09);
+  showOverlay('lookout');
+}
+function drawTelescope(){
+  const p = telescopePos;
+  const seen = lookoutSeen().length;
+  const swing = Math.sin(time*.7)*.09;
+  ctx.save();
+  ctx.translate(p.x,p.y);
+  ctx.fillStyle = '#00000055';
+  ctx.beginPath();
+  ctx.ellipse(0,44,44,12,0,0,7);
+  ctx.fill();
+  ctx.strokeStyle = '#4c4238';
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  for(const a of [-.5,0,.5]){
+    ctx.beginPath();
+    ctx.moveTo(0,-4);
+    ctx.lineTo(Math.sin(a)*30, 42);
+    ctx.stroke();
+  }
+  ctx.save();
+  ctx.rotate(-.42+swing);
+  const brass = ctx.createLinearGradient(-8,-46,8,26);
+  brass.addColorStop(0,'#f0d087');
+  brass.addColorStop(.45,'#c99a3e');
+  brass.addColorStop(1,'#6d4a1a');
+  roundRect(-9,-52,18,74,7,brass,'#f6e2a8');
+  roundRect(-12,-60,24,14,5,'#5b4526','#e8cd88');
+  roundRect(-7,16,14,16,5,'#5b4526','#e8cd88');
+  ctx.restore();
+  ctx.fillStyle = '#3d3529';
+  ctx.beginPath();
+  ctx.arc(0,-2,9,0,7);
+  ctx.fill();
+  const pulse = 1+Math.sin(time*2.6)*.05;
+  ctx.save();
+  ctx.scale(pulse,pulse);
+  ctx.shadowColor = seen>=lookoutSpots.length ? '#7bd8a0' : '#ffd56f';
+  ctx.shadowBlur = seen>=lookoutSpots.length ? 12 : 22;
+  ctx.strokeStyle = seen>=lookoutSpots.length ? '#63bd8a' : '#dcb660';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.arc(0,-74,17,0,7);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = seen>=lookoutSpots.length ? '#276a4c' : '#7d2733';
+  ctx.beginPath();
+  ctx.arc(0,-74,14,0,7);
+  ctx.fill();
+  ctx.fillStyle = '#fff0b4';
+  ctx.font = '15px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(seen>=lookoutSpots.length ? '✓' : '🔭', 0, -73);
+  ctx.restore();
+  ctx.restore();
+}
+
+/* ===== Kapitler i fortællingen ===== */
+const chapters = [
+  {
+    at:4,
+    icon:'🕯️',
+    title:'Hvorfor tav klokken?',
+    text:'Fire steder er klar, og lyset breder sig gennem huset. Oppe i Tårnet sidder juleklokken helt stille. Den ringer nemlig ikke af sig selv — den ringer først, når hele Borgen er med. Ikke kun de folkevalgte. Også kokkene, portnerne, hestene og dem, der bor bag panelerne.'
+  },
+  {
+    at:8,
+    icon:'🐭',
+    title:'Dem bag panelerne',
+    text:'Otte steder er klar. Bag lister og under gulvbrædder begynder det at rumstere. Musene og nisserne har boet på Christiansborg længere end nogen af de nulevende medlemmer, og de har ventet hele året på netop denne aften. Find dem alle syv — klokken tæller dem med.'
+  },
+  {
+    at:12,
+    icon:'⭐',
+    title:'Det sidste sted',
+    text:'Tolv ud af tretten. Der mangler ét sted, og så er hele huset klar. Tag så vejen op gennem Samtaleværelset til Tårnet. Der hænger klokken og venter, 44 meter over København.'
+  }
+];
+function showChapter(ch){
+  $('#chapterIcon').textContent = ch.icon;
+  $('#chapterTitle').textContent = ch.title;
+  $('#chapterText').textContent = ch.text;
+  tone(392,.16);
+  setTimeout(function(){ tone(523,.2) },150);
+  showOverlay('chapter');
+}
+let chapterTimer = 0;
+function queueChapter(ch){
+  if(chapterTimer) return;
+  chapterTimer = setTimeout(function(){
+    chapterTimer = 0;
+    if(state.won) return;
+    if(!playing){ queueChapter(ch); return }
+    state.chapters[ch.at] = true;
+    save();
+    showChapter(ch);
+  }, 1500);
+}
+function checkChapters(){
+  if(!state.chapters || typeof state.chapters !== 'object') state.chapters = {};
+  const t = countTasks();
+  for(let i=0;i<chapters.length;i++){
+    const ch = chapters[i];
+    if(t >= ch.at && !state.chapters[ch.at]){ queueChapter(ch); return }
+  }
+}
+
 function drawHall(room){ctx.fillStyle='#ffffff1e';ctx.fillRect(50,52,760,430);ctx.strokeStyle='#ffffff4a';ctx.lineWidth=4;ctx.strokeRect(50,52,760,430);const wall=ctx.createLinearGradient(0,52,0,244);wall.addColorStop(0,'#ffffff25');wall.addColorStop(1,'#00000010');ctx.fillStyle=wall;ctx.fillRect(54,56,752,184);for(let i=0;i<9;i++){ctx.fillStyle=i%2?'#0000000a':'#ffffff0b';ctx.fillRect(54+i*84,58,83,180)}ctx.fillStyle='#594a38';ctx.fillRect(52,232,756,13);ctx.fillStyle='#d6c49b';ctx.fillRect(52,236,756,5);drawFloorDepth(room);drawWindow(357,100,146,96);
   if(room.id==='vandrehallen'){for(let i=0;i<8;i++){ctx.fillStyle='#77483a';ctx.fillRect(78+i*94,100,60,90);ctx.fillStyle='#d0aa65';ctx.fillRect(83+i*94,105,50,80)}}
   if(room.id==='folketingssalen'){for(let row=0;row<4;row++)for(let i=0;i<11;i++){ctx.fillStyle='#7b3b2e';ctx.beginPath();ctx.arc(190+i*47+Math.abs(row-2)*14,165+row*64,13,0,7);ctx.fill()}ctx.fillStyle='#6a3629';ctx.fillRect(366,370,128,56)}
@@ -315,11 +1729,12 @@ function drawHorse(x,y,s,turn=1,fed=false,phase=0){ctx.save();ctx.translate(x,y)
 function drawBell(x,y,s,color){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-43,30);ctx.quadraticCurveTo(-28,7,-27,-25);ctx.quadraticCurveTo(0,-58,27,-25);ctx.quadraticCurveTo(28,7,43,30);ctx.closePath();ctx.fill();ctx.fillStyle='#5d4420';ctx.beginPath();ctx.arc(0,37,9,0,7);ctx.fill();ctx.restore()}
 function drawAtmosphere(room){ctx.save();if(state.tasks[room.id]){for(let i=0;i<16;i++){const a=i*.8+time*.35,rad=92+(i%4)*34,x=430+Math.cos(a)*rad,y=306+Math.sin(a*1.3)*rad*.48;ctx.globalAlpha=.2+(Math.sin(time*3+i)+1)*.2;ctx.fillStyle=i%3?'#ffe08a':'#fff';ctx.beginPath();ctx.arc(x,y,1.4+(i%2),0,7);ctx.fill()}}else if(!['slotsplads','rigsdagsgaard'].includes(room.id)){for(let i=0;i<10;i++){ctx.globalAlpha=.12+(i%3)*.06;ctx.fillStyle='#fff1c4';ctx.beginPath();ctx.arc((i*103+time*5)%W,100+(i*67)%400,1,0,7);ctx.fill()}}ctx.restore()}
 function drawVignette(){const v=ctx.createRadialGradient(W/2,H/2,210,W/2,H/2,540);v.addColorStop(.45,'#0000');v.addColorStop(1,'#0000007a');ctx.fillStyle=v;ctx.fillRect(0,0,W,H);ctx.fillStyle='#f5d16b14';ctx.fillRect(0,0,W,2)}
-function drawPrompt(){let txt='',x=0,y=0;const room=r(),station=taskPos();if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<88){txt='Undersøg den vildfarne raket';x=rocketPos.x;y=rocketPos.y-55}else if(Math.hypot(state.x-station.x,state.y-station.y)<92){if(room.id==='taarn')txt=allReady()?'Ring med juleklokken':'Juleklokken venter';else if(state.tasks[room.id])txt='Se stedets historie';else if(room.id==='slotsplads')txt='Start sneploven';else if(room.id==='stalde')txt=stableProgress().picked?'Gå hen til hestene':'Tag seks gulerødder';else txt='Start juleforberedelsen';x=station.x;y=station.y-80}else if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<82){txt='Hvem gemmer sig her?';x=p[0];y=p[1]-54}}if(!txt)return;ctx.font='800 13px sans-serif';const w=ctx.measureText(txt).width+28;roundRect(x-w/2,y-17,w,34,12,'#06211fea','#f5c85b');ctx.fillStyle='#fff1bd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x,y)}
-function draw(){ctx.clearRect(0,0,W,H);drawArchitecture(r());drawAtmosphere(r());drawStation(r());drawRocketFind();drawResident(r());drawStableCarrotFlights();drawFollowers();drawPlayer();drawPrompt();drawVignette();drawConfetti();}
+function drawPrompt(){let txt='',x=0,y=0;const room=r(),station=taskPos();if(room.id==='taarn'&&Math.hypot(state.x-telescopePos.x,state.y-telescopePos.y)<90){txt='Kig i kikkerten';x=telescopePos.x;y=telescopePos.y-96}else if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<88){txt='Undersøg den vildfarne raket';x=rocketPos.x;y=rocketPos.y-55}else if(Math.hypot(state.x-station.x,state.y-station.y)<92){if(room.id==='taarn')txt=allReady()?'Ring med juleklokken':'Juleklokken venter';else if(state.tasks[room.id])txt='Se stedets historie';else if(room.id==='slotsplads')txt='Start sneploven';else if(room.id==='stalde')txt=stableProgress().picked?'Gå hen til hestene':'Tag seks gulerødder';else txt='Start juleforberedelsen';x=station.x;y=station.y-80}else if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<82){txt='Hvem gemmer sig her?';x=p[0];y=p[1]-54}}if(!txt)return;ctx.font='800 13px sans-serif';const w=ctx.measureText(txt).width+28;roundRect(x-w/2,y-17,w,34,12,'#06211fea','#f5c85b');ctx.fillStyle='#fff1bd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x,y)}
+function drawRoomFade(){if(roomFade<=0)return;ctx.save();ctx.fillStyle='rgba(5,14,19,'+(roomFade*.9)+')';ctx.fillRect(0,0,W,H);ctx.restore()}
+function draw(){ctx.clearRect(0,0,W,H);drawArchitecture(r());drawAtmosphere(r());drawStation(r());drawRocketFind();drawResident(r());drawStableCarrotFlights();drawFollowers();drawPlayer();drawPrompt();drawVignette();drawRoomFade();drawConfetti();}
 function move(dt){if(!playing)return;let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);if(dx||dy){const oldX=state.x,oldY=state.y,n=Math.hypot(dx,dy);stepPhase+=dt*11;if(Math.abs(dx)>Math.abs(dy))playerFacing=dx<0?'left':'right';else playerFacing=dy<0?'up':'down';state.x+=dx/n*190*dt;state.y+=dy/n*190*dt;state.x=Math.max(42,Math.min(818,state.x));state.y=Math.max(42,Math.min(565,state.y));recordTrail(Math.hypot(state.x-oldX,state.y-oldY))}transition();updateStableFeeding()}
-function transition(){const room=r();let d=null;if(state.y<54)d='N';else if(state.y>548)d='S';else if(state.x<48)d='W';else if(state.x>812)d='E';if(!d||!room.exits[d])return;const next=room.exits[d];state.room=next;state.visited[next]=true;if(d==='N'){state.y=520}else if(d==='S'){state.y=92}else if(d==='W'){state.x=780}else state.x=80;recordTrail(99);$('#roomPill').textContent=byId[next].name;toast(byId[next].fact);tone(440,.08);save();updateHUD()}
-function action(){if(!playing)return;const room=r(),station=taskPos(room);if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<96){state.rocketFound=true;save();tone(420,.08);setTimeout(()=>tone(630,.12),90);showOverlay('rocketStory');return}if(Math.hypot(state.x-station.x,state.y-station.y)<100){if(room.id==='taarn'){if(allReady())win();else toast('Klokken mangler '+(13-countTasks())+' forberedelser og '+(7-countResidents())+' skjulte beboere.')}else if(state.tasks[room.id])toast(room.fact);else if(room.id==='stalde'){const p=stableProgress();if(!p.picked)pickupStableCarrots();else toast((stableHorseLayout.length-p.fed.length)+' gulerødder tilbage. Gå hen til hestene.')}else openMission(room);return}if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<92){state.residents[room.id]=true;state.residentOrder=Array.isArray(state.residentOrder)?state.residentOrder:[];if(!state.residentOrder.includes(room.id))state.residentOrder.push(room.id);newFollowerId=room.id;newFollowerUntil=performance.now()+4200;recordTrail(99);tone(760,.14);save();updateHUD();showResidentStory(room);return}}toast(room.id==='slotskirke'&&!state.rocketFound?'Gå hen til orglet, kig efter slotsmusen eller undersøg den mærkelige genstand ved bænkene.':room.id==='slotsplads'?'Gå hen til sneploven i højre side, eller kig efter den skjulte slotsmus.':room.id==='stalde'?'Tag gulerødderne i kurven og gå helt hen til hver hest.':room.resident?'Gå hen til den lysende opgave eller kig efter den skjulte beboer.':'Gå hen til den lysende juleopgave.')}
+function transition(){const room=r();let d=null;if(state.y<54)d='N';else if(state.y>548)d='S';else if(state.x<48)d='W';else if(state.x>812)d='E';if(!d||!room.exits[d])return;const next=room.exits[d];state.room=next;state.visited[next]=true;if(d==='N'){state.y=520}else if(d==='S'){state.y=92}else if(d==='W'){state.x=780}else state.x=80;recordTrail(99);$('#roomPill').textContent=byId[next].name;toast(byId[next].fact);tone(440,.08);roomFade=1;save();updateHUD()}
+function action(){if(!playing)return;const room=r(),station=taskPos(room);if(room.id==='taarn'&&Math.hypot(state.x-telescopePos.x,state.y-telescopePos.y)<98){openLookout();return}if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<96){state.rocketFound=true;save();tone(420,.08);setTimeout(()=>tone(630,.12),90);showOverlay('rocketStory');return}if(Math.hypot(state.x-station.x,state.y-station.y)<100){if(room.id==='taarn'){if(allReady())win();else toast('Klokken mangler '+(13-countTasks())+' forberedelser og '+(7-countResidents())+' skjulte beboere.')}else if(state.tasks[room.id])toast(room.fact);else if(room.id==='stalde'){const p=stableProgress();if(!p.picked)pickupStableCarrots();else toast((stableHorseLayout.length-p.fed.length)+' gulerødder tilbage. Gå hen til hestene.')}else openMission(room);return}if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<92){state.residents[room.id]=true;state.residentOrder=Array.isArray(state.residentOrder)?state.residentOrder:[];if(!state.residentOrder.includes(room.id))state.residentOrder.push(room.id);newFollowerId=room.id;newFollowerUntil=performance.now()+4200;recordTrail(99);tone(760,.14);save();updateHUD();showResidentStory(room);return}}toast(room.id==='slotskirke'&&!state.rocketFound?'Gå hen til orglet, kig efter slotsmusen eller undersøg den mærkelige genstand ved bænkene.':room.id==='slotsplads'?'Gå hen til sneploven i højre side, eller kig efter den skjulte slotsmus.':room.id==='stalde'?'Tag gulerødderne i kurven og gå helt hen til hver hest.':room.resident?'Gå hen til den lysende opgave eller kig efter den skjulte beboer.':'Gå hen til den lysende juleopgave.')}
 function startSnowMaze(room,body){
   missionCleanup();
   const COL=17,ROW=11,CELL=36,map=[
@@ -425,10 +1840,11 @@ function openMission(room){showOverlay('mission');const t=room.task,panel=$('#mi
 }
 function completeMission(room){if(state.tasks[room.id])return;state.tasks[room.id]=true;tone(660,.12);setTimeout(()=>tone(880,.16),100);$('#missionError').textContent='Klaret! En juleglød er tændt.';save();updateHUD();setTimeout(()=>{hideOverlays();toast(room.name+' er klar til jul.')},650)}
 function objective(){const t=countTasks(),h=countResidents();if(t<13)return 'Gør '+(13-t)+' steder klar. Find den særlige juleopgave i hvert sted.';if(h<7)return 'Find de sidste '+(7-h)+' skjulte nisser eller mus. Kortet viser, hvor du mangler nogen.';if(state.room!=='taarn')return 'Alt er klart. Find vej til Tårnet gennem Samtaleværelset.';return 'Gå hen til klokken og ring julen ind.'}
-function updateHUD(){const t=countTasks(),h=countResidents();$('#taskCount').textContent=t+'/13';$('#residentCount').textContent=h+'/7';$('#objective').textContent=objective();$('#progress').style.width=((t+h)/20*100)+'%';$('#roomPill').textContent=r().name;const map=$('#map');map.innerHTML='';rooms.forEach((room,i)=>{const b=document.createElement('button'),residentTip=room.resident&&state.visited[room.id]?(state.residents[room.id]?' · '+room.residentName+', '+room.residentRole:' · beboer mangler'):'';b.className='mapDot'+(state.visited[room.id]?' visited':'')+(state.tasks[room.id]||room.id==='taarn'&&state.won?' done':'')+(state.room===room.id?' here':'');b.innerHTML=room.abbr+'<span class="tip">'+room.name+residentTip+'</span>';b.disabled=!state.visited[room.id];b.onclick=()=>{state.room=room.id;state.x=430;state.y=395;seedTrail();save();updateHUD();toast(room.name)};map.appendChild(b)})}
+function updateHUD(){updateHUDInner();checkChapters()}
+function updateHUDInner(){const t=countTasks(),h=countResidents();$('#taskCount').textContent=t+'/13';$('#residentCount').textContent=h+'/7';$('#objective').textContent=objective();$('#progress').style.width=((t+h)/20*100)+'%';$('#roomPill').textContent=r().name;const map=$('#map');map.innerHTML='';rooms.forEach((room,i)=>{const b=document.createElement('button'),residentTip=room.resident&&state.visited[room.id]?(state.residents[room.id]?' · '+room.residentName+', '+room.residentRole:' · beboer mangler'):'';b.className='mapDot'+(state.visited[room.id]?' visited':'')+(state.tasks[room.id]||room.id==='taarn'&&state.won?' done':'')+(state.room===room.id?' here':'');b.innerHTML=room.abbr+'<span class="tip">'+room.name+residentTip+'</span>';b.disabled=!state.visited[room.id];b.onclick=()=>{state.room=room.id;state.x=430;state.y=395;seedTrail();save();updateHUD();toast(room.name)};map.appendChild(b)})}
 function win(){state.won=true;save();playing=false;for(let i=0;i<100;i++)confetti.push({x:Math.random()*W,y:-Math.random()*H,v:45+Math.random()*85,a:Math.random()*7,c:['#f5c85b','#d63740','#74bd8d','#fff'][i%4]});$('#winText').textContent='Du fik alle på Christiansborg med. Juleklokken kan høres over hele København, og selv musene under de gamle mure har fået risengrød.';showOverlay('win');tone(523,.2);setTimeout(()=>tone(659,.2),160);setTimeout(()=>tone(784,.3),320)}
 function drawConfetti(){if(!confetti.length)return;confetti.forEach(p=>{p.y+=p.v/60;p.x+=Math.sin(p.y*.03+p.a);if(p.y>H)p.y=-10;ctx.fillStyle=p.c;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.y*.02);ctx.fillRect(-4,-7,8,14);ctx.restore()})}
-function loop(ts){const dt=Math.min(.04,(ts-last)/1000||0);last=ts;time+=dt;move(dt);draw();requestAnimationFrame(loop)}
+function loop(ts){const dt=Math.min(.04,(ts-last)/1000||0);last=ts;time+=dt;if(roomFade>0)roomFade=Math.max(0,roomFade-dt*2.5);move(dt);draw();requestAnimationFrame(loop)}
 window.addEventListener('keydown',e=>{if(['INPUT','BUTTON'].includes(e.target.tagName))return;const k=e.key.toLowerCase();if(k==='arrowup'||k==='w')keys.up=true;if(k==='arrowdown'||k==='s')keys.down=true;if(k==='arrowleft'||k==='a')keys.left=true;if(k==='arrowright'||k==='d')keys.right=true;if(['e',' ','enter'].includes(k)){e.preventDefault();action()}if(k.startsWith('arrow'))e.preventDefault()});
 window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='arrowup'||k==='w')keys.up=false;if(k==='arrowdown'||k==='s')keys.down=false;if(k==='arrowleft'||k==='a')keys.left=false;if(k==='arrowright'||k==='d')keys.right=false});
 document.querySelectorAll('.dpad button').forEach(b=>{const k=b.dataset.key;['pointerdown','touchstart'].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=true}));['pointerup','pointercancel','pointerleave','touchend'].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=false}))});
@@ -437,6 +1853,8 @@ $('#startBtn').onclick=()=>{reset();hideOverlays();toast('Find først opgaven p�
 $('#continueBtn').onclick=()=>{const d=load();if(d)state=d;stableProgress();seedTrail();hideOverlays();updateHUD();toast('Velkommen tilbage til julemissionen!')};
 $('#missionClose').onclick=()=>{missionCleanup();hideOverlays()};$('#helpBtn').onclick=()=>showOverlay('info');$('#infoClose').onclick=hideOverlays;$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'Lyd til':'Lyd fra';if(sound)tone(660,.08)};
 $('#rocketClose').onclick=hideOverlays;
+$('#lookoutClose').onclick=hideOverlays;
+$('#chapterClose').onclick=hideOverlays;
 $('#residentStoryClose').onclick=()=>{const room=residentStoryRoom;hideOverlays();if(room)toast(room.residentName+' slutter sig til juleoptoget.',3200);residentStoryRoom=null};
 $('#resetBtn').onclick=()=>{if(confirm('Vil du starte hele julemissionen forfra?')){reset();showOverlay('start');refreshStart()}};
 $('#againBtn').onclick=()=>{reset();showOverlay('start');refreshStart()};$('#stayBtn').onclick=()=>{hideOverlays();confetti=[]};

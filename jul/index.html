@@ -51,6 +51,48 @@
     /* Hold startknapperne synlige på lave computerskærme. */
     @media(max-height:760px) and (min-width:901px){#app{padding:10px}#shell{height:100%}#start .panel{padding-bottom:12px}.palaceHero{height:160px}#start h1{margin-top:-7px;font-size:38px}#start .lead{max-width:650px;margin-bottom:14px;font-size:15px;line-height:1.42}#start .primary,#start .secondary{padding:10px 20px}#start>.panel>.hint{margin-top:5px;font-size:10px}}
     @media(max-height:600px){#hud{gap:7px;padding-top:12px}.card{padding:9px}.brand{font-size:18px}.panel{padding:16px}.crest{font-size:39px}.lead{font-size:13px;margin-bottom:10px}.palaceHero{height:135px}#start h1{font-size:33px}#start .lead{font-size:14px;line-height:1.38;margin-bottom:10px}}
+    .lightsGame,.lanternGame,.sortGame,.carillonGame,.heartsGame{width:min(620px,100%);margin:0 auto}
+    .lightsHall{display:flex;align-items:flex-start;justify-content:center;gap:6px;padding:14px 8px 10px;border:1px solid #f4d57970;border-radius:16px;background:linear-gradient(160deg,#3b2c1c,#0f1a1c);box-shadow:0 15px 40px #0008,inset 0 1px #ffffff1a}
+    .lightLamp{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;padding:calc(20px - var(--d)*10px) 2px 6px;border:0;background:none;cursor:pointer}
+    .lampShade{width:calc(30px*var(--d));height:calc(19px*var(--d));border-radius:14px 14px 5px 5px;background:linear-gradient(90deg,#6d4a1c,#e6c477 50%,#6d4a1c);box-shadow:0 2px 0 #2a1d0c}
+    .lampGlow{width:calc(16px*var(--d));height:calc(10px*var(--d));margin-top:-3px;border-radius:50%;background:#4b4436;transition:.18s}
+    .lightLamp.on .lampGlow{background:#ffeab0;box-shadow:0 0 calc(16px + var(--v)*20px) rgba(255,212,122,calc(.35 + var(--v)*.65))}
+    .lampBar{display:block;width:100%;max-width:44px;height:5px;border-radius:5px;background:#02100f99;overflow:hidden}
+    .lampBar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a92130,#f7d478);transition:width .1s linear}
+    .lightsStatus,.lanternStatus,.carillonStatus{margin-top:9px;color:#ffe397;font:800 14px Georgia,serif;text-align:center}
+    .lanternFrame{padding:7px;border:1px solid #f4d57970;border-radius:16px;background:linear-gradient(145deg,#2b2b28,#0a0d0e);box-shadow:0 15px 40px #0008,inset 0 1px #ffffff14}
+    .lanternFrame canvas{display:block;width:100%;height:auto;aspect-ratio:7/4;border-radius:10px;background:#0b0e10;touch-action:none;cursor:crosshair}
+    .sortRow{display:flex;align-items:flex-end;justify-content:center;gap:9px;min-height:150px;padding:14px 10px 12px;border:1px solid #f4d57970;border-radius:16px;background:linear-gradient(160deg,#2e3a2c,#101a18);box-shadow:0 15px 40px #0008,inset 0 1px #ffffff14}
+    .sortGift{border:0;background:none;padding:0 2px;cursor:pointer}
+    .giftBox{position:relative;display:block;width:calc(20px + var(--s)*11px);height:calc(20px + var(--s)*11px);border-radius:4px;background:linear-gradient(150deg,#b7303c,#7d1c26);box-shadow:0 6px 14px #0007,inset 0 1px #ffffff2e}
+    .sortGift:nth-child(2n) .giftBox{background:linear-gradient(150deg,#2f7a56,#1a5038)}
+    .sortGift:nth-child(3n) .giftBox{background:linear-gradient(150deg,#356088,#1e3d58)}
+    .giftBand{position:absolute;inset:0;background:linear-gradient(90deg,transparent calc(50% - 3px),#f3d17e calc(50% - 3px),#f3d17e calc(50% + 3px),transparent calc(50% + 3px)),linear-gradient(0deg,transparent calc(50% - 3px),#f3d17e calc(50% - 3px),#f3d17e calc(50% + 3px),transparent calc(50% + 3px))}
+    .giftBow{position:absolute;left:50%;top:-7px;width:16px;height:11px;transform:translateX(-50%);border:2.5px solid #f3d17e;border-radius:50%}
+    .sortGift.picked .giftBox{outline:3px solid #ffe08b;outline-offset:3px;transform:translateY(-8px)}
+    .sortGift .giftBox{transition:transform .14s}
+    .carillonRounds{display:flex;justify-content:center;gap:7px;margin-bottom:9px}
+    .carillonRounds i{width:30px;height:5px;border-radius:5px;background:#ffffff1c}
+    .carillonRounds i.done{background:#f1cb67;box-shadow:0 0 9px #f1cb6766}
+    .carillonPad{display:flex;justify-content:center;gap:9px;margin-top:11px}
+    .carillonBell{width:74px;height:74px;border:1px solid #f1d37a55;border-radius:18px;background:radial-gradient(circle at 50% 26%,#123c39,#07201f);color:#fff3c7;font-size:29px;cursor:pointer;transition:.12s}
+    .carillonBell:hover{background:radial-gradient(circle at 50% 26%,#1a544c,#0a2a27)}
+    .carillonBell.lit{background:radial-gradient(circle at 50% 26%,#ffe9a7,#d8a63c);box-shadow:0 0 26px #ffd77aa8;transform:scale(1.07)}
+    .heartsRows{display:grid;gap:7px;margin:4px auto 10px;max-width:420px}
+    .heartsRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px;border:1px solid #eed27c3b;border-radius:12px;background:#ffffff0b;color:#fff5dc;font:800 14px Inter,system-ui,sans-serif;cursor:pointer;text-align:left}
+    .heartsRow strong{color:#ffe394;font:800 15px Georgia,serif}
+    .heartsRow span{color:#bfd0c4;font-size:12px}
+    .heartsRow:hover:not(:disabled){background:#ffffff19}
+    .heartsRow.done{background:#266747;border-color:#8fd0a8}
+    .heartsRow.done:after{content:"♥";margin-left:6px;color:#ffe8ab}
+    .heartsRow:disabled{cursor:default;opacity:.92}
+    @media(max-width:650px){
+     .lightsHall{gap:3px;padding:9px 4px 7px}
+     .lampBar{height:4px}
+     .carillonBell{width:58px;height:58px;font-size:23px}
+     .sortRow{min-height:120px;gap:6px}
+     .heartsRow{padding:9px 12px}
+    }
   </style>
 </head>
 <body>
@@ -85,24 +127,24 @@
 </main>
 <script>
 (()=>{'use strict';
-const cv=document.getElementById('game'),ctx=cv.getContext('2d');
+const cv=document.getElementById('game');let ctx=cv.getContext('2d');
 const W=860,H=620,EDGE={x1:66,x2:794,y1:80,y2:532};
 const riddersalArt=new Image();riddersalArt.src='riddersalen-jul.webp';
 const $=s=>document.querySelector(s), overlays=['start','mission','info','win','rocketStory','residentStory','lookout','chapter'];
 const rooms=[
  {id:'slotsplads',name:'Slotspladsen',abbr:'SP',icon:'🚜',theme:['#315c65','#d9e7df','#7693a2'],fact:'Slotspladsen ligger foran Christiansborg og er stedet med Frederik 7.s rytterstatue.',resident:'mus',residentName:'Mette',residentRole:'Statuens snevagt',residentStory:'Hun bor i rytterstatuens sokkel og bruger hestens fodspor som kælkebane.',task:{type:'snowmaze',icon:'🚜',title:'Sneploven på Slotspladsen',text:'Kør nissens røde sneplov gennem pladsen og ryd alle 24 snedriver. Pas på den levende fygesne. Varm kakao gør ploven uovervindelig i fem træk.'},exits:{N:'rigsdagsgaard',E:'slotskirke'}},
  {id:'rigsdagsgaard',name:'Rigsdagsgården',abbr:'RG',icon:'📯',theme:['#62433d','#e6d2b3','#9f6a53'],fact:'Rigsdagsgården er den indre gård ved Folketinget.',resident:null,task:{type:'sequence',icon:'📯',title:'Fordel den vigtige julepost',text:'Postnissen hvisker rækkefølgen: brev, gave, lovmappe.',options:['✉️','🎁','📕'],answer:['✉️','🎁','📕']},exits:{S:'slotsplads',N:'vandrehallen',E:'stalde'}},
- {id:'vandrehallen',name:'Vandrehallen',abbr:'VH',icon:'💡',theme:['#614931','#d8c5a5','#8e775b'],fact:'Vandrehallen er over 80 meter lang og forbinder Folketingssalen med Landstingssalen.',resident:null,task:{type:'clicks',icon:'💡',title:'Tænd den lange juleguirlande',text:'Vandrehallen er husets hovedfærdselsåre. Tænd alle otte lamper.',items:['💡','💡','💡','💡','💡','💡','💡','💡']},exits:{S:'rigsdagsgaard',W:'folketingssalen',E:'landstingssalen',N:'samtale'}},
- {id:'folketingssalen',name:'Folketingssalen',abbr:'FS',icon:'🏛️',theme:['#52372f','#c9a881','#8d5843'],fact:'Debatter og behandling af lovforslag foregår i Folketingssalen, der har 179 medlemspladser.',resident:'nisse',residentName:'Marlene',residentRole:'Den 180. plads',residentStory:'Hun tæller de 179 stole hver aften og stiller en fingerbølsskammel frem til sig selv.',task:{type:'count',icon:'🏛️',title:'Gør alle 179 pladser klar',text:'Læg julehjerter på præcis 179 pladser. Brug bundterne herunder.',target:179,steps:[50,20,5,1]},exits:{E:'vandrehallen',N:'udvalg'}},
+ {id:'vandrehallen',name:'Vandrehallen',abbr:'VH',icon:'💡',theme:['#614931','#d8c5a5','#8e775b'],fact:'Vandrehallen er over 80 meter lang og forbinder Folketingssalen med Landstingssalen.',resident:null,task:{type:'lights',icon:'💡',title:'Lystændingen i Vandrehallen',text:'De otte gamle lamper falder i søvn igen, så snart de er tændt. Få dem til at lyse alle sammen på samme tid.'},exits:{S:'rigsdagsgaard',W:'folketingssalen',E:'landstingssalen',N:'samtale'}},
+ {id:'folketingssalen',name:'Folketingssalen',abbr:'FS',icon:'🏛️',theme:['#52372f','#c9a881','#8d5843'],fact:'Debatter og behandling af lovforslag foregår i Folketingssalen, der har 179 medlemspladser.',resident:'nisse',residentName:'Marlene',residentRole:'Den 180. plads',residentStory:'Hun tæller de 179 stole hver aften og stiller en fingerbølsskammel frem til sig selv.',task:{type:'hearts',icon:'🏛️',title:'Gør alle 179 pladser klar',text:'Salens 179 pladser ligger i fem buede rækker. Læg julehjerterne bagfra og frem.'},exits:{E:'vandrehallen',N:'udvalg'}},
  {id:'samtale',name:'Samtaleværelset',abbr:'SV',icon:'🤝',theme:['#3d5264','#d7cfc0','#667a8c'],fact:'Samtaleværelset ligger midt mellem de to tingsale og blev tænkt som et sted for uformelle samtaler.',resident:'mus',residentName:'Kim',residentRole:'Osteforhandleren',residentStory:'Han forlader aldrig rummet uden et kompromis og et stykke ost til begge sider.',task:{type:'choice',icon:'🤝',title:'Skab julefred',text:'To nisser er uenige om, hvem der skal hænge stjernen op. Hvad gør du?',options:['Stem hurtigt','Lyt til begge og find en løsning','Gem stjernen'],answer:1},exits:{S:'vandrehallen',N:'taarn'}},
- {id:'landstingssalen',name:'Landstingssalen',abbr:'LS',icon:'🔔',theme:['#ddd8c8','#f4efe2','#9a835f'],fact:'Landstingssalen blev brugt af Landstinget frem til grundlovsændringen i 1953 og bruges i dag til møder og konferencer.',resident:null,task:{type:'sequence',icon:'🔔',title:'Væk de gamle juleklokker',text:'Spil mønstret: klokke, snefnug, klokke, stjerne.',options:['🔔','❄️','⭐'],answer:['🔔','❄️','🔔','⭐']},exits:{W:'vandrehallen',E:'riddersalen'}},
- {id:'udvalg',name:'Udvalgsværelset',abbr:'UV',icon:'🎁',theme:['#445b4c','#c8b58d','#788d76'],fact:'Folketingets faste udvalg behandler lovforslag og beslutningsforslag i udvalgsværelserne.',resident:null,task:{type:'sequence',icon:'🎁',title:'Sorter udvalgets pakker',text:'Pakkerne skal stå fra den mindste til den største.',options:['▫️','◻️','⬜'],answer:['▫️','◻️','⬜']},exits:{S:'folketingssalen',E:'finans'}},
- {id:'finans',name:'Finansudvalgets værelse',abbr:'FU',icon:'🧮',theme:['#2c5360','#c8d4d5','#5c7c86'],fact:'Finansudvalget holder til i Tårnet i et rum med en azurblå kuppel og en veneziansk krystallysekrone.',resident:null,task:{type:'count',icon:'🧮',title:'Få julebudgettet til at gå op',text:'Der skal være præcis 179 juleposer. Læg portioner sammen uden at gå over.',target:179,steps:[100,50,20,5,1]},exits:{W:'udvalg',S:'snapstinget'}},
+ {id:'landstingssalen',name:'Landstingssalen',abbr:'LS',icon:'🔔',theme:['#ddd8c8','#f4efe2','#9a835f'],fact:'Landstingssalen blev brugt af Landstinget frem til grundlovsændringen i 1953 og bruges i dag til møder og konferencer.',resident:null,task:{type:'carillon',icon:'🔔',title:'Klokkespillet i Landstingssalen',text:'Klokkerne har glemt julemelodien. Lyt og spil efter — fem runder, og melodien vokser for hver.'},exits:{W:'vandrehallen',E:'riddersalen'}},
+ {id:'udvalg',name:'Udvalgsværelset',abbr:'UV',icon:'🎁',theme:['#445b4c','#c8b58d','#788d76'],fact:'Folketingets faste udvalg behandler lovforslag og beslutningsforslag i udvalgsværelserne.',resident:null,task:{type:'sortsizes',icon:'🎁',title:'Sorter udvalgets pakker',text:'Fem pakker er endt i en rodet bunke. Byt dem rundt, indtil de står fra den mindste til den største.'},exits:{S:'folketingssalen',E:'finans'}},
+ {id:'finans',name:'Finansudvalgets værelse',abbr:'FU',icon:'🧮',theme:['#2c5360','#c8d4d5','#5c7c86'],fact:'Finansudvalget holder til i Tårnet i et rum med en azurblå kuppel og en veneziansk krystallysekrone.',resident:null,task:{type:'count',icon:'🧮',title:'Få julebudgettet til at gå op',text:'Julebudgettet skal ramme præcis 2.450 kroner — hverken mere eller mindre.',target:2450,unit:'kr.',steps:[1000,500,100,50,25,10]},exits:{W:'udvalg',S:'snapstinget'}},
  {id:'snapstinget',name:'Snapstinget',abbr:'SN',icon:'🥣',theme:['#6b312c','#d7b17a','#9a5b43'],fact:'Snapstinget er Folketingets restaurant, hvor medlemmer og ansatte kan spise.',resident:'mus',residentName:'Ellen',residentRole:'Snapstingets smagsdommer',residentStory:'Hun kan høre på gryden, præcis hvornår risengrøden mangler smør.',task:{type:'porridge',icon:'🥣',title:'Snapstingets julegrød',text:'Kog en gryde risengrød til Borgens nattevagt. Følg køkkenets rækkefølge, rør grøden glat og server den rigtigt.'},exits:{N:'finans',E:'stalde'}},
  {id:'riddersalen',name:'Riddersalen',abbr:'RS',icon:'🧵',theme:['#763e3c','#d8b982','#a56b4a'],fact:'Riddersalen er den største sal i De Kongelige Repræsentationslokaler og rummer Dronning Margrethes gobeliner.',resident:null,task:{type:'clicks',icon:'🧵',title:'Find stjernerne i gobelinerne',text:'Seks små julestjerner har gemt sig i de farverige vævninger.',items:['⭐','⭐','⭐','⭐','⭐','⭐']},exits:{W:'landstingssalen',S:'slotskirke',E:'stalde'}},
  {id:'slotskirke',name:'Christiansborg Slotskirke',abbr:'SK',icon:'🎼',theme:['#d8d0c3','#fffaf0','#8d7b68'],fact:'Slotskirken bruges blandt andet til gudstjenesten ved Folketingets åbning.',resident:'mus',residentName:'Anna',residentRole:'Orgelmusen',residentStory:'Hun bor bag den dybeste orgelpibe og kender alle toner, bortset fra den stille.',task:{type:'organ',icon:'🎼',title:'Den forsvundne julemelodi',text:'Fang 12 gyldne toner ved orglet. Flyt nissen mellem tangenterne, spil i det lysende felt og undgå de grå falske toner.'},exits:{W:'slotsplads',N:'riddersalen'}},
  {id:'stalde',name:'De Kongelige Stalde',abbr:'ST',icon:'🐴',theme:['#4f3a2b','#d7c29a','#856b4c'],fact:'De Kongelige Stalde har huset kongelige heste siden 1740. I dag står de hvide køreheste blandt marmorsøjler.',resident:'nisse',residentName:'Søren',residentRole:'Hestenes nattevagt',residentStory:'Han kender hver hest på lyden af dens tyggen og gemmer altid en ekstra gulerod.',task:{type:'stable',icon:'🐴',title:'Julegulerødder til de kongelige heste',text:'Gå hen til kurven og tag seks gulerødder. Nissen bærer tre i hver hånd. Besøg derefter alle seks heste.'},exits:{W:'rigsdagsgaard',N:'riddersalen',S:'ruiner',E:'snapstinget'}},
- {id:'ruiner',name:'Ruinerne under Christiansborg',abbr:'RU',icon:'🗝️',theme:['#2c3435','#93866c','#4d5552'],fact:'Under slottet ligger rester af Absalons Borg og Københavns Slot med fundamentet fra Blåtårn.',resident:'mus',residentName:'Christian',residentRole:'Nøglevogteren',residentStory:'Han bærer en rusten nøgle til en dør, der forsvandt for flere hundrede år siden.',task:{type:'sequence',icon:'🗝️',title:'Find den gamle julemekanisme',text:'På muren står koden: vand, nøgle, borg, stjerne.',options:['🌊','🗝️','🏰','⭐'],answer:['🌊','🗝️','🏰','⭐']},exits:{N:'stalde'}},
+ {id:'ruiner',name:'Ruinerne under Christiansborg',abbr:'RU',icon:'🗝️',theme:['#2c3435','#93866c','#4d5552'],fact:'Under slottet ligger rester af Absalons Borg og Københavns Slot med fundamentet fra Blåtårn.',resident:'mus',residentName:'Christian',residentRole:'Nøglevogteren',residentStory:'Han bærer en rusten nøgle til en dør, der forsvandt for flere hundrede år siden.',task:{type:'lantern',icon:'🗝️',title:'Lygten i mørket',text:'Der er bælgmørkt under slottet. Flyt lygten rundt og find de fire gamle julemærker på murene.'},exits:{N:'stalde'}},
  {id:'taarn',name:'Tårnet',abbr:'TÅ',icon:'🔔',theme:['#233f47','#b9c8c7','#526d72'],fact:'Tårnet er 106 meter højt og Københavns højeste. Fra udsigtsplatformen 44 meter over jorden kan man se ud over byen og i klart vejr helt til Sverige — prøv kikkerten.',resident:null,task:null,exits:{S:'samtale'}}
 ];
 const byId=Object.fromEntries(rooms.map(r=>[r.id,r]));
@@ -138,15 +180,254 @@ function allReady(){return countTasks()===13&&countResidents()===7}
 function followerIds(){const ordered=Array.isArray(state.residentOrder)?state.residentOrder.filter(id=>state.residents[id]&&byId[id]&&byId[id].resident):[];Object.keys(state.residents).filter(id=>state.residents[id]&&byId[id]&&byId[id].resident&&!ordered.includes(id)).forEach(id=>ordered.push(id));return ordered}
 function seedTrail(){trail=[];for(let i=0;i<220;i++){const reach=Math.min(125,i*.75),angle=i*.16;trail.push({x:Math.max(72,Math.min(788,state.x+Math.sin(angle)*reach)),y:Math.max(92,Math.min(520,state.y+35+Math.cos(angle)*reach*.62)),room:state.room})}trailDistance=0}
 function recordTrail(distance=0){trailDistance+=distance;if(trailDistance<7&&trail.length)return;trailDistance=0;trail.unshift({x:state.x,y:state.y,room:state.room});if(trail.length>1800)trail.length=1800}
-function reset(){localStorage.removeItem('borgenJulV1');clearTimeout(stableFinishTimer);stableFinishTimer=0;stableCarrotFlights=[];stableFeedLockUntil=0;stableResidentRevealStart=0;state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]},lookout:[],chapters:{}};seedTrail();updateHUD()}
+function reset(){localStorage.removeItem('borgenJulV1');Object.keys(layerCache).forEach(function(k){delete layerCache[k]});clearTimeout(stableFinishTimer);stableFinishTimer=0;stableCarrotFlights=[];stableFeedLockUntil=0;stableResidentRevealStart=0;state={room:'slotsplads',x:430,y:355,tasks:{},residents:{},residentOrder:[],visited:{slotsplads:true},won:false,rocketFound:false,stableFeed:{picked:false,fed:[]},lookout:[],chapters:{}};seedTrail();updateHUD()}
 function showOverlay(id){overlays.forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));playing=false}
 function hideOverlays(){overlays.forEach(x=>$('#'+x).classList.add('hidden'));playing=true}
 function toast(msg,duration=2600){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),duration)}
 function showResidentStory(room){residentStoryRoom=room;$('#residentStoryIcon').textContent=room.resident==='mus'?'🐭':'🎅';$('#residentStoryName').textContent=room.residentName+' '+(room.resident==='mus'?'Mus':'Nisse');$('#residentStoryRole').textContent=room.residentRole;$('#residentStoryText').textContent=room.residentStory;$('#residentStoryClose').textContent=room.residentName+' følger med';showOverlay('residentStory')}
-function tone(freq=520,d=.09){if(!sound)return;try{const ac=tone.ac||(tone.ac=new(window.AudioContext||window.webkitAudioContext)());const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.value=freq;g.gain.setValueAtTime(.0001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.12,ac.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d+.02)}catch(e){}}
+/* ===== Ydelse: cachede statiske lag og automatisk kvalitetsjustering ===== */
+let qual = 1;              /* 1 = fuld, .5 = sparetilstand på svag hardware */
+let frameCost = 0;         /* glidende gennemsnit af tegnetiden i ms */
+const layerCache = {};
+function ctxOverride(g){ ctx = g }
+function cachedLayer(key, drawFn){
+  let c = layerCache[key];
+  if(!c){
+    c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const prev = ctx;
+    try{
+      /* drawFn tegner i den samme kontekstvariabel som resten af spillet */
+      ctxOverride(g);
+      drawFn();
+    } finally {
+      ctxOverride(prev);
+    }
+    layerCache[key] = c;
+    const keys = Object.keys(layerCache);
+    if(keys.length > 24) delete layerCache[keys[0]];
+  }
+  ctx.drawImage(c, 0, 0);
+}
+function shadow(color, blur){
+  ctx.shadowColor = color;
+  ctx.shadowBlur = qual < 1 ? blur * .4 : blur;
+}
+function trackFrame(ms){
+  frameCost = frameCost ? frameCost * .93 + ms * .07 : ms;
+  if(qual === 1 && frameCost > 11) qual = .5;
+  else if(qual < 1 && frameCost < 5) qual = 1;
+}
+
+/* ===== Lyd: klokker, klange og en lille julefanfare ===== */
+const audio = { ctx:null, master:null };
+function audioCtx(){
+  if(!sound) return null;
+  try{
+    if(!audio.ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      audio.ctx = new AC();
+      audio.master = audio.ctx.createGain();
+      audio.master.gain.value = .5;
+      audio.master.connect(audio.ctx.destination);
+    }
+    if(audio.ctx.state === 'suspended') audio.ctx.resume();
+    return audio.ctx;
+  }catch(e){ return null }
+}
+/* Enkelt tone — samme kald som før, blødere klang */
+function tone(freq, d, vol){
+  freq = freq || 520; d = d || .09; vol = vol || .11;
+  const ac = audioCtx();
+  if(!ac) return;
+  try{
+    const t = ac.currentTime;
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .012);
+    g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(audio.master);
+    o.start(t); o.stop(t + d + .03);
+  }catch(e){}
+}
+/* Klokke: grundtone plus overtoner der dør ud i forskelligt tempo */
+function bell(freq, dur, vol, delay){
+  freq = freq || 660; dur = dur || 1.5; vol = vol || .16; delay = delay || 0;
+  const ac = audioCtx();
+  if(!ac) return;
+  try{
+    const t0 = ac.currentTime + delay;
+    const partials = [[1,1,1],[2.76,.42,.7],[5.4,.22,.42],[8.9,.11,.28]];
+    for(let i=0;i<partials.length;i++){
+      const p = partials[i];
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq * p[0], t0);
+      g.gain.setValueAtTime(.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol * p[1], t0 + .008);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + dur * p[2]);
+      o.connect(g); g.connect(audio.master);
+      o.start(t0); o.stop(t0 + dur * p[2] + .05);
+    }
+  }catch(e){}
+}
+/* Blød "kling" til klik og fund */
+function chime(freq, delay){
+  const ac = audioCtx();
+  if(!ac) return;
+  try{
+    const t0 = ac.currentTime + (delay || 0);
+    const o = ac.createOscillator(), g = ac.createGain(), o2 = ac.createOscillator();
+    o.type = 'sine'; o2.type = 'sine';
+    o.frequency.setValueAtTime(freq, t0);
+    o2.frequency.setValueAtTime(freq * 2.01, t0);
+    const g2 = ac.createGain();
+    g2.gain.value = .35;
+    g.gain.setValueAtTime(.0001, t0);
+    g.gain.exponentialRampToValueAtTime(.13, t0 + .01);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + .5);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(audio.master);
+    o.start(t0); o2.start(t0); o.stop(t0 + .55); o2.stop(t0 + .55);
+  }catch(e){}
+}
+const NOTE = { d4:293.66, e4:329.63, fs4:369.99, g4:392.00, a4:440.00, b4:493.88, cs5:554.37, d5:587.33, e5:659.25, fs5:739.99, g5:783.99, a5:880.00, d6:1174.66 };
+function playMelody(notes, beat, kind){
+  beat = beat || .17;
+  let at = 0;
+  for(let i=0;i<notes.length;i++){
+    const n = notes[i];
+    if(n[0]) {
+      if(kind === 'bell') bell(n[0], 1.1 + n[1] * .5, .12, at);
+      else chime(n[0], at);
+    }
+    at += n[1] * beat;
+  }
+}
+/* Et sted er gjort klar */
+function roomReadySound(){
+  playMelody([[NOTE.d5,1],[NOTE.fs5,1],[NOTE.a5,2]], .13);
+}
+/* Klokken ringer julen ind — original lille fanfare */
+function victoryMusic(){
+  playMelody([
+    [NOTE.d5,2],[NOTE.a4,1],[NOTE.b4,1],[NOTE.cs5,2],[NOTE.d5,2],
+    [0,1],
+    [NOTE.fs5,2],[NOTE.e5,1],[NOTE.d5,1],[NOTE.e5,2],[NOTE.fs5,2],
+    [0,1],
+    [NOTE.a5,3],[NOTE.g5,1],[NOTE.fs5,2],[NOTE.d5,4]
+  ], .21, 'bell');
+}
+
+/* ===== Spor efter de skjulte beboere ===== */
+const residentClues = {
+  slotsplads:     {x:-52, y:36,  kind:'sled',    hint:'Nogen har kælket i sneen ved statuens sokkel.'},
+  folketingssalen:{x:56,  y:30,  hint:'Der står en lillebitte skammel ved siden af pladserne.', kind:'stool'},
+  samtale:        {x:-58, y:28,  kind:'cheese',  hint:'Der ligger et stykke ost på gulvet. Nogen deler stadig med begge sider.'},
+  snapstinget:    {x:-56, y:30,  kind:'spoon',   hint:'En grødske er efterladt. Den er stadig varm.'},
+  slotskirke:     {x:54,  y:30,  kind:'note',    hint:'Et nodeblad er faldet ned bag orglet.'},
+  stalde:         {x:-58, y:34,  kind:'carrot',  hint:'Nogen har gemt en ekstra gulerod her.'},
+  ruiner:         {x:56,  y:32,  kind:'key',     hint:'En rusten nøgle ligger op ad muren.'}
+};
+function drawClueShape(kind, pulse){
+  ctx.save();
+  ctx.scale(pulse, pulse);
+  if(kind === 'cheese'){
+    ctx.fillStyle = '#e8bd4e';
+    ctx.beginPath(); ctx.moveTo(-11,6); ctx.lineTo(9,6); ctx.lineTo(9,-6); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#a9812a'; ctx.lineWidth = 1.6; ctx.stroke();
+    ctx.fillStyle = '#c99c33';
+    ctx.beginPath(); ctx.arc(0,2,2,0,7); ctx.arc(5,4,1.3,0,7); ctx.fill();
+  }else if(kind === 'carrot'){
+    ctx.fillStyle = '#ef8a2b';
+    ctx.beginPath(); ctx.moveTo(-4,-7); ctx.lineTo(4,-7); ctx.lineTo(0,10); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#3f8d53'; ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.moveTo(0,-6); ctx.lineTo(-4,-13); ctx.moveTo(0,-6); ctx.lineTo(4,-13); ctx.stroke();
+  }else if(kind === 'key'){
+    ctx.strokeStyle = '#c9a24a'; ctx.lineWidth = 2.6;
+    ctx.beginPath(); ctx.arc(-6,0,5,0,7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-1,0); ctx.lineTo(11,0); ctx.moveTo(8,0); ctx.lineTo(8,5); ctx.moveTo(11,0); ctx.lineTo(11,4); ctx.stroke();
+  }else if(kind === 'note'){
+    ctx.fillStyle = '#f6efdc';
+    roundRect(-9,-8,18,16,2,'#f6efdc','#b8a882');
+    ctx.fillStyle = '#26313a';
+    ctx.beginPath(); ctx.ellipse(-2,4,3.2,2.4,-.3,0,7); ctx.fill();
+    ctx.fillRect(.6,-6,1.6,10);
+    ctx.beginPath(); ctx.moveTo(2.2,-6); ctx.quadraticCurveTo(7,-5,7,-1); ctx.lineTo(5.4,-1); ctx.quadraticCurveTo(5.4,-4,2.2,-4); ctx.fill();
+  }else if(kind === 'spoon'){
+    ctx.strokeStyle = '#c69a52'; ctx.lineWidth = 3.4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-9,7); ctx.lineTo(6,-4); ctx.stroke();
+    ctx.fillStyle = '#d8ac5e';
+    ctx.beginPath(); ctx.ellipse(9,-7,5.5,4,-.6,0,7); ctx.fill();
+    ctx.fillStyle = '#efe0bd';
+    ctx.beginPath(); ctx.ellipse(9,-7,3.4,2.3,-.6,0,7); ctx.fill();
+  }else if(kind === 'stool'){
+    ctx.fillStyle = '#8a5837';
+    roundRect(-8,-4,16,4,1.5,'#8a5837','#c99f5c');
+    ctx.fillStyle = '#5c3a24';
+    ctx.fillRect(-7,0,2.4,8); ctx.fillRect(4.6,0,2.4,8);
+  }else{ /* sled: kælkespor i sneen */
+    ctx.strokeStyle = '#cfe2ea'; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+    for(const dy of [-3,3]){
+      ctx.beginPath();
+      ctx.moveTo(-16,dy);
+      ctx.quadraticCurveTo(0,dy-2.5,16,dy);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+function drawResidentClue(room){
+  if(!room.resident || state.residents[room.id]) return;
+  if(room.id === 'stalde' && !state.tasks.stalde) return;
+  const c = residentClues[room.id];
+  if(!c) return;
+  const p = residentPos[room.id];
+  if(!p) return;
+  const x = p[0] + c.x, y = p[1] + c.y;
+  const pulse = 1 + Math.sin(time * 2.2 + x) * .06;
+  glowPatch(x, y, 52 + Math.sin(time * 2) * 5, .26, '255,214,124');
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.fillStyle = '#00000038';
+  ctx.beginPath(); ctx.ellipse(0, 11, 15, 4, 0, 0, 7); ctx.fill();
+  drawClueShape(c.kind, pulse);
+  ctx.restore();
+  /* små gnister der peger mod gemmestedet */
+  if(qual === 1){
+    ctx.save();
+    for(let i=0;i<4;i++){
+      const t = ((time * .55 + i * .25) % 1);
+      const gx = x + (p[0] - x) * t, gy = y + (p[1] - 14 - y) * t - Math.sin(Math.PI * t) * 16;
+      ctx.globalAlpha = .5 * (1 - t);
+      ctx.fillStyle = '#ffe08b';
+      ctx.beginPath(); ctx.arc(gx, gy, 1.9, 0, 7); ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+function clueHint(room){
+  const c = residentClues[room.id];
+  if(!c || !room.resident || state.residents[room.id]) return '';
+  if(room.id === 'stalde' && !state.tasks.stalde) return '';
+  return c.hint;
+}
+
+/* Beboeren viser sig først, når man er tæt nok på — sporet er ledetråden */
+function residentReveal(room){
+  const p = residentPos[room.id];
+  if(!p) return 1;
+  const d = Math.hypot(state.x - p[0], state.y - p[1]);
+  return Math.max(0, Math.min(1, (255 - d) / 135));
+}
+
 function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
 function poly(points,fill,stroke){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
-function drawFloorDepth(room){
+function drawFloorDepth(room){cachedLayer('floor-'+room.id+'-'+(state.tasks[room.id]?1:0)+'-'+qual,function(){drawFloorDepthRaw(room)})}
+function drawFloorDepthRaw(room){
   const done=!!state.tasks[room.id];
   const g=ctx.createLinearGradient(0,236,0,560);g.addColorStop(0,'#ffffff24');g.addColorStop(.55,'#00000008');g.addColorStop(1,'#00000048');
   poly([[53,238],[807,238],[850,575],[10,575]],g);
@@ -159,7 +440,7 @@ function drawFloorDepth(room){
 function drawWindow(x,y,w,h){ctx.save();roundRect(x-7,y-7,w+14,h+14,8,'#665a48','#e5cf91');const sky=ctx.createLinearGradient(0,y,0,y+h);sky.addColorStop(0,'#0b2439');sky.addColorStop(1,'#4f6d77');ctx.fillStyle=sky;ctx.fillRect(x,y,w,h);ctx.strokeStyle='#d8c59a';ctx.lineWidth=4;ctx.strokeRect(x,y,w,h);ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();for(let i=0;i<10;i++){ctx.globalAlpha=.4+(i%3)*.2;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+8+(i*31)%w,y+7+(i*19)%h,1.2+(i%2),0,7);ctx.fill()}ctx.restore()}
 function drawGarland(y,lit=true){ctx.save();ctx.strokeStyle='#154d35';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(62,y);ctx.bezierCurveTo(220,y+38,310,y-5,430,y+24);ctx.bezierCurveTo(560,y+52,655,y-4,798,y+20);ctx.stroke();for(let i=0;i<17;i++){const x=75+i*44,yy=y+15+Math.sin(i*.95)*15;ctx.fillStyle=i%3===0?'#b52531':'#214f38';ctx.beginPath();ctx.ellipse(x,yy,7,3.5,i,0,7);ctx.fill();if(lit){ctx.shadowColor=i%2?'#ffd76a':'#ef4d58';ctx.shadowBlur=12;ctx.fillStyle=i%2?'#ffe08a':'#ff7b7e';ctx.beginPath();ctx.arc(x,yy+5,2.8,0,7);ctx.fill();ctx.shadowBlur=0}}ctx.restore()}
 function drawSconce(x,y,lit=true){ctx.save();ctx.strokeStyle='#69522b';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+24);ctx.stroke();ctx.fillStyle='#a77a31';ctx.fillRect(x-9,y+20,18,6);if(lit){ctx.shadowColor='#ffd56b';ctx.shadowBlur=18;ctx.fillStyle='#ffe6a1';ctx.beginPath();ctx.moveTo(x,y-4);ctx.quadraticCurveTo(x-10,y+13,x,y+20);ctx.quadraticCurveTo(x+10,y+13,x,y-4);ctx.fill();ctx.shadowBlur=0}ctx.restore()}
-function snow(count){count=count||78;ctx.save();for(let i=0;i<count;i++){const depth=(i%3)+1,drift=Math.sin(time*.55+i*.63)*(17/depth),x=((i*113+time*(10+depth*9))%(W+70))-35+drift,y=((i*67+time*(16+depth*16))%(H+50))-25;ctx.globalAlpha=.15+depth*.15;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(x,y,.85+depth*.7,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;ctx.restore()}
+function snow(count){count=Math.round((count||78)*qual);ctx.save();for(let i=0;i<count;i++){const depth=(i%3)+1,drift=Math.sin(time*.55+i*.63)*(17/depth),x=((i*113+time*(10+depth*9))%(W+70))-35+drift,y=((i*67+time*(16+depth*16))%(H+50))-25;ctx.globalAlpha=.15+depth*.15;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(x,y,.85+depth*.7,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;ctx.restore()}
 function drawArchitecture(room){
   const [dark,light,mid]=room.theme,g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,dark);g.addColorStop(.42,light);g.addColorStop(1,mid);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
   if(room.id==='slotsplads'){drawFacade(room);snow()}
@@ -208,7 +489,7 @@ function drawLandstingssalen(room){
 }
 /* ===== fælles stemningsværktøj ===== */
 function flick(seed){return .84+.16*Math.sin(time*(3.05+seed*.41)+seed*2.7)}
-function glowPatch(x,y,rad,alpha,rgb){ctx.save();ctx.globalCompositeOperation='screen';const g=ctx.createRadialGradient(x,y,2,x,y,rad);g.addColorStop(0,'rgba('+rgb+','+alpha+')');g.addColorStop(.42,'rgba('+rgb+','+(alpha*.38)+')');g.addColorStop(1,'rgba('+rgb+',0)');ctx.fillStyle=g;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);ctx.restore()}
+function glowPatch(x,y,rad,alpha,rgb){if(qual<1&&alpha<.16)return;ctx.save();ctx.globalCompositeOperation='screen';const g=ctx.createRadialGradient(x,y,2,x,y,rad);g.addColorStop(0,'rgba('+rgb+','+alpha+')');g.addColorStop(.42,'rgba('+rgb+','+(alpha*.38)+')');g.addColorStop(1,'rgba('+rgb+',0)');ctx.fillStyle=g;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);ctx.restore()}
 function candle(x,y,s,seed,tall){tall=tall||16;const f=flick(seed);ctx.save();ctx.translate(x,y);ctx.scale(s,s);roundRect(-3.4,0,6.8,tall,2,'#f6ecd4','#cbb98f');ctx.fillStyle='#8e7c56';ctx.fillRect(-.7,-3,1.4,4);ctx.shadowColor='#ffd36b';ctx.shadowBlur=16*f;ctx.fillStyle='#ffeeb6';ctx.beginPath();ctx.moveTo(0,-13*f);ctx.quadraticCurveTo(-4.1,-4.2,0,-.6);ctx.quadraticCurveTo(4.1,-4.2,0,-13*f);ctx.fill();ctx.shadowBlur=0;ctx.restore();glowPatch(x,y-6*s,34*s*f,.45,'255,206,110')}
 function paintFloor(topY,c1,c2){const g=ctx.createLinearGradient(0,topY,0,H);g.addColorStop(0,c1);g.addColorStop(1,c2);ctx.fillStyle=g;ctx.fillRect(0,topY,W,H-topY)}
 function snowPile(x,y,w,h){ctx.save();ctx.fillStyle='#f6fbfd';ctx.beginPath();ctx.ellipse(x,y,w,h,0,0,7);ctx.fill();ctx.globalAlpha=.45;ctx.fillStyle='#cfe2ea';ctx.beginPath();ctx.ellipse(x,y+h*.45,w*.85,h*.5,0,0,7);ctx.fill();ctx.restore()}
@@ -238,6 +519,7 @@ function drawFolketingssalen(room){
   paintFloor(298,'#946a3f','#2a1a10');
   drawFloorDepth(room);
   const cx=430,cy=360,ryf=.44,rows=[{rx:158,n:29,s:.42},{rx:206,n:33,s:.48},{rx:254,n:37,s:.54},{rx:302,n:39,s:.6},{rx:350,n:41,s:.66}];
+  cachedLayer('ft-seats-'+(done?1:0),function(){
   let seatNo=0;
   for(let row=rows.length-1;row>=0;row--){
     const cfg=rows[row],a0=Math.PI*1.12,a1=Math.PI*1.88;
@@ -247,6 +529,7 @@ function drawFolketingssalen(room){
       drawFtSeat(x,y,cfg.s,done,seatNo++);
     }
   }
+  });
   ctx.save();ctx.globalAlpha=done?1:.82;ctx.strokeStyle='#17513a';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(62,152);ctx.bezierCurveTo(220,194,320,144,430,170);ctx.bezierCurveTo(548,198,650,144,798,166);ctx.stroke();
   for(let i=0;i<18;i++){const x=72+i*41,yy=165+Math.sin(i*.92)*13;ctx.shadowColor='#ffd66d';ctx.shadowBlur=done?14:7;ctx.fillStyle=i%3?'#ffe08b':'#e2454f';ctx.beginPath();ctx.arc(x,yy,2.7,0,7);ctx.fill()}ctx.restore();
   glowPatch(430,306,330,done?.22:.12,'255,214,124');
@@ -1700,11 +1983,11 @@ function drawStation(room){
   ctx.scale(pulse,pulse);ctx.shadowColor=done?'#75d69a':'#ffd467';ctx.shadowBlur=done?14:30;const orb=ctx.createRadialGradient(-9,-37,3,0,-27,39);orb.addColorStop(0,'#fff8cd');orb.addColorStop(.35,done?'#7bd59b':'#f6cd67');orb.addColorStop(1,done?'#194f3b':'#972733');ctx.fillStyle=orb;ctx.beginPath();ctx.arc(0,-27,37,0,7);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ffecad99';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle=done?'#f2ffed':'#fff8dc';ctx.font='36px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(done?'✓':room.icon,0,-28);ctx.restore()
 }
 function pickupStableCarrots(){if(state.room!=='stalde'||state.tasks.stalde)return;const p=stableProgress();if(p.picked)return;p.picked=true;tone(520,.08);setTimeout(()=>tone(700,.1),90);toast('Seks julegulerødder! Nissen har tre i hver hånd. Gå hen til hestene.',4000);save()}
-function finishStableFeeding(){if(state.tasks.stalde||stableFinishTimer)return;stableFinishTimer=setTimeout(()=>{stableFinishTimer=0;if(stableProgress().fed.length<stableHorseLayout.length||state.tasks.stalde)return;state.tasks.stalde=true;stableResidentRevealStart=performance.now();tone(660,.12);setTimeout(()=>tone(880,.16),110);save();updateHUD();toast('Alle seks heste er fodret. Søren Nisse kommer frem fra stalden!',4500)},680)}
+function finishStableFeeding(){if(state.tasks.stalde||stableFinishTimer)return;stableFinishTimer=setTimeout(()=>{stableFinishTimer=0;if(stableProgress().fed.length<stableHorseLayout.length||state.tasks.stalde)return;state.tasks.stalde=true;Object.keys(layerCache).forEach(function(k){delete layerCache[k]});stableResidentRevealStart=performance.now();roomReadySound();save();updateHUD();toast('Alle seks heste er fodret. Søren Nisse kommer frem fra stalden!',4500)},680)}
 function updateStableFeeding(){if(!playing||state.room!=='stalde'||state.tasks.stalde)return;const p=stableProgress(),now=performance.now();if(!p.picked){if(Math.hypot(state.x-carrotBasketPos.x,state.y-carrotBasketPos.y)<78)pickupStableCarrots();return}if(p.fed.length>=stableHorseLayout.length){finishStableFeeding();return}if(now<stableFeedLockUntil)return;for(let index=0;index<stableHorseLayout.length;index++){if(p.fed.includes(index))continue;const horse=stableHorseLayout[index],targetY=horse.y-34*horse.s;if(Math.hypot(state.x-horse.x,state.y-targetY)<72+horse.s*14){p.fed.push(index);stableFeedLockUntil=now+720;stableCarrotFlights.push({fromX:state.x,fromY:state.y-18,toX:horse.x+horse.side*12*horse.s,toY:targetY,start:now,duration:620});tone(440+index*35,.08);const left=stableHorseLayout.length-p.fed.length;toast(left?left+' gulerødder tilbage.':'Den sidste hest har fået sin gulerod!',1900);save();if(!left)finishStableFeeding();break}}}
 function drawStableCarrotFlights(){if(state.room!=='stalde'){stableCarrotFlights=[];return}const now=performance.now();stableCarrotFlights=stableCarrotFlights.filter(f=>{const t=Math.min(1,(now-f.start)/f.duration),x=f.fromX+(f.toX-f.fromX)*t,y=f.fromY+(f.toY-f.fromY)*t-Math.sin(Math.PI*t)*65;ctx.save();ctx.translate(x,y);ctx.rotate(t*Math.PI*2);ctx.fillStyle='#f08a2e';ctx.beginPath();ctx.moveTo(-5,-8);ctx.lineTo(5,-8);ctx.lineTo(0,12);ctx.closePath();ctx.fill();ctx.strokeStyle='#3f8d53';ctx.lineWidth=2.5;for(const dx of [-5,0,5]){ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(dx,-15);ctx.stroke()}ctx.restore();return t<1})}
 function drawHeldCarrots(){if(state.room!=='stalde'||state.tasks.stalde)return;const count=stableCarrotsHeld();if(!count)return;const amounts=[Math.min(3,count),Math.max(0,count-3)];for(const side of [-1,1]){const amount=amounts[side===-1?0:1];ctx.save();ctx.translate(side*30,31);for(let i=0;i<amount;i++){ctx.save();ctx.translate(side*(i-1)*3,-i*2);ctx.rotate(side*(.28+(i-1)*.12));ctx.fillStyle=i%2?'#f59a35':'#e87825';ctx.beginPath();ctx.moveTo(-3,-5);ctx.lineTo(3,-5);ctx.lineTo(0,12);ctx.closePath();ctx.fill();ctx.strokeStyle='#4c965a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-4,-11);ctx.moveTo(0,-4);ctx.lineTo(4,-11);ctx.stroke();ctx.restore()}ctx.restore()}}
-function drawResident(room){if(!room.resident||state.residents[room.id]||room.id==='stalde'&&!state.tasks.stalde)return;let p=residentPos[room.id],pulse=1+Math.sin(time*4)*.04,alpha=.72;if(room.id==='stalde'&&stableResidentRevealStart){const t=Math.min(1,(performance.now()-stableResidentRevealStart)/1400),ease=1-Math.pow(1-t,3);p=[430,205+(residentPos.stalde[1]-205)*ease];pulse*=.55+.45*ease;alpha=.35+.65*ease}ctx.save();ctx.translate(p[0],p[1]);ctx.scale(pulse,pulse);ctx.globalAlpha=alpha;if(room.resident==='mus')drawMouse(0,0,1);else drawGnome(0,0,.9);ctx.restore()}
+function drawResident(room){if(!room.resident||state.residents[room.id]||room.id==='stalde'&&!state.tasks.stalde)return;let p=residentPos[room.id],pulse=1+Math.sin(time*4)*.04,alpha=.72;if(!stableResidentRevealStart||room.id!=='stalde'){const rv=residentReveal(room);if(rv<=0)return;alpha*=rv;pulse*=.82+.18*rv}if(room.id==='stalde'&&stableResidentRevealStart){const t=Math.min(1,(performance.now()-stableResidentRevealStart)/1400),ease=1-Math.pow(1-t,3);p=[430,205+(residentPos.stalde[1]-205)*ease];pulse*=.55+.45*ease;alpha=.35+.65*ease}ctx.save();ctx.translate(p[0],p[1]);ctx.scale(pulse,pulse);ctx.globalAlpha=alpha;if(room.resident==='mus')drawMouse(0,0,1);else drawGnome(0,0,.9);ctx.restore()}
 function drawFollowers(){followerIds().forEach((id,i)=>{const room=byId[id],idx=(i+1)*9,p=trail[Math.min(idx,trail.length-1)];if(!p||p.room!==state.room)return;const older=trail[Math.min(idx+2,trail.length-1)]||p,dx=p.x-older.x,dy=p.y-older.y,facing=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'),bob=Math.sin(time*5-i*.8)*1.5;ctx.save();ctx.translate(p.x,p.y+bob);ctx.globalAlpha=.96;if(room.resident==='mus')drawMouse(0,0,.64,facing,true,i*.85);else drawGnome(0,0,.53,false,facing,true);if(id===newFollowerId&&performance.now()<newFollowerUntil){ctx.font='800 11px sans-serif';const w=ctx.measureText(room.residentName).width+18;roundRect(-w/2,-56,w,24,9,'#06211fe8','#f5c85b');ctx.fillStyle='#fff1bd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(room.residentName,0,-44)}ctx.restore()})}
 function drawPlayer(){ctx.save();ctx.translate(state.x,state.y);const walking=keys.up||keys.down||keys.left||keys.right,bob=walking?Math.sin(stepPhase)*2:Math.sin(time*3)*.7;ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(0,26,24,8,0,0,7);ctx.fill();ctx.translate(0,bob);drawGnome(0,0,1.15,true,playerFacing,walking);drawHeldCarrots();ctx.restore()}
 function drawGnome(x,y,s,hero=false,facing='down',walking=false){ctx.save();ctx.translate(x,y);const flip=facing==='left'?-1:1;ctx.scale(s*flip,s);const stride=walking?Math.sin(stepPhase)*5:0;
@@ -1729,11 +2012,11 @@ function drawHorse(x,y,s,turn=1,fed=false,phase=0){ctx.save();ctx.translate(x,y)
 function drawBell(x,y,s,color){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-43,30);ctx.quadraticCurveTo(-28,7,-27,-25);ctx.quadraticCurveTo(0,-58,27,-25);ctx.quadraticCurveTo(28,7,43,30);ctx.closePath();ctx.fill();ctx.fillStyle='#5d4420';ctx.beginPath();ctx.arc(0,37,9,0,7);ctx.fill();ctx.restore()}
 function drawAtmosphere(room){ctx.save();if(state.tasks[room.id]){for(let i=0;i<16;i++){const a=i*.8+time*.35,rad=92+(i%4)*34,x=430+Math.cos(a)*rad,y=306+Math.sin(a*1.3)*rad*.48;ctx.globalAlpha=.2+(Math.sin(time*3+i)+1)*.2;ctx.fillStyle=i%3?'#ffe08a':'#fff';ctx.beginPath();ctx.arc(x,y,1.4+(i%2),0,7);ctx.fill()}}else if(!['slotsplads','rigsdagsgaard'].includes(room.id)){for(let i=0;i<10;i++){ctx.globalAlpha=.12+(i%3)*.06;ctx.fillStyle='#fff1c4';ctx.beginPath();ctx.arc((i*103+time*5)%W,100+(i*67)%400,1,0,7);ctx.fill()}}ctx.restore()}
 function drawVignette(){const v=ctx.createRadialGradient(W/2,H/2,210,W/2,H/2,540);v.addColorStop(.45,'#0000');v.addColorStop(1,'#0000007a');ctx.fillStyle=v;ctx.fillRect(0,0,W,H);ctx.fillStyle='#f5d16b14';ctx.fillRect(0,0,W,2)}
-function drawPrompt(){let txt='',x=0,y=0;const room=r(),station=taskPos();if(room.id==='taarn'&&Math.hypot(state.x-telescopePos.x,state.y-telescopePos.y)<90){txt='Kig i kikkerten';x=telescopePos.x;y=telescopePos.y-96}else if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<88){txt='Undersøg den vildfarne raket';x=rocketPos.x;y=rocketPos.y-55}else if(Math.hypot(state.x-station.x,state.y-station.y)<92){if(room.id==='taarn')txt=allReady()?'Ring med juleklokken':'Juleklokken venter';else if(state.tasks[room.id])txt='Se stedets historie';else if(room.id==='slotsplads')txt='Start sneploven';else if(room.id==='stalde')txt=stableProgress().picked?'Gå hen til hestene':'Tag seks gulerødder';else txt='Start juleforberedelsen';x=station.x;y=station.y-80}else if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<82){txt='Hvem gemmer sig her?';x=p[0];y=p[1]-54}}if(!txt)return;ctx.font='800 13px sans-serif';const w=ctx.measureText(txt).width+28;roundRect(x-w/2,y-17,w,34,12,'#06211fea','#f5c85b');ctx.fillStyle='#fff1bd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x,y)}
+function drawPrompt(){let txt='',x=0,y=0;const room=r(),station=taskPos();if(room.id==='taarn'&&Math.hypot(state.x-telescopePos.x,state.y-telescopePos.y)<90){txt='Kig i kikkerten';x=telescopePos.x;y=telescopePos.y-96}else if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<88){txt='Undersøg den vildfarne raket';x=rocketPos.x;y=rocketPos.y-55}else if(Math.hypot(state.x-station.x,state.y-station.y)<92){if(room.id==='taarn')txt=allReady()?'Ring med juleklokken':'Juleklokken venter';else if(state.tasks[room.id])txt='Se stedets historie';else if(room.id==='slotsplads')txt='Start sneploven';else if(room.id==='stalde')txt=stableProgress().picked?'Gå hen til hestene':'Tag seks gulerødder';else txt='Start juleforberedelsen';x=station.x;y=station.y-80}else if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<82){txt='Hvem gemmer sig her?';x=p[0];y=p[1]-54}else{const cl=residentClues[room.id];if(cl&&Math.hypot(state.x-(p[0]+cl.x),state.y-(p[1]+cl.y))<74){txt='Nogen har været her';x=p[0]+cl.x;y=p[1]+cl.y-46}}}if(!txt)return;ctx.font='800 13px sans-serif';const w=ctx.measureText(txt).width+28;roundRect(x-w/2,y-17,w,34,12,'#06211fea','#f5c85b');ctx.fillStyle='#fff1bd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x,y)}
 function drawRoomFade(){if(roomFade<=0)return;ctx.save();ctx.fillStyle='rgba(5,14,19,'+(roomFade*.9)+')';ctx.fillRect(0,0,W,H);ctx.restore()}
-function draw(){ctx.clearRect(0,0,W,H);drawArchitecture(r());drawAtmosphere(r());drawStation(r());drawRocketFind();drawResident(r());drawStableCarrotFlights();drawFollowers();drawPlayer();drawPrompt();drawVignette();drawRoomFade();drawConfetti();}
+function draw(){ctx.clearRect(0,0,W,H);drawArchitecture(r());drawAtmosphere(r());drawStation(r());drawRocketFind();drawResidentClue(r());drawResident(r());drawStableCarrotFlights();drawFollowers();drawPlayer();drawPrompt();drawVignette();drawRoomFade();drawConfetti();}
 function move(dt){if(!playing)return;let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);if(dx||dy){const oldX=state.x,oldY=state.y,n=Math.hypot(dx,dy);stepPhase+=dt*11;if(Math.abs(dx)>Math.abs(dy))playerFacing=dx<0?'left':'right';else playerFacing=dy<0?'up':'down';state.x+=dx/n*190*dt;state.y+=dy/n*190*dt;state.x=Math.max(42,Math.min(818,state.x));state.y=Math.max(42,Math.min(565,state.y));recordTrail(Math.hypot(state.x-oldX,state.y-oldY))}transition();updateStableFeeding()}
-function transition(){const room=r();let d=null;if(state.y<54)d='N';else if(state.y>548)d='S';else if(state.x<48)d='W';else if(state.x>812)d='E';if(!d||!room.exits[d])return;const next=room.exits[d];state.room=next;state.visited[next]=true;if(d==='N'){state.y=520}else if(d==='S'){state.y=92}else if(d==='W'){state.x=780}else state.x=80;recordTrail(99);$('#roomPill').textContent=byId[next].name;toast(byId[next].fact);tone(440,.08);roomFade=1;save();updateHUD()}
+function transition(){const room=r();let d=null;if(state.y<54)d='N';else if(state.y>548)d='S';else if(state.x<48)d='W';else if(state.x>812)d='E';if(!d||!room.exits[d])return;const next=room.exits[d];state.room=next;state.visited[next]=true;if(d==='N'){state.y=520}else if(d==='S'){state.y=92}else if(d==='W'){state.x=780}else state.x=80;recordTrail(99);$('#roomPill').textContent=byId[next].name;const clue=clueHint(byId[next]);toast(byId[next].fact);if(clue)setTimeout(function(){if(playing)toast(clue,3600)},2900);tone(440,.08);roomFade=1;save();updateHUD()}
 function action(){if(!playing)return;const room=r(),station=taskPos(room);if(room.id==='taarn'&&Math.hypot(state.x-telescopePos.x,state.y-telescopePos.y)<98){openLookout();return}if(room.id==='slotskirke'&&!state.rocketFound&&Math.hypot(state.x-rocketPos.x,state.y-rocketPos.y)<96){state.rocketFound=true;save();tone(420,.08);setTimeout(()=>tone(630,.12),90);showOverlay('rocketStory');return}if(Math.hypot(state.x-station.x,state.y-station.y)<100){if(room.id==='taarn'){if(allReady())win();else toast('Klokken mangler '+(13-countTasks())+' forberedelser og '+(7-countResidents())+' skjulte beboere.')}else if(state.tasks[room.id])toast(room.fact);else if(room.id==='stalde'){const p=stableProgress();if(!p.picked)pickupStableCarrots();else toast((stableHorseLayout.length-p.fed.length)+' gulerødder tilbage. Gå hen til hestene.')}else openMission(room);return}if(room.resident&&!state.residents[room.id]&&(room.id!=='stalde'||state.tasks.stalde)){const p=residentPos[room.id];if(Math.hypot(state.x-p[0],state.y-p[1])<92){state.residents[room.id]=true;state.residentOrder=Array.isArray(state.residentOrder)?state.residentOrder:[];if(!state.residentOrder.includes(room.id))state.residentOrder.push(room.id);newFollowerId=room.id;newFollowerUntil=performance.now()+4200;recordTrail(99);tone(760,.14);save();updateHUD();showResidentStory(room);return}}toast(room.id==='slotskirke'&&!state.rocketFound?'Gå hen til orglet, kig efter slotsmusen eller undersøg den mærkelige genstand ved bænkene.':room.id==='slotsplads'?'Gå hen til sneploven i højre side, eller kig efter den skjulte slotsmus.':room.id==='stalde'?'Tag gulerødderne i kurven og gå helt hen til hver hest.':room.resident?'Gå hen til den lysende opgave eller kig efter den skjulte beboer.':'Gå hen til den lysende juleopgave.')}
 function startSnowMaze(room,body){
   missionCleanup();
@@ -1765,7 +2048,7 @@ function startSnowMaze(room,body){
   function releaseNearby(){enemies.forEach(e=>{if(e.released)return;const distance=Math.abs(e.x-player.x)+Math.abs(e.y-player.y);if(distance<=5){e.released=true;e.crack=performance.now();tone(230,.18);setTimeout(()=>tone(340,.12),90);$('#missionError').textContent='KRAK! Et isbur er knust. Fygesneen er nu løs og bevæger sig hele tiden.'}});updateSnowHud()}
   function moveEnemies(){if(!active||paused)return;enemies.filter(e=>e.released).forEach(e=>{let ns=neighbors(e);ns.sort((a,b)=>{const da=Math.abs(a.x-player.x)+Math.abs(a.y-player.y),db=Math.abs(b.x-player.x)+Math.abs(b.y-player.y);return power?db-da:da-db});if(ns.length){const pick=Math.random()<.2?ns[Math.floor(Math.random()*ns.length)]:ns[0];e.x=pick.x;e.y=pick.y}});collide()}
   function collide(){const hit=enemies.find(e=>e.released&&e.x===player.x&&e.y===player.y);if(!hit||paused)return false;if(power>0){tone(790,.09);hit.x=hit.home[0];hit.y=hit.home[1];hit.released=false;hit.crack=0;$('#missionError').textContent='Kakaoens varme pressede fygesneen tilbage i isburet.';updateSnowHud();return true}paused=true;hitFlash=performance.now()+1100;lives--;tone(130,.28);$('#missionError').textContent='Du blev ramt. Se hvad der sker: Fygesneen skubber ploven tilbage til start.';updateSnowHud();hitTimer=setTimeout(()=>{if(!active)return;player={x:8,y:9,dir:'up'};enemies.forEach(e=>{e.x=e.home[0];e.y=e.home[1];e.released=false;e.crack=0});if(lives<=0){lives=3;$('#missionError').textContent='Nissen har hentet tre nye vanter. Den sne, du allerede har ryddet, forbliver væk.'}else $('#missionError').textContent='Tilbage ved start. Fygesneen er igen fanget, indtil du nærmer dig.';paused=false;hitFlash=0;updateSnowHud()},1100);return true}
-  function finishSnow(){if(!active)return;drawSnowGame();missionCleanup();state.tasks[room.id]=true;save();updateHUD();$('#missionError').textContent='Klaret! Hele Slotspladsen er ryddet, og vejen til Borgen er åben.';root.querySelector('.snowPad').classList.add('hidden');root.querySelector('.snowLegend').classList.add('hidden');const victory=document.createElement('div');victory.className='snowVictory';victory.setAttribute('role','status');victory.setAttribute('aria-live','polite');victory.innerHTML='<div class="snowVictoryIcon">🏆❄️</div><h3>Slotspladsen er ryddet!</h3><p>Du har vundet sneplovsmissionen. Alle snedriver er væk, og juleholdet kan nu komme sikkert ind på Borgen.</p><div class="snowVictoryStats"><span>24 / 24 snedriver</span><span>Mission klaret</span></div><button>Tilbage til Slotspladsen</button>';root.querySelector('.snowFrame').appendChild(victory);const victoryButton=victory.querySelector('button');victoryButton.onclick=()=>{hideOverlays();toast('Slotspladsen er klar til jul!')};victoryButton.focus();tone(523,.12);setTimeout(()=>tone(659,.14),120);setTimeout(()=>tone(784,.22),260)}
+  function finishSnow(){if(!active)return;drawSnowGame();missionCleanup();state.tasks[room.id]=true;Object.keys(layerCache).forEach(function(k){delete layerCache[k]});save();updateHUD();$('#missionError').textContent='Klaret! Hele Slotspladsen er ryddet, og vejen til Borgen er åben.';root.querySelector('.snowPad').classList.add('hidden');root.querySelector('.snowLegend').classList.add('hidden');const victory=document.createElement('div');victory.className='snowVictory';victory.setAttribute('role','status');victory.setAttribute('aria-live','polite');victory.innerHTML='<div class="snowVictoryIcon">🏆❄️</div><h3>Slotspladsen er ryddet!</h3><p>Du har vundet sneplovsmissionen. Alle snedriver er væk, og juleholdet kan nu komme sikkert ind på Borgen.</p><div class="snowVictoryStats"><span>24 / 24 snedriver</span><span>Mission klaret</span></div><button>Tilbage til Slotspladsen</button>';root.querySelector('.snowFrame').appendChild(victory);const victoryButton=victory.querySelector('button');victoryButton.onclick=()=>{hideOverlays();toast('Slotspladsen er klar til jul!')};victoryButton.focus();tone(523,.12);setTimeout(()=>tone(659,.14),120);setTimeout(()=>tone(784,.22),260)}
   function step(dir){if(!active||paused)return;const vectors={up:[0,-1],right:[1,0],down:[0,1],left:[-1,0]},v=vectors[dir];player.dir=dir;const nx=player.x+v[0],ny=player.y+v[1];if(!walkable(nx,ny)){tone(190,.05);return}player.x=nx;player.y=ny;turn++;const k=key(nx,ny);if(drifts.delete(k))tone(510+Math.random()*80,.035);if(cocoa.delete(k)){power=5;tone(840,.16);$('#missionError').textContent='Varm kakao! Sneploven er uovervindelig i fem træk.'}releaseNearby();collide();if(power>0)power--;updateSnowHud();if(!drifts.size)finishSnow()}
   function drawStone(x,y){const px=x*CELL,py=y*CELL,g=sx.createLinearGradient(px,py,px,py+CELL);g.addColorStop(0,'#526879');g.addColorStop(1,'#263c49');sx.fillStyle=g;sx.fillRect(px+1,py+1,CELL-2,CELL-2);sx.strokeStyle='#8ea0aa44';sx.strokeRect(px+3,py+3,CELL-6,CELL-6);sx.fillStyle='#ffffff0b';sx.fillRect(px+5,py+5,CELL-10,3)}
   function drawPlow(){const x=(player.x+.5)*CELL,y=(player.y+.5)*CELL,ang={right:0,down:Math.PI/2,left:Math.PI,up:-Math.PI/2}[player.dir],bounce=Math.sin(time*13)*.45;sx.save();sx.translate(x,y+bounce);sx.rotate(ang);sx.shadowColor=power?'#ffcf5c':'#000';sx.shadowBlur=power?22:7;
@@ -1830,28 +2113,465 @@ function startOrganGame(room,body){
   window.addEventListener('keydown',onOrganKey,true);document.addEventListener('visibilitychange',onVisibility);root.querySelectorAll('[data-organ]').forEach(b=>b.addEventListener('pointerdown',ev=>{ev.preventDefault();const a=b.dataset.organ;if(a==='start')beginOrgan();else if(a==='play')playNote();else if(a==='restart')resetOrgan();else moveOrgan(a)}));missionCleanup=()=>{alive=false;running=false;cancelAnimationFrame(raf);clearTimeout(finishTimer);window.removeEventListener('keydown',onOrganKey,true);document.removeEventListener('visibilitychange',onVisibility);missionCleanup=()=>{}};resetOrgan();raf=requestAnimationFrame(animateOrgan)
 }
 function startPorridgeGame(room,body){missionCleanup();let phase=0,stirs=0,finishing=false;const root=document.createElement('div');root.className='porridgeGame';body.appendChild(root);const steps=['Kog risene','Tilsæt mælk','Rør grøden','Server til nattevagten'];function wrong(button,msg){button.classList.remove('wrong');void button.offsetWidth;button.classList.add('wrong');$('#missionError').textContent=msg;tone(180,.12)}function render(){const fill=phase===0?'#59483b':phase===1?'#dfcfab':'#f1e8d2',steam=phase>=1?1:0;root.innerHTML='<div class="porridgeKitchen"><div class="porridgeShelf"></div><div class="porridgeSteam">♨ ♨</div><div class="porridgeSpoon"></div><div class="porridgePot"></div></div><div class="porridgeProgress">'+steps.map((_,i)=>'<i class="'+(i<phase?'done':'')+'"></i>').join('')+'</div><div class="porridgeStep"></div><div class="porridgeChoices"></div>';root.querySelector('.porridgePot').style.setProperty('--porridge',fill);root.querySelector('.porridgeKitchen').style.setProperty('--steam',steam);root.querySelector('.porridgeSpoon').style.setProperty('--stir',(-19+(stirs%2)*34)+'deg');const title=root.querySelector('.porridgeStep'),choices=root.querySelector('.porridgeChoices');if(phase===0){title.textContent='1. Start grøden rigtigt';addChoice(choices,'🌾','Ris og vand',true,'Risene skal først koges møre i vand.');addChoice(choices,'🧈','Smør først',false,'Smørret hører til ved serveringen.');addChoice(choices,'✨','Kanelsukker',false,'Kanelsukker skal ikke ned i gryden.')}else if(phase===1){title.textContent='2. Gør grøden cremet';addChoice(choices,'🥛','Tilsæt mælk',true,'Nu skal mælken langsomt i gryden.');addChoice(choices,'🔥','Fuld varme',false,'Så brænder grøden fast. Brug lav varme.');addChoice(choices,'🧈','Mere smør',false,'Gem smørret til skålen.')}else if(phase===2){title.textContent='3. Lav varme. Rør '+stirs+' af 5 gange';addStir(choices);addChoice(choices,'🔥','Skru op',false,'Risengrød kræver tålmodighed og lav varme.')}else if(phase===3){title.textContent='4. Gør skålen klar til nattevagten';addChoice(choices,'🧈','Smør og kanelsukker',true,'Den klassiske juleafslutning.');addChoice(choices,'🥛','Mere mælk',false,'Grøden er allerede cremet.');addChoice(choices,'🌾','Flere ris',false,'Risene er færdigkogte.')}}function addChoice(parent,icon,label,correct,msg){const b=document.createElement('button');b.className='porridgeChoice';b.innerHTML='<strong>'+icon+'</strong>'+label;b.onclick=()=>{if(finishing)return;if(!correct){wrong(b,msg);return}b.classList.add('correct');$('#missionError').textContent=msg;tone(520+phase*70,.08);setTimeout(()=>{phase++;if(phase===4)finish();else render()},320)};parent.appendChild(b)}function addStir(parent){const b=document.createElement('button');b.className='porridgeChoice porridgeStir';b.innerHTML='<strong>🥄</strong>Rør roligt i gryden';b.onclick=()=>{stirs++;tone(420+stirs*25,.04);root.querySelector('.porridgeSpoon').style.setProperty('--stir',(-19+(stirs%2)*34)+'deg');title.textContent='3. Lav varme. Rør '+stirs+' af 5 gange';if(stirs>=5){b.classList.add('correct');setTimeout(()=>{phase++;render()},320)}};parent.appendChild(b)}function finish(){if(finishing)return;finishing=true;root.querySelector('.porridgeKitchen').insertAdjacentHTML('beforeend','<div class="porridgeServe"><b>Grøden er klar!</b><span>Varm, cremet og med smør i midten</span></div>');$('#missionError').textContent='Snapstingets nattevagt kan nu få julegrød.';tone(659,.12);setTimeout(()=>tone(784,.16),120);setTimeout(()=>completeMission(room),650)}missionCleanup=()=>{finishing=true;missionCleanup=()=>{}};render()}
+/* ===== Vandrehallen: Lystændingen ===== */
+function startLightsGame(room, body){
+  missionCleanup();
+  const COUNT = 8, FADE = 6.2;
+  const levels = [];
+  for(let i=0;i<COUNT;i++) levels.push(0);
+  const wrap = document.createElement('div');
+  wrap.className = 'lightsGame';
+  const hall = document.createElement('div');
+  hall.className = 'lightsHall';
+  const lamps = [];
+  const depth = [1,.9,.82,.76,.76,.82,.9,1];
+  for(let i=0;i<COUNT;i++){
+    const b = document.createElement('button');
+    b.className = 'lightLamp';
+    b.style.setProperty('--d', depth[i]);
+    b.setAttribute('aria-label', 'Lampe ' + (i+1));
+    b.innerHTML = '<span class="lampShade"></span><span class="lampGlow"></span><span class="lampBar"><i></i></span>';
+    b.onclick = function(){
+      if(state.tasks[room.id]) return;
+      levels[i] = 1;
+      chime(560 + i * 48);
+      render();
+      check();
+    };
+    hall.appendChild(b);
+    lamps.push(b);
+  }
+  const status = document.createElement('div');
+  status.className = 'lightsStatus';
+  const legend = document.createElement('p');
+  legend.className = 'organLegend';
+  legend.innerHTML = 'Vandrehallen er over 80 meter lang, og de gamle lamper falder i søvn igen. <b>Tænd alle otte på én gang</b> — en lampe holder kun omkring seks sekunder.';
+  wrap.append(hall, status, legend);
+  body.appendChild(wrap);
+
+  function render(){
+    let lit = 0;
+    for(let i=0;i<COUNT;i++){
+      const v = levels[i];
+      if(v > 0) lit++;
+      lamps[i].classList.toggle('on', v > 0);
+      lamps[i].style.setProperty('--v', v.toFixed(3));
+      lamps[i].querySelector('.lampBar i').style.width = Math.round(v * 100) + '%';
+    }
+    status.textContent = lit + ' af 8 lamper lyser';
+  }
+  function check(){
+    for(let i=0;i<COUNT;i++) if(levels[i] <= 0) return;
+    clearInterval(timer);
+    for(let i=0;i<COUNT;i++){ levels[i] = 1; chime(520 + i * 60, i * .05) }
+    render();
+    $('#missionError').textContent = 'Hele hallen lyser på én gang!';
+    completeMission(room);
+  }
+  const step = .1;
+  const timer = setInterval(function(){
+    if(state.tasks[room.id]) return;
+    let any = false;
+    for(let i=0;i<COUNT;i++){
+      if(levels[i] > 0){
+        levels[i] = Math.max(0, levels[i] - step / FADE);
+        if(levels[i] > 0) any = true;
+      }
+    }
+    render();
+    if(!any) $('#missionError').textContent = '';
+  }, step * 1000);
+  missionCleanup = function(){ clearInterval(timer) };
+  render();
+}
+
+/* ===== Ruinerne: Lygten i mørket ===== */
+function startLanternGame(room, body){
+  missionCleanup();
+  const CW = 560, CH = 320;
+  const wrap = document.createElement('div');
+  wrap.className = 'lanternGame';
+  const frame = document.createElement('div');
+  frame.className = 'lanternFrame';
+  const c = document.createElement('canvas');
+  c.width = CW; c.height = CH;
+  c.setAttribute('aria-label', 'Mørk kælder med en lygte');
+  frame.appendChild(c);
+  const legend = document.createElement('p');
+  legend.className = 'organLegend';
+  legend.innerHTML = 'Under slottet ligger resterne af Absalons borg. <b>Flyt lygten</b> med musen, fingeren eller piletasterne, og find de fire gamle julemærker i mørket.';
+  const status = document.createElement('div');
+  status.className = 'lanternStatus';
+  wrap.append(frame, status, legend);
+  body.appendChild(wrap);
+
+  const g = c.getContext('2d');
+  const marks = [
+    {x:88,  y:96,  sym:'🌊', found:false},
+    {x:196, y:238, sym:'🗝️', found:false},
+    {x:392, y:82,  sym:'🏰', found:false},
+    {x:486, y:222, sym:'⭐', found:false}
+  ];
+  const lamp = { x: CW/2, y: CH - 54 };
+  const keysL = { up:false, down:false, left:false, right:false };
+  let alive = true, raf = 0, last = performance.now();
+
+  function found(){ return marks.filter(function(m){ return m.found }).length }
+  function updateStatus(){ status.textContent = found() + ' af 4 mærker fundet' }
+
+  function onKey(e){
+    const k = e.key.toLowerCase();
+    let hit = true;
+    if(k === 'arrowup' || k === 'w') keysL.up = e.type === 'keydown';
+    else if(k === 'arrowdown' || k === 's') keysL.down = e.type === 'keydown';
+    else if(k === 'arrowleft' || k === 'a') keysL.left = e.type === 'keydown';
+    else if(k === 'arrowright' || k === 'd') keysL.right = e.type === 'keydown';
+    else hit = false;
+    if(hit){ e.preventDefault(); e.stopPropagation() }
+  }
+  function pointerTo(e){
+    const q = c.getBoundingClientRect();
+    lamp.x = Math.max(18, Math.min(CW - 18, (e.clientX - q.left) / q.width * CW));
+    lamp.y = Math.max(18, Math.min(CH - 18, (e.clientY - q.top) / q.height * CH));
+  }
+  function onMove(e){ if(e.buttons || e.pointerType === 'touch' || e.type === 'pointerdown'){ e.preventDefault(); pointerTo(e) } else pointerTo(e) }
+
+  function frameStep(now){
+    if(!alive) return;
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    const sp = 230 * dt;
+    if(keysL.up) lamp.y -= sp;
+    if(keysL.down) lamp.y += sp;
+    if(keysL.left) lamp.x -= sp;
+    if(keysL.right) lamp.x += sp;
+    lamp.x = Math.max(18, Math.min(CW - 18, lamp.x));
+    lamp.y = Math.max(18, Math.min(CH - 18, lamp.y));
+
+    for(let i=0;i<marks.length;i++){
+      const m = marks[i];
+      if(!m.found && Math.hypot(lamp.x - m.x, lamp.y - m.y) < 46){
+        m.found = true;
+        chime(480 + i * 90);
+        updateStatus();
+        if(found() === marks.length){
+          $('#missionError').textContent = 'Alle fire mærker lyser i mørket!';
+          setTimeout(function(){ completeMission(room) }, 500);
+        }
+      }
+    }
+    render();
+    raf = requestAnimationFrame(frameStep);
+  }
+
+  function render(){
+    const t = performance.now() / 1000;
+    g.fillStyle = '#0b0e10';
+    g.fillRect(0,0,CW,CH);
+    /* murværk anes svagt */
+    g.strokeStyle = '#1b201f';
+    g.lineWidth = 2;
+    for(let row=0; row<7; row++){
+      const y = 20 + row*44;
+      for(let x = (row%2)*38; x < CW; x += 76) g.strokeRect(x, y, 72, 40);
+    }
+    /* mærkerne */
+    for(let i=0;i<marks.length;i++){
+      const m = marks[i];
+      const d = Math.hypot(lamp.x - m.x, lamp.y - m.y);
+      let a = 0;
+      if(m.found) a = 1;
+      else if(d < 150) a = Math.max(0, (150 - d) / 150) * (.35 + .25 * Math.sin(t * 4 + i));
+      if(a <= 0) continue;
+      g.save();
+      g.globalAlpha = Math.min(1, a);
+      if(m.found){
+        g.fillStyle = '#1f5c40';
+        g.beginPath(); g.arc(m.x, m.y, 26, 0, 7); g.fill();
+        g.strokeStyle = '#f2cf72'; g.lineWidth = 3; g.stroke();
+      }
+      g.font = '28px serif';
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillStyle = '#ffe9a7';
+      g.fillText(m.sym, m.x, m.y + 1);
+      g.restore();
+    }
+    /* lygtens lyskegle: alt uden for cirklen males sort */
+    const dark = g.createRadialGradient(lamp.x, lamp.y, 24, lamp.x, lamp.y, 132);
+    dark.addColorStop(0, 'rgba(6,9,11,0)');
+    dark.addColorStop(.55, 'rgba(6,9,11,.72)');
+    dark.addColorStop(1, 'rgba(6,9,11,.985)');
+    g.fillStyle = dark;
+    g.fillRect(0,0,CW,CH);
+    const warm = g.createRadialGradient(lamp.x, lamp.y, 4, lamp.x, lamp.y, 96);
+    const fl = .88 + .12 * Math.sin(t * 7.3);
+    warm.addColorStop(0, 'rgba(255,214,124,' + (.34 * fl) + ')');
+    warm.addColorStop(1, 'rgba(255,214,124,0)');
+    g.fillStyle = warm;
+    g.fillRect(0,0,CW,CH);
+    /* selve lygten */
+    g.save();
+    g.translate(lamp.x, lamp.y);
+    g.fillStyle = '#3b342b';
+    g.fillRect(-9, -2, 18, 22);
+    g.fillStyle = '#ffeeb6';
+    g.beginPath(); g.arc(0, 6, 6.5 * fl, 0, 7); g.fill();
+    g.strokeStyle = '#c8a44e';
+    g.lineWidth = 2.4;
+    g.strokeRect(-11, -4, 22, 26);
+    g.beginPath(); g.arc(0, -6, 8, Math.PI, 0); g.stroke();
+    g.restore();
+  }
+
+  c.addEventListener('pointerdown', onMove);
+  c.addEventListener('pointermove', onMove);
+  window.addEventListener('keydown', onKey, true);
+  window.addEventListener('keyup', onKey, true);
+  missionCleanup = function(){
+    alive = false;
+    cancelAnimationFrame(raf);
+    window.removeEventListener('keydown', onKey, true);
+    window.removeEventListener('keyup', onKey, true);
+  };
+  updateStatus();
+  raf = requestAnimationFrame(frameStep);
+}
+
+/* ===== Udvalgsværelset: sorter pakkerne ===== */
+function startSortGame(room, body){
+  missionCleanup();
+  const sizes = [1,2,3,4,5];
+  let order = sizes.slice();
+  /* bland, men aldrig til den rigtige rækkefølge med det samme */
+  do {
+    for(let i=order.length-1;i>0;i--){
+      const j = Math.floor(Math.random() * (i+1));
+      const tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+    }
+  } while(order.every(function(v,i){ return v === sizes[i] }));
+
+  let picked = -1;
+  const wrap = document.createElement('div');
+  wrap.className = 'sortGame';
+  const row = document.createElement('div');
+  row.className = 'sortRow';
+  const legend = document.createElement('p');
+  legend.className = 'organLegend';
+  legend.innerHTML = 'Udvalget har fået fem pakker i en rodet bunke. <b>Byt to pakker</b> ad gangen, indtil de står fra den mindste til den største.';
+  wrap.append(row, legend);
+  body.appendChild(wrap);
+
+  function render(){
+    row.innerHTML = '';
+    order.forEach(function(size, i){
+      const b = document.createElement('button');
+      b.className = 'sortGift' + (picked === i ? ' picked' : '');
+      b.style.setProperty('--s', size);
+      b.setAttribute('aria-label', 'Pakke i størrelse ' + size);
+      b.innerHTML = '<span class="giftBox"><i class="giftBand"></i><i class="giftBow"></i></span>';
+      b.onclick = function(){
+        if(state.tasks[room.id]) return;
+        if(picked < 0){ picked = i; tone(520, .05); render(); return }
+        if(picked === i){ picked = -1; render(); return }
+        const tmp = order[picked]; order[picked] = order[i]; order[i] = tmp;
+        picked = -1;
+        chime(600);
+        render();
+        if(order.every(function(v, k){ return v === sizes[k] })){
+          $('#missionError').textContent = 'Fra den mindste til den største — helt rigtigt.';
+          for(let k=0;k<5;k++) chime(520 + k*70, k*.07);
+          completeMission(room);
+        }
+      };
+      row.appendChild(b);
+    });
+  }
+  missionCleanup = function(){};
+  render();
+}
+
+/* ===== Landstingssalen: klokkespillet ===== */
+function startCarillonGame(room, body){
+  missionCleanup();
+  const BELLS = [
+    {label:'❄️', freq:NOTE.d5},
+    {label:'🔔', freq:NOTE.fs5},
+    {label:'⭐', freq:NOTE.a5},
+    {label:'🕯️', freq:NOTE.d6}
+  ];
+  const ROUNDS = 5;
+  let sequence = [], step = 0, round = 0, locked = true, timers = [];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'carillonGame';
+  const meter = document.createElement('div');
+  meter.className = 'carillonRounds';
+  const pad = document.createElement('div');
+  pad.className = 'carillonPad';
+  const status = document.createElement('div');
+  status.className = 'carillonStatus';
+  const legend = document.createElement('p');
+  legend.className = 'organLegend';
+  legend.innerHTML = 'De gamle klokker i Landstingssalen har glemt julemelodien. <b>Lyt og spil efter</b> — melodien bliver et hak længere for hver runde.';
+  const buttons = [];
+  BELLS.forEach(function(b, i){
+    const el = document.createElement('button');
+    el.className = 'carillonBell';
+    el.textContent = b.label;
+    el.setAttribute('aria-label', 'Klokke ' + (i+1));
+    el.onclick = function(){ press(i) };
+    pad.appendChild(el);
+    buttons.push(el);
+  });
+  wrap.append(meter, status, pad, legend);
+  body.appendChild(wrap);
+
+  function clearTimers(){ timers.forEach(clearTimeout); timers = [] }
+  function flash(i, dur){
+    buttons[i].classList.add('lit');
+    timers.push(setTimeout(function(){ buttons[i].classList.remove('lit') }, dur || 260));
+  }
+  function renderMeter(){
+    meter.innerHTML = '';
+    for(let i=0;i<ROUNDS;i++){
+      const dot = document.createElement('i');
+      if(i < round) dot.className = 'done';
+      meter.appendChild(dot);
+    }
+  }
+  function playBack(){
+    locked = true;
+    status.textContent = 'Lyt …';
+    clearTimers();
+    sequence.forEach(function(idx, i){
+      timers.push(setTimeout(function(){
+        bell(BELLS[idx].freq, .9, .15);
+        flash(idx, 300);
+      }, 520 + i * 560));
+    });
+    timers.push(setTimeout(function(){
+      locked = false;
+      step = 0;
+      status.textContent = 'Spil efter — ' + sequence.length + ' toner';
+    }, 520 + sequence.length * 560 + 180));
+  }
+  function nextRound(){
+    round++;
+    renderMeter();
+    if(round > ROUNDS){
+      status.textContent = 'Hele melodien er tilbage!';
+      $('#missionError').textContent = 'Klokkerne kan julemelodien igen.';
+      completeMission(room);
+      return;
+    }
+    sequence.push(Math.floor(Math.random() * BELLS.length));
+    playBack();
+  }
+  function press(i){
+    if(locked || state.tasks[room.id]) return;
+    bell(BELLS[i].freq, .8, .14);
+    flash(i, 200);
+    if(sequence[step] === i){
+      step++;
+      if(step >= sequence.length){
+        locked = true;
+        status.textContent = 'Rigtigt!';
+        timers.push(setTimeout(nextRound, 700));
+      }
+    }else{
+      locked = true;
+      tone(150, .22, .14);
+      status.textContent = 'Den tone sad ved siden af.';
+      $('#missionError').textContent = 'Melodien starter forfra fra denne runde.';
+      timers.push(setTimeout(function(){ $('#missionError').textContent = ''; step = 0; playBack() }, 1100));
+    }
+  }
+  missionCleanup = function(){ clearTimers() };
+  renderMeter();
+  timers.push(setTimeout(nextRound, 400));
+}
+
+/* ===== Folketingssalen: julehjerter række for række ===== */
+function startHeartsGame(room, body){
+  missionCleanup();
+  const ROWS = [
+    {no:5, seats:41, label:'Bagerste række'},
+    {no:4, seats:39, label:'Fjerde række'},
+    {no:3, seats:37, label:'Tredje række'},
+    {no:2, seats:33, label:'Anden række'},
+    {no:1, seats:29, label:'Forreste række'}
+  ];
+  let next = 0, total = 0;
+  const wrap = document.createElement('div');
+  wrap.className = 'heartsGame';
+  const read = document.createElement('div');
+  read.className = 'counter';
+  const list = document.createElement('div');
+  list.className = 'heartsRows';
+  const legend = document.createElement('p');
+  legend.className = 'organLegend';
+  legend.innerHTML = 'Salen har 179 pladser fordelt på fem buede rækker. <b>Læg hjerterne bagfra og frem</b> — ellers træder du i dem, du lige har lagt.';
+  wrap.append(read, list, legend);
+  body.appendChild(wrap);
+
+  const buttons = [];
+  ROWS.forEach(function(rw, i){
+    const b = document.createElement('button');
+    b.className = 'heartsRow';
+    b.innerHTML = '<strong>' + rw.label + '</strong><span>' + rw.seats + ' pladser</span>';
+    b.onclick = function(){
+      if(state.tasks[room.id]) return;
+      if(i !== next){
+        $('#missionError').textContent = 'Start bagerst i salen og arbejd dig frem.';
+        tone(170, .16, .13);
+        return;
+      }
+      $('#missionError').textContent = '';
+      b.classList.add('done');
+      b.disabled = true;
+      total += rw.seats;
+      next++;
+      chime(480 + i * 70);
+      read.textContent = total + ' / 179 hjerter';
+      if(next >= ROWS.length){
+        $('#missionError').textContent = 'Alle 179 pladser har fået et julehjerte.';
+        completeMission(room);
+      }
+    };
+    list.appendChild(b);
+    buttons.push(b);
+  });
+  read.textContent = '0 / 179 hjerter';
+  missionCleanup = function(){};
+}
+
 function openMission(room){showOverlay('mission');const t=room.task,panel=$('#mission .panel');panel.classList.toggle('snowMission',t.type==='snowmaze');panel.classList.toggle('organMission',t.type==='organ');$('#missionIcon').textContent=t.icon;$('#missionTitle').textContent=t.title;$('#missionText').textContent=t.text;$('#missionError').textContent='';const body=$('#missionBody');body.innerHTML='';if(t.type==='snowmaze')startSnowMaze(room,body);
  else if(t.type==='organ')startOrganGame(room,body);
  else if(t.type==='porridge')startPorridgeGame(room,body);
+ else if(t.type==='lights')startLightsGame(room,body);
+ else if(t.type==='lantern')startLanternGame(room,body);
+ else if(t.type==='sortsizes')startSortGame(room,body);
+ else if(t.type==='carillon')startCarillonGame(room,body);
+ else if(t.type==='hearts')startHeartsGame(room,body);
  else if(t.type==='clicks'){const wrap=document.createElement('div');wrap.className='missionGrid';t.items.forEach((it,i)=>{const b=document.createElement('button');b.className='missionChoice';b.textContent=it;b.onclick=()=>{b.classList.toggle('on');tone(500+i*30,.05);if([...wrap.children].every(x=>x.classList.contains('on')))completeMission(room)};wrap.appendChild(b)});body.appendChild(wrap)}
  else if(t.type==='sequence'){let picked=[];const read=document.createElement('div');read.className='counter';read.textContent='····';const wrap=document.createElement('div');wrap.className='missionGrid';t.options.forEach(op=>{const b=document.createElement('button');b.className='missionChoice';b.textContent=op;b.onclick=()=>{picked.push(op);read.textContent=picked.join(' ');tone(460+picked.length*70,.06);if(picked.length===t.answer.length){if(picked.every((x,i)=>x===t.answer[i]))completeMission(room);else{$('#missionError').textContent='Ikke helt. Prøv rækkefølgen igen.';picked=[];setTimeout(()=>read.textContent='····',350)}}};wrap.appendChild(b)});body.append(read,wrap)}
  else if(t.type==='choice'){const wrap=document.createElement('div');wrap.className='missionGrid';t.options.forEach((op,i)=>{const b=document.createElement('button');b.className='missionChoice';b.textContent=op;b.onclick=()=>{if(i===t.answer){b.classList.add('good');completeMission(room)}else{$('#missionError').textContent='Den løsning samler ikke hele Borgen. Prøv igen.';tone(180,.12)}};wrap.appendChild(b)});body.appendChild(wrap)}
- else if(t.type==='count'){let value=0;const read=document.createElement('div');read.className='counter';read.textContent='0 / '+t.target;const wrap=document.createElement('div');wrap.className='missionGrid';t.steps.forEach(n=>{const b=document.createElement('button');b.className='missionChoice';b.textContent='+'+n;b.onclick=()=>{value+=n;if(value>t.target){value=0;$('#missionError').textContent='For mange. Tælleren starter forfra.';tone(180,.12)}else tone(430+n,.05);read.textContent=value+' / '+t.target;if(value===t.target)completeMission(room)};wrap.appendChild(b)});const resetB=document.createElement('button');resetB.className='missionChoice';resetB.textContent='Nulstil';resetB.onclick=()=>{value=0;read.textContent='0 / '+t.target};wrap.appendChild(resetB);body.append(read,wrap)}
+ else if(t.type==='count'){let value=0;const read=document.createElement('div');read.className='counter';const unit=t.unit?' '+t.unit:'';read.textContent='0 / '+t.target+unit;const wrap=document.createElement('div');wrap.className='missionGrid';t.steps.forEach(n=>{const b=document.createElement('button');b.className='missionChoice';b.textContent='+'+n;b.onclick=()=>{value+=n;if(value>t.target){value=0;$('#missionError').textContent='For mange. Tælleren starter forfra.';tone(180,.12)}else tone(430+n,.05);read.textContent=value+' / '+t.target+unit;if(value===t.target)completeMission(room)};wrap.appendChild(b)});const resetB=document.createElement('button');resetB.className='missionChoice';resetB.textContent='Nulstil';resetB.onclick=()=>{value=0;read.textContent='0 / '+t.target+unit};wrap.appendChild(resetB);body.append(read,wrap)}
 }
-function completeMission(room){if(state.tasks[room.id])return;state.tasks[room.id]=true;tone(660,.12);setTimeout(()=>tone(880,.16),100);$('#missionError').textContent='Klaret! En juleglød er tændt.';save();updateHUD();setTimeout(()=>{hideOverlays();toast(room.name+' er klar til jul.')},650)}
+function completeMission(room){if(state.tasks[room.id])return;state.tasks[room.id]=true;Object.keys(layerCache).forEach(function(k){delete layerCache[k]});roomReadySound();$('#missionError').textContent='Klaret! En juleglød er tændt.';save();updateHUD();setTimeout(()=>{hideOverlays();toast(room.name+' er klar til jul.')},650)}
 function objective(){const t=countTasks(),h=countResidents();if(t<13)return 'Gør '+(13-t)+' steder klar. Find den særlige juleopgave i hvert sted.';if(h<7)return 'Find de sidste '+(7-h)+' skjulte nisser eller mus. Kortet viser, hvor du mangler nogen.';if(state.room!=='taarn')return 'Alt er klart. Find vej til Tårnet gennem Samtaleværelset.';return 'Gå hen til klokken og ring julen ind.'}
 function updateHUD(){updateHUDInner();checkChapters()}
 function updateHUDInner(){const t=countTasks(),h=countResidents();$('#taskCount').textContent=t+'/13';$('#residentCount').textContent=h+'/7';$('#objective').textContent=objective();$('#progress').style.width=((t+h)/20*100)+'%';$('#roomPill').textContent=r().name;const map=$('#map');map.innerHTML='';rooms.forEach((room,i)=>{const b=document.createElement('button'),residentTip=room.resident&&state.visited[room.id]?(state.residents[room.id]?' · '+room.residentName+', '+room.residentRole:' · beboer mangler'):'';b.className='mapDot'+(state.visited[room.id]?' visited':'')+(state.tasks[room.id]||room.id==='taarn'&&state.won?' done':'')+(state.room===room.id?' here':'');b.innerHTML=room.abbr+'<span class="tip">'+room.name+residentTip+'</span>';b.disabled=!state.visited[room.id];b.onclick=()=>{state.room=room.id;state.x=430;state.y=395;seedTrail();save();updateHUD();toast(room.name)};map.appendChild(b)})}
-function win(){state.won=true;save();playing=false;for(let i=0;i<100;i++)confetti.push({x:Math.random()*W,y:-Math.random()*H,v:45+Math.random()*85,a:Math.random()*7,c:['#f5c85b','#d63740','#74bd8d','#fff'][i%4]});$('#winText').textContent='Du fik alle på Christiansborg med. Juleklokken kan høres over hele København, og selv musene under de gamle mure har fået risengrød.';showOverlay('win');tone(523,.2);setTimeout(()=>tone(659,.2),160);setTimeout(()=>tone(784,.3),320)}
+function win(){state.won=true;save();playing=false;for(let i=0;i<100;i++)confetti.push({x:Math.random()*W,y:-Math.random()*H,v:45+Math.random()*85,a:Math.random()*7,c:['#f5c85b','#d63740','#74bd8d','#fff'][i%4]});$('#winText').textContent='Du fik alle på Christiansborg med. Juleklokken kan høres over hele København, og selv musene under de gamle mure har fået risengrød.';showOverlay('win');bell(NOTE.d5,2.4,.19);setTimeout(victoryMusic,520)}
 function drawConfetti(){if(!confetti.length)return;confetti.forEach(p=>{p.y+=p.v/60;p.x+=Math.sin(p.y*.03+p.a);if(p.y>H)p.y=-10;ctx.fillStyle=p.c;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.y*.02);ctx.fillRect(-4,-7,8,14);ctx.restore()})}
-function loop(ts){const dt=Math.min(.04,(ts-last)/1000||0);last=ts;time+=dt;if(roomFade>0)roomFade=Math.max(0,roomFade-dt*2.5);move(dt);draw();requestAnimationFrame(loop)}
+function loop(ts){const dt=Math.min(.04,(ts-last)/1000||0);last=ts;time+=dt;if(roomFade>0)roomFade=Math.max(0,roomFade-dt*2.5);move(dt);const t0=performance.now();draw();trackFrame(performance.now()-t0);requestAnimationFrame(loop)}
 window.addEventListener('keydown',e=>{if(['INPUT','BUTTON'].includes(e.target.tagName))return;const k=e.key.toLowerCase();if(k==='arrowup'||k==='w')keys.up=true;if(k==='arrowdown'||k==='s')keys.down=true;if(k==='arrowleft'||k==='a')keys.left=true;if(k==='arrowright'||k==='d')keys.right=true;if(['e',' ','enter'].includes(k)){e.preventDefault();action()}if(k.startsWith('arrow'))e.preventDefault()});
 window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='arrowup'||k==='w')keys.up=false;if(k==='arrowdown'||k==='s')keys.down=false;if(k==='arrowleft'||k==='a')keys.left=false;if(k==='arrowright'||k==='d')keys.right=false});
 document.querySelectorAll('.dpad button').forEach(b=>{const k=b.dataset.key;['pointerdown','touchstart'].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=true}));['pointerup','pointercancel','pointerleave','touchend'].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();keys[k]=false}))});
 $('#actionBtn').onclick=action;cv.addEventListener('pointerdown',e=>{if(!playing)return;const q=cv.getBoundingClientRect(),x=(e.clientX-q.left)/q.width*W,y=(e.clientY-q.top)/q.height*H,station=taskPos();if(Math.hypot(x-station.x,y-station.y)<100||r().id==='slotskirke'&&!state.rocketFound&&Math.hypot(x-rocketPos.x,y-rocketPos.y)<75||r().resident&&!state.residents[r().id]&&(r().id!=='stalde'||state.tasks.stalde)&&Math.hypot(x-residentPos[r().id][0],y-residentPos[r().id][1])<70)action()});
 $('#startBtn').onclick=()=>{reset();hideOverlays();toast('Find først opgaven på Slotspladsen.');save()};
 $('#continueBtn').onclick=()=>{const d=load();if(d)state=d;stableProgress();seedTrail();hideOverlays();updateHUD();toast('Velkommen tilbage til julemissionen!')};
-$('#missionClose').onclick=()=>{missionCleanup();hideOverlays()};$('#helpBtn').onclick=()=>showOverlay('info');$('#infoClose').onclick=hideOverlays;$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'Lyd til':'Lyd fra';if(sound)tone(660,.08)};
+$('#missionClose').onclick=()=>{missionCleanup();hideOverlays()};$('#helpBtn').onclick=()=>showOverlay('info');$('#infoClose').onclick=hideOverlays;$('#soundBtn').onclick=()=>{sound=!sound;$('#soundBtn').textContent=sound?'Lyd til':'Lyd fra';if(sound)chime(NOTE.a5);else if(audio.ctx){try{audio.ctx.suspend()}catch(e){}}};
 $('#rocketClose').onclick=hideOverlays;
 $('#lookoutClose').onclick=hideOverlays;
 $('#chapterClose').onclick=hideOverlays;

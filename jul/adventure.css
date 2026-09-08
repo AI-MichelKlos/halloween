@@ -1,0 +1,104 @@
+/* The night edition: the existing palace artwork carries the opening scene. */
+:root{--gold:#f7d589;--ink:#fff8e8;--night:#060f20}
+body{background:radial-gradient(ellipse at 25% 0,#17384f,transparent 65%),#050e18}
+#app{padding:clamp(8px,1.6vw,24px)}
+#shell{width:min(1530px,100%);height:min(880px,100%);border-color:#e8c47d50;border-radius:20px;grid-template-columns:minmax(0,1fr) 278px;box-shadow:0 30px 100px #000b,0 0 90px #26728514}
+#gameWrap{background:#060f18}
+#game{object-fit:contain}
+#hud{padding:22px 18px;gap:14px;background:linear-gradient(165deg,#17372f,#0a1f22 48%,#081523);border-color:#f5d58930}
+#hud:before{display:none}
+.brand{font-size:24px;padding-bottom:20px}.brand small{font-size:10px;letter-spacing:.12em;line-height:1.4}
+.label{font-size:11px;letter-spacing:.13em;color:#b5c5bc}
+#objective{font:500 14px/1.6 system-ui,sans-serif}
+.stat b{font-size:24px}.stat span{font-size:10px}.card{border-color:#ffe3a21c;border-radius:12px}
+#roomPill{font-size:15px;background:#081e28de;border:1px solid #f3d57855;border-radius:9px;padding:12px 18px 12px 36px;box-shadow:0 6px 25px #0005}
+#roomPill:before{top:10px}
+.mapDot{min-height:35px;font:700 12px system-ui}.mapDot.done{background:#285442;border-color:#e7ce7559}
+.smallBtn{min-height:42px;font-size:12px}.controls{flex-wrap:wrap;gap:6px}
+.controls .smallBtn{flex:1 1 28%}.controls #resetBtn{flex-basis:100%;min-height:28px;padding:3px;color:#a6b4b5;background:none;border:0;font-size:11px}
+button:focus-visible,a:focus-visible{outline:3px solid #fff0bd;outline-offset:4px}
+.overlay{background:#04111ed9;backdrop-filter:blur(10px);padding:20px}
+.panel{border-color:#e9d07a50;background:linear-gradient(145deg,#14352e,#0a1c28);border-radius:18px}
+.lead{font-size:16px}.hint{line-height:1.5}
+.primary{background:linear-gradient(115deg,#fff0b5,#edc26c);border:1px solid #fff0bd;box-shadow:0 4px 0 #976531,0 12px 32px #0006;padding:15px 28px;min-height:48px}
+.secondary{min-height:44px}
+#start{padding:0;overflow:auto;background:#071320;backdrop-filter:none;isolation:isolate}
+#start .panel{position:relative;isolation:isolate;width:100%;min-height:100%;max-height:none;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;padding:clamp(28px,5.5vw,78px);border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+#start .palaceHero{position:absolute;inset:0;z-index:-2;height:100%;width:100%;border:0;background:#091728}
+#start .palaceHero:before{display:none}
+#start .palaceHero img{height:100%;width:100%;object-fit:cover;object-position:60% center;filter:none;animation:palaceAwakens 18s ease-out both}
+#start .palaceHero:after{background:linear-gradient(90deg,#030c18dc,transparent 95%),linear-gradient(0deg,#040d1bf5,transparent 92%);box-shadow:none}
+#start h1{max-width:720px;font-size:clamp(46px,6.5vw,88px);line-height:1;letter-spacing:-.045em;font-weight:400;color:#fff3d4;text-shadow:0 3px 32px #0008;margin:20px 0}
+#start h1 em{display:block;font-weight:400;color:#f6d78c;font-style:italic}
+#start .lead{margin:0 0 27px;padding:0;max-width:510px;color:#e1e8ea;font:400 clamp(15px,1.35vw,18px)/1.75 system-ui,sans-serif;text-shadow:0 2px 10px #000}
+#start .row{padding:0;margin:0;justify-content:flex-start;gap:14px}
+#start>.panel>.hint{margin:22px 0 0;padding:0;font-size:12px;color:#b1c3cd}
+.edition{color:#e8d8b3;text-transform:uppercase;letter-spacing:.24em;font:700 11px/1.5 system-ui}
+.startMeta{display:flex;flex-wrap:wrap;gap:12px 24px;margin:0 0 28px;color:#cad7d6;font:500 12px system-ui}
+.startMeta span{padding-bottom:7px;border-bottom:1px solid #f8d79035}
+.startSnow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+.expedition{display:grid;gap:9px}
+.glintCounter{display:flex;align-items:baseline;justify-content:space-between;color:#c5d6cf;font-size:12px}
+.glintCounter b{font:700 22px Georgia,serif;color:#f6d78c}
+.dashButton{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px;background:linear-gradient(90deg,#2a5049 var(--charge,100%),#132b2c 0);border:1px solid #ead49455;border-radius:9px;padding:8px 11px;color:#f7e9c4;cursor:pointer;font-size:12px}
+kbd{font:700 10px system-ui;background:#ffffff10;border:1px solid #ffffff30;padding:3px 5px;border-radius:4px}
+.expeditionButtons{display:flex;gap:6px}.expeditionButtons button{flex:1}
+#guideBtn[aria-pressed="true"]{background:#ba914330;border-color:#eacb79;color:#ffe49b}
+#roomArrival{position:absolute;z-index:5;left:50%;top:22%;transform:translate(-50%,-8px);width:min(80%,570px);padding:16px;text-align:center;pointer-events:none;opacity:0;transition:opacity .45s,transform .45s;text-shadow:0 3px 14px #000}
+#roomArrival.show{opacity:1;transform:translate(-50%,0)}
+#roomArrival small{display:block;font:700 10px system-ui;letter-spacing:.3em;text-transform:uppercase;color:#f2dca6;margin-bottom:10px}
+#roomArrival strong{font:400 clamp(22px,3vw,40px)/1.1 Georgia;color:#fff6dc;background:#071523a3;box-shadow:0 0 40px 25px #071523a3}
+#reward{position:absolute;z-index:24;top:72px;left:50%;transform:translate(-50%,-15px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:90%;width:max-content;padding:14px 22px;border:1px solid #efcf805e;border-radius:12px;background:linear-gradient(110deg,#1b423aee,#0d2534f5);box-shadow:0 12px 40px #0007;transition:.3s}
+#reward.show{opacity:1;transform:translate(-50%,0)}
+#reward .rewardIcon{font-size:30px;color:#ffe6a1}#reward strong{display:block;font:700 17px Georgia;color:#fff0c3}#reward small{display:block;margin-top:4px;font-size:12px;color:#c1d7d2}
+.journalPanel{width:min(980px,100%);text-align:left;padding:26px}
+.journalHeader{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:16px}.journalHeader h2{margin:4px 0 10px;font-weight:400}.journalHeader p{font-size:13px;color:#bdcfcf;margin:0}
+.journalSummary{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}.journalSummary span{background:#ffffff08;border:1px solid #e9d07a2a;border-radius:7px;padding:8px 11px;color:#e2dcc8;font-size:12px}
+.journalRooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.journalRoom{display:flex;gap:10px;align-items:flex-start;text-align:left;min-height:89px;border:1px solid #e9d07a24;background:#ffffff05;border-radius:10px;color:#f2ead6;padding:13px;cursor:pointer}
+.journalRoom:disabled{opacity:.65;cursor:default}.journalRoom.here{border-color:#f4d185;background:#d6bb6520}.journalRoom:not(:disabled):hover{background:#ffffff13}
+.journalRoom .roomIcon{font-size:22px}.journalRoom strong{display:block;font-size:13px;line-height:1.35}.journalRoom small{display:block;margin-top:6px;font-size:11px;line-height:1.45;color:#afc9bf}
+.journalRoom .roomGlimts{color:#efcf7e;letter-spacing:2px}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 2px}.badge{padding:7px 10px;border:1px solid #ffffff15;border-radius:7px;color:#95aaa7;font-size:11px}.badge.earned{border-color:#edd08275;color:#ffe3a0;background:#e8c76012}
+#journal .journalFoot{font-size:12px;line-height:1.5;color:#b6c9c5;margin:17px 0 0}
+.tapestryHunt{position:relative;aspect-ratio:1.85;width:100%;overflow:hidden;border-radius:12px;border:1px solid #e9ce7880;background:url('riddersalen-jul.webp') center/cover}
+.tapestryStar{position:absolute;width:42px;height:42px;transform:translate(-50%,-50%);border:0;border-radius:50%;background:#24180b30;color:#ffe99b;text-shadow:0 0 8px #ffe087;font-size:21px;cursor:pointer;animation:starBreath 2.8s ease-in-out infinite}
+.tapestryStar.found{background:#29563bdd;color:#fff5c6;font-size:26px;animation:none;border:1px solid #e8d18b;cursor:default}
+.huntCount{margin:10px 0;color:#f0d798;font:700 16px Georgia}
+.finalePanel{width:min(650px,100%)}.finalePanel .edition{margin-bottom:15px}
+.bellRhythm{position:relative;width:220px;height:220px;border-radius:50%;margin:24px auto;background:radial-gradient(circle,#f7d5851c,transparent 68%);border:1px solid #f7d58533;box-shadow:0 0 70px #edc4700d;display:grid;place-items:center}
+.bellRhythm .bellFace{font-size:74px;filter:drop-shadow(0 0 18px #f7cc6766)}
+.bellRhythm .ring{position:absolute;inset:0;border:3px solid #ecbb6266;border-radius:50%;transform:scale(var(--ring,1))}
+.bellRhythm .targetRing{position:absolute;inset:43px;border:10px solid #ffdc8270;border-radius:50%;box-shadow:0 0 25px #f5d08230}
+.bellRhythm.ready .ring{border-color:#fff3bd;box-shadow:0 0 28px #ffdf8b}
+.bellRhythm.hit .bellFace{animation:bellSwing .7s ease-out}
+.finaleNotes{font-size:27px;color:#ffe49b;letter-spacing:15px;margin:12px 0}
+#finaleHint{min-height:44px;color:#c9dcd4;font-size:14px;line-height:1.5}
+#win{background:linear-gradient(#061325b0,#061325ef),url('christiansborg-jul.webp') center/cover;isolation:isolate}
+#win .panel{background:#071b23d9;backdrop-filter:blur(5px);z-index:1}#win h1{font-weight:400;text-shadow:none}
+#fireworks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.winExtra{color:#f1d68b;font-size:14px;margin:18px 0}.winExtra small{display:block;color:#c0d0cd;margin-top:6px;font-size:12px}
+#quickBar{display:none}
+@keyframes palaceAwakens{from{transform:scale(1.08)}to{transform:scale(1)}}
+@keyframes starBreath{50%{opacity:.4;filter:brightness(1.3)}}
+@keyframes bellSwing{20%{transform:rotate(14deg)}50%{transform:rotate(-10deg)}80%{transform:rotate(5deg)}}
+@media(max-width:1050px){#shell{grid-template-columns:minmax(0,1fr) 240px}#hud{padding:16px 12px;gap:10px}.brand{font-size:21px}.card{padding:10px}}
+@media(max-width:900px){
+ #app{padding:0}#shell{display:flex;flex-direction:column;height:100dvh;width:100%;border:0;border-radius:0}#shell:after{display:none}
+ #gameWrap{flex:1;min-height:0;height:auto;width:100%}#game{width:100%;height:100%}
+ #hud{position:relative;inset:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%;max-height:none;gap:7px 12px;border-radius:0;border:0;border-top:1px solid #d9c37542;padding:10px 13px;background:#0b2228;overflow:visible;box-shadow:none}
+ #hud>.brand,#hud>#mapCard,#hud>.expedition,#hud>.controls{display:none}
+ #hud>.card{padding:0;border:0;background:none;box-shadow:none}#hud .label{display:none}#objective{font-size:12px;line-height:1.4}
+ #hud .stats{align-self:center;display:flex;gap:7px}.stat{padding:4px 7px;min-width:52px}.stat b{font-size:18px}.stat span{font-size:9px}
+ #quickBar{display:flex;grid-column:1/-1;gap:6px}#quickBar button{font-size:12px;min-height:37px;padding:6px;flex:1}#quickDash{background:#284e45}
+ #roomPill{font-size:12px;top:10px;left:10px;padding:10px 12px 10px 31px}#roomPill:before{top:7px;left:10px}
+ #start .panel{padding:32px 26px;justify-content:flex-end}#start .palaceHero img{object-position:63% center}#start h1{font-size:clamp(40px,8vw,65px);margin:15px 0}#start .lead{font-size:15px;line-height:1.6;max-width:500px;margin-bottom:21px}#start>.panel>.hint{font-size:11px;margin-top:20px}.startMeta{margin-bottom:22px}
+ .journalRooms{grid-template-columns:repeat(2,minmax(0,1fr))}.journalPanel{padding:20px}.journalHeader h2{font-size:26px}
+ #reward{top:53px;padding:10px 15px}#reward strong{font-size:15px}#toast{bottom:165px;font-size:12px}
+ .dpad{bottom:10px;left:10px}#actionBtn{bottom:24px;right:12px}
+}
+@media(max-width:450px){.overlay{padding:12px}.journalRooms{grid-template-columns:1fr}.journalRoom{min-height:68px}.journalSummary{gap:5px}.journalSummary span{padding:6px;font-size:11px}#start .panel{padding:26px 23px}#start h1{font-size:44px}.edition{font-size:10px}#start .lead{font-size:14px}.startMeta{gap:10px;font-size:11px}#start>.panel>.hint{max-width:290px}.tapestryHunt{aspect-ratio:1.4}.finalePanel{padding:18px}.bellRhythm{width:180px;height:180px}.bellRhythm .targetRing{inset:34px;border-width:8px}}
+@media(max-height:620px){#start .panel{padding:22px 35px}#start h1{font-size:42px;margin:12px 0}#start .lead{font-size:13px;line-height:1.5;max-width:580px;margin-bottom:15px}.startMeta{margin-bottom:15px}#start>.panel>.hint{margin-top:12px}#start .primary,#start .secondary{min-height:40px;padding:10px 20px}.bellRhythm{width:150px;height:150px;margin:12px auto}.bellRhythm .targetRing{inset:28px;border-width:7px}.finalePanel h2{font-size:26px}.finalePanel .lead{font-size:13px}.finalePanel .edition{display:none}.finaleNotes{margin:5px 0}}
+@media(max-width:900px) and (orientation:landscape) and (max-height:620px){#shell{display:grid;grid-template-columns:minmax(0,1fr) 190px}#gameWrap{height:100%}#hud{display:flex;flex-direction:column;justify-content:center;height:100%;border-top:0;border-left:1px solid #d9c37542}#quickBar{display:flex;flex-direction:column}#hud .stats{width:100%;justify-content:center}#objective{font-size:12px}.startMeta{display:none}#start .lead{max-width:520px}.dpad{transform:scale(.8);transform-origin:left bottom}#actionBtn{width:65px;height:65px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+body.calm *,body.calm *:before,body.calm *:after{animation:none!important;transition:none!important}

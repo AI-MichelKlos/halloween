@@ -2589,7 +2589,14 @@ $('#chapterClose').onclick=hideOverlays;
 $('#residentStoryClose').onclick=()=>{const room=residentStoryRoom;hideOverlays();if(room)toast(room.residentName+' slutter sig til juleoptoget.',3200);residentStoryRoom=null};
 $('#resetBtn').onclick=()=>{if(confirm('Vil du starte hele julemissionen forfra?')){reset();showOverlay('start');refreshStart()}};
 $('#againBtn').onclick=()=>{reset();showOverlay('start');refreshStart()};$('#stayBtn').onclick=()=>{hideOverlays();confetti=[]};
-function refreshStart(){const d=load();$('#continueBtn').classList.toggle('hidden',!d);if(d)$('#continueBtn').textContent='Fortsæt missionen'}
+function refreshStart(){
+ const saved=!!load(),start=$('#startBtn'),resume=$('#continueBtn');
+ resume.classList.toggle('hidden',!saved);
+ resume.classList.toggle('primary',saved);resume.classList.toggle('secondary',!saved);
+ start.classList.toggle('primary',!saved);start.classList.toggle('secondary',saved);
+ resume.textContent='Fortsæt missionen';start.textContent=saved?'Nyt eventyr':'Begynd missionen';
+ if(saved)start.parentNode.insertBefore(resume,start);
+}
 adventure=window.createBorgenAdventure({
  rooms,byId,canvas:cv,state:()=>state,playing:()=>playing,keys:()=>keys,quality:()=>qual,sound:()=>sound,
  countTasks,countResidents,allReady,taskPos,residentPos,save,toast,tone,bell,chime,showOverlay,hideOverlays,completeMission,win,

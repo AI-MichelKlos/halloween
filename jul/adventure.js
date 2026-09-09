@@ -12,6 +12,24 @@ window.createBorgenAdventure = function (game) {
   let clock = 0, musicAt = 0, lastRoom = '', knownBadges = new Set(), rewardTimer = 0, arrivalTimer = 0;
   let score = -1, lastCharge = -1, finale = null, fireworkAt = 0, celebrationTime = 0;
   let rewardQueue = [], activeReward = false, winWasVisible = false;
+  let companionWait = 8, companionCooldown = 0;
+  const spokenRooms = new Set();
+  const roomRemarks = {
+    slotsplads: ['slotsplads', 'Den snebunke var altså mindre, da vi gik forbi sidst.'],
+    rigsdagsgaard: ['samtale', 'Mon juleposten også kommer ned i musehullerne?'],
+    vandrehallen: ['slotsplads', 'Sikke en lang gang. Godt, vi har korte ben og god tid!'],
+    folketingssalen: ['folketingssalen', '179 stole. Mon nogen har husket en lille plads til os?'],
+    samtale: ['samtale', 'Mit forslag er enkelt: Alle får et stykke ost.'],
+    landstingssalen: ['slotskirke', 'Her lyder selv et lille pip højtideligt.'],
+    udvalg: ['samtale', 'Jeg stemmer for at åbne den største pakke først.'],
+    finans: ['ruiner', 'Er der mon sat penge af til ekstra risengrød?'],
+    snapstinget: ['snapstinget', 'Jeg kan lugte risengrød!'],
+    riddersalen: ['ruiner', 'Tænk, hvor god man kunne være til gemmeleg bag de gobeliner.'],
+    slotskirke: ['slotskirke', 'Shhh. Selv mine poter får ekko herinde.'],
+    stalde: ['stalde', 'De heste kan høre en gulerod knække på lang afstand.'],
+    ruiner: ['ruiner', 'Hvis de her sten kunne tale, ville vi aldrig nå hjem til jul.'],
+    taarn: ['slotsplads', 'Heroppe ser selv den største snedrive lille ud!']
+  };
   const positions = rooms.map((room, i) => [
     { id: room.id + ':0', x: 150 + i * 37 % 160, y: 330 + i * 23 % 100 },
     { id: room.id + ':1', x: 580 + i * 41 % 145, y: 290 + i * 19 % 135 },
@@ -69,6 +87,7 @@ window.createBorgenAdventure = function (game) {
     });
     if (lastRoom !== game.state().room) {
       lastRoom = game.state().room;
+      companionWait = 8;
       particles = [];
       dashLeft = 0;
       guideTarget = null;
@@ -84,6 +103,7 @@ window.createBorgenAdventure = function (game) {
   function resetSession() {
     particles = []; dashLeft = 0; cooldown = 0; finale = null; lastRoom = '';
     rewardQueue = []; activeReward = false; knownBadges = new Set(); celebrationTime = 0;
+    companionWait = 8; companionCooldown = 0; spokenRooms.clear();
     clearTimeout(rewardTimer); clearTimeout(arrivalTimer);
     $('#reward').classList.remove('show');
     sync(false);
@@ -314,6 +334,22 @@ window.createBorgenAdventure = function (game) {
     melody.forEach((freq, i) => game.bell(freq, 2.8, .014, i * .65));
   }
 
+  function companionRemark(dt) {
+    companionWait = Math.max(0, companionWait - dt);
+    companionCooldown = Math.max(0, companionCooldown - dt);
+    const state = game.state(), remark = roomRemarks[state.room];
+    if (!remark || spokenRooms.has(state.room) || companionWait || companionCooldown) return;
+    // Leave mission hints and celebrations time to finish before a friend speaks.
+    if ($('#toast').classList.contains('show') || activeReward || rewardQueue.length) return;
+    const followers = rooms.filter((room) => room.resident && state.residents[room.id]);
+    if (!followers.length) return;
+    const speaker = followers.find((room) => room.id === remark[0]) || followers[spokenRooms.size % followers.length];
+    const name = speaker.residentName + (speaker.resident === 'mus' ? ' Mus' : ' Nisse');
+    game.toast(name + ': »' + remark[1] + '«', 4500);
+    spokenRooms.add(state.room);
+    companionCooldown = 35;
+  }
+
   function tick(dt) {
     clock += dt;
     if (isVisible('start')) drawIntro();
@@ -350,7 +386,7 @@ window.createBorgenAdventure = function (game) {
     particles.forEach((p) => { p.life -= dt * 1.2; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += dt * 30; });
     particles = particles.filter((p) => p.life > 0);
     guideTarget = guide ? guidePoint() : null;
-    flushReward(); ambientMusic();
+    flushReward(); ambientMusic(); companionRemark(dt);
   }
 
   function drawWorld(ctx) {

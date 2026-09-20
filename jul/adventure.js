@@ -135,6 +135,9 @@ window.createBorgenAdventure = function (game) {
       if (item.task && !state.tasks[id]) return game.taskPos(item);
       if (item.resident && !state.residents[id]) return { x: game.residentPos[id][0], y: game.residentPos[id][1] };
       if (id === 'taarn' && game.allReady() && !state.won) return game.taskPos(item);
+      if (state.won) {
+        return positions[rooms.findIndex((r) => r.id === id)].find((point) => !state.glimts.includes(point.id)) || null;
+      }
       return null;
     };
     if (destination(room.id)) return destination(room.id);

@@ -6,7 +6,7 @@ window.createBorgenAdventure = function (game) {
   const roomIds = new Set(rooms.map((room) => room.id));
   const totalGlimts = rooms.length * 3;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let prefs = { calm: reducedMotion.matches, music: false };
+  let prefs = { calm: reducedMotion.matches, music: false, song: true };
   try { Object.assign(prefs, JSON.parse(localStorage.getItem('borgenJulPreferences') || '{}')); } catch (_) {}
   let particles = [], dashLeft = 0, cooldown = 0, guide = false, guideTarget = null;
   let clock = 0, musicAt = 0, lastRoom = '', knownBadges = new Set(), rewardTimer = 0, arrivalTimer = 0;
@@ -329,13 +329,42 @@ window.createBorgenAdventure = function (game) {
     g.globalAlpha = 1;
   }
 
-  function ambientMusic() {
-    if (!prefs.music || !game.sound() || !game.playing() || document.hidden || clock < musicAt) return;
-    musicAt = clock + 4.8;
-    const melodies = [[293.66,369.99,440,587.33],[329.63,392,493.88,659.25],[293.66,440,587.33,739.99]];
-    const melody = melodies[Math.floor(clock / 4.8) % melodies.length];
-    melody.forEach((freq, i) => game.bell(freq, 2.8, .014, i * .65));
+  /* Baggrundsmusik: Winter_at_Christiansborg.mp3 spiller stille i løkke, når eventyret er i gang. */
+  const MUSIC_VOLUME = .22;
+  const bgMusic = new Audio('Winter_at_Christiansborg.mp3');
+  bgMusic.loop = true; bgMusic.preload = 'auto';
+  let musicLevel = 0, musicGain = null, musicCtx = null, musicFailed = false;
+  // iPhone og iPad tillader ikke at skrue ned via .volume, så der bruges en lydforstærker i stedet.
+  const volumeLocked = (() => { try { bgMusic.volume = .5; const locked = bgMusic.volume === 1; bgMusic.volume = 1; return locked; } catch (_) { return true; } })();
+  function setMusicLevel(v) {
+    musicLevel = v;
+    if (musicGain) musicGain.gain.value = v; else if (!volumeLocked) bgMusic.volume = v;
   }
+  function prepareMusicGain() {
+    if (!volumeLocked || musicGain) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      musicCtx = new AC();
+      musicGain = musicCtx.createGain(); musicGain.gain.value = musicLevel;
+      musicCtx.createMediaElementSource(bgMusic).connect(musicGain);
+      musicGain.connect(musicCtx.destination);
+    } catch (_) { musicGain = null; }
+  }
+  setMusicLevel(0);
+  bgMusic.addEventListener('error', () => { musicFailed = true; });
+  function ambientMusic(dt) {
+    if (musicFailed) return;
+    const want = prefs.song && !document.hidden && $('#start').classList.contains('hidden');
+    const target = want ? MUSIC_VOLUME : 0;
+    const step = (dt || 0) * (want ? .12 : .6);
+    setMusicLevel(musicLevel < target ? Math.min(target, musicLevel + step) : Math.max(target, musicLevel - step));
+    if (want && bgMusic.paused) {
+      prepareMusicGain();
+      if (musicCtx && musicCtx.state === 'suspended') musicCtx.resume().catch(() => {});
+      const p = bgMusic.play(); if (p && p.catch) p.catch(() => {});
+    } else if (!want && !bgMusic.paused && musicLevel <= .001) bgMusic.pause();
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { bgMusic.pause(); setMusicLevel(0); } });
 
   function companionRemark(dt) {
     companionWait = Math.max(0, companionWait - dt);
@@ -389,7 +418,7 @@ window.createBorgenAdventure = function (game) {
     particles.forEach((p) => { p.life -= dt * 1.2; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += dt * 30; });
     particles = particles.filter((p) => p.life > 0);
     guideTarget = guide ? guidePoint() : null;
-    flushReward(); ambientMusic(); companionRemark(dt);
+    flushReward(); ambientMusic(dt); companionRemark(dt);
   }
 
   function drawWorld(ctx) {
@@ -438,8 +467,8 @@ window.createBorgenAdventure = function (game) {
     document.body.classList.toggle('calm', !!prefs.calm);
     $('#motionBtn').textContent = prefs.calm ? 'Rolige effekter: til' : 'Rolige effekter: fra';
     $('#motionBtn').setAttribute('aria-pressed', String(!!prefs.calm));
-    $('#musicBtn').textContent = prefs.music ? 'Musik: til' : 'Musik: fra';
-    $('#musicBtn').setAttribute('aria-pressed', String(!!prefs.music));
+    $('#musicBtn').textContent = prefs.song ? 'Musik: til' : 'Musik: fra';
+    $('#musicBtn').setAttribute('aria-pressed', String(!!prefs.song));
     preferencesSave();
   }
 
@@ -450,7 +479,7 @@ window.createBorgenAdventure = function (game) {
   $('#ringBellBtn').onclick = ringBell;
   $('#finaleClose').onclick = () => { finale = null; game.hideOverlays(); };
   $('#motionBtn').onclick = () => { prefs.calm = !prefs.calm; updatePreferences(); };
-  $('#musicBtn').onclick = () => { prefs.music = !prefs.music; musicAt = 0; updatePreferences(); };
+  $('#musicBtn').onclick = () => { prefs.song = !prefs.song; updatePreferences(); };
   $('#quickPause').onclick = () => { if (game.playing()) game.showOverlay('info'); };
   const effectsBtn = document.createElement('button');
   effectsBtn.className = 'secondary';

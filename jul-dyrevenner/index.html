@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d37">
+  <meta name="description" content="Et lille juleeventyr på Christiansborg for de yngste: find tre dyr og deres mad.">
+  <title>Julens dyrevenner på Borgen</title>
+  <style>
+    :root{font-family:ui-rounded,"Trebuchet MS",Arial,sans-serif;color:#fff9e8;background:#102a2c;--gold:#ffdb82;--red:#b92e48;--green:#174d42}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,#39605a 0,#183c3c 48%,#0e292c 100%);overflow-x:hidden}
+    body:before{content:"✦  ·  ❄  ·  ✦  ·  ❄  ·  ✦  ·  ❄  ·  ✦";position:fixed;top:8px;left:0;width:100%;text-align:center;letter-spacing:1.2em;color:#fff8bd50;pointer-events:none;z-index:0}
+    button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:4px solid #ffeb77;outline-offset:4px}
+    .shell{position:relative;max-width:1050px;margin:auto;padding:22px 18px 40px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}.brand{font-weight:900;letter-spacing:.03em;color:var(--gold)}.brand span{color:#fff;font-weight:600}.smallButton{border:2px solid #ffe8b9a3;background:#173c37;color:#fff;border-radius:18px;padding:10px 15px;font-weight:800;min-height:48px}
+    .card{overflow:hidden;border:3px solid #e9c17e;border-radius:30px;background:#18383a;box-shadow:0 20px 55px #031719aa,0 0 0 7px #fff2ca11}.hidden{display:none!important}
+    .introHero{height:clamp(220px,38vw,385px);background:linear-gradient(0deg,#10272bc7,transparent 50%),url('../jul/christiansborg-jul.webp') center 54%/cover;display:flex;align-items:end;justify-content:center;padding:24px}
+    .introHero .seal{font-size:clamp(64px,12vw,112px);filter:drop-shadow(0 8px 4px #0016);animation:bob 2.6s ease-in-out infinite}
+    .introText{text-align:center;padding:20px 20px 34px;background:radial-gradient(ellipse at top,#225247,#173b3a 70%)}h1{font-family:Georgia,serif;line-height:1.05;font-size:clamp(36px,7vw,64px);margin:0 0 10px;color:#ffe5a2;text-shadow:0 3px 0 #632a30}h1 em{display:block;font-style:normal;color:white}.introText p{font-size:clamp(18px,2.6vw,24px);line-height:1.35;max-width:650px;margin:12px auto 21px}.introFaces{font-size:clamp(30px,6vw,50px);letter-spacing:.12em;margin:8px auto 20px}
+    .bigButton{border:3px solid #fff6d8;background:linear-gradient(#ffda85,#f7b950);color:#523215;border-radius:21px;padding:14px 24px;min-width:205px;min-height:62px;font-size:clamp(19px,3vw,25px);font-weight:900;box-shadow:0 7px 0 #9b5f2e,0 12px 21px #0018}.bigButton:hover{transform:translateY(-2px)}.bigButton:active{transform:translateY(5px);box-shadow:0 2px 0 #9b5f2e}.bigButton[disabled]{opacity:.5;cursor:default}
+    .gameHead{background:#173b39;padding:15px 18px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px}.place{font:700 clamp(23px,4vw,37px)/1.1 Georgia,serif;color:#ffe2a1}.progress{white-space:nowrap;font-weight:900;background:#305952;border-radius:99px;padding:9px 13px;color:#fff3ce}.prompt{display:flex;align-items:center;justify-content:center;gap:12px;min-height:86px;text-align:center;background:#f8e9c7;color:#3e392d;padding:11px 16px;font-size:clamp(20px,3.4vw,30px);font-weight:900}.prompt .promptEmoji{font-size:clamp(38px,6vw,56px);line-height:1}.prompt small{display:block;font-size:clamp(14px,2vw,18px);font-weight:700;margin-top:3px}
+    .scene{height:clamp(315px,46vw,500px);position:relative;isolation:isolate;overflow:hidden;background:#26515b}.scene:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#122f33d9,transparent 36%),radial-gradient(ellipse at 50% 50%,transparent 42%,#0c273850)}
+    .scene.courtyard{background:linear-gradient(0deg,#0c273cd2,#184a8122 65%),url('../jul/christiansborg-jul.webp') center 65%/cover}
+    .scene.hall,.scene.party{background:linear-gradient(0deg,#2c162679,#39201014 70%),url('../jul/riddersalen-jul.webp') center 65%/cover}
+    .scene.pantry{background:repeating-linear-gradient(90deg,#765044 0 9%,#875847 9% 10%,#684539 10% 19%,#442f30 19% 20%);border-top:12px solid #b38352}
+    .scene.stable{background:linear-gradient(0deg,#47372c 0 24%,transparent 24%),repeating-linear-gradient(90deg,#725642 0 22%,#b18958 23%,#6e4c39 25%);border-top:12px solid #d3a66b}
+    .scene.feed{background:linear-gradient(0deg,#544633 0 23%,transparent 23%),repeating-linear-gradient(90deg,#526844 0 18%,#405839 18% 20%,#506842 20% 40%);border-top:12px solid #d5b26b}
+    .scene.table{background:linear-gradient(0deg,#4c2933 0 24%,transparent 24%),linear-gradient(110deg,#71404a,#9b5c57 48%,#64394c)}
+    .scene.pantry:before,.scene.stable:before,.scene.feed:before,.scene.table:before{content:"✦       🎄       ✦       🎁       ✦";position:absolute;top:12%;left:0;width:100%;font-size:clamp(35px,7vw,68px);text-align:center;white-space:pre;color:#ffe5a7;text-shadow:0 8px 15px #171d1a9c}
+    .scene.pantry:before{content:"🕯️       🎄       🕯️"}.scene.stable:before{content:"🔔       🎄       🔔"}.scene.feed:before{content:"✨       🎁       ✨"}.scene.table:before{content:"🕯️       🎄       🎁"}
+    .target{position:absolute;z-index:4;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:clamp(100px,15vw,152px);height:clamp(100px,15vw,152px);border:4px solid #ffe7ae;border-radius:32px;background:#193b38e8;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 10px 26px #0008,0 0 0 9px #ffeab435;transition:transform .2s,background .2s}
+    .target:hover{transform:translate(-50%,-50%) scale(1.07);background:#295c4e}.target .icon{font-size:clamp(57px,9vw,92px);line-height:1.05;filter:drop-shadow(0 3px 1px #0005)}.target .look{font-size:15px;font-weight:900}.target.hint{animation:glow 1s ease-in-out infinite}.target.found{background:#33774d;box-shadow:0 0 0 12px #f7eb8f83,0 10px 24px #0008;cursor:default}.target.found .look{font-size:28px}
+    .decor{position:absolute;font-size:clamp(30px,5.5vw,62px);z-index:1;filter:drop-shadow(0 5px 3px #0005);pointer-events:none}.decor.a{left:8%;top:27%}.decor.b{right:9%;top:16%}.decor.c{right:20%;bottom:26%}.scene.courtyard .decor,.scene.hall .decor{opacity:.88}
+    .parade{position:absolute;z-index:5;bottom:0;left:0;right:0;min-height:107px;padding:9px 10px 7px;display:flex;align-items:end;justify-content:center;gap:clamp(3px,1.5vw,17px);background:linear-gradient(0deg,#123831ed,#173b39ae 72%,transparent);overflow:hidden}.friend{text-align:center;min-width:65px;animation:walkIn .7s both;animation-delay:var(--delay);filter:drop-shadow(0 4px 1px #0006)}.friend span{display:block;font-size:clamp(39px,7vw,72px);line-height:1.05;animation:bob .7s ease-in-out infinite alternate;animation-delay:var(--delay)}.friend b{display:block;padding:2px 5px;border-radius:8px;background:#fff7d7;color:#3e3427;font-size:clamp(11px,1.6vw,15px)}.friend.me span{font-size:clamp(49px,8vw,78px)}
+    .controls{min-height:92px;background:#173b39;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.status{font-size:clamp(15px,2.3vw,20px);font-weight:800;color:#fff0c7;max-width:55%}.next{min-width:175px}.tip{display:block;text-align:center;margin:12px;color:#d1e5da;font-size:14px}.win{padding:30px 18px 38px;text-align:center;background:radial-gradient(circle at center,#38715c,#133934 70%)}.win h1{font-size:clamp(34px,6vw,62px)}.win p{font-size:clamp(19px,2.7vw,25px);line-height:1.35;max-width:650px;margin:16px auto 23px}.winAnimals{font-size:clamp(52px,10vw,96px);margin:15px 0;animation:bob 1.6s infinite alternate}.winPicture{height:clamp(180px,35vw,330px);margin:-30px -18px 24px;background:linear-gradient(0deg,#133934,transparent 72%),url('../jul/riddersalen-jul.webp') center/cover;display:flex;align-items:end;justify-content:center;font-size:80px}.win .stars{color:#ffe08b;font-size:33px;letter-spacing:.1em}.win .bigButton{margin:10px}
+    @keyframes bob{to{transform:translateY(-7px)}}@keyframes walkIn{from{transform:translateX(-110vw);opacity:.1}to{transform:translateX(0);opacity:1}}@keyframes glow{50%{box-shadow:0 0 0 16px #ffed8494,0 10px 24px #0008}}
+    @media(max-width:600px){.shell{padding:10px 8px 30px}.card{border-radius:22px}.gameHead{padding:12px}.scene{height:400px}.target{width:112px;height:112px}.decor.c{display:none}.controls{flex-wrap:wrap;justify-content:center}.status{max-width:none;width:100%;text-align:center}.next{width:100%}.friend{min-width:50px}.introHero{height:240px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="top"><div class="brand">🎄 Borgen <span>for de mindste</span></div><button id="sound" class="smallButton" type="button" aria-label="Læs op">🔊 Læs op</button></div>
+    <section id="intro" class="card" aria-labelledby="title">
+      <div class="introHero"><span class="seal" aria-hidden="true">🎅</span></div>
+      <div class="introText"><h1 id="title">Julens dyrevenner <em>på Borgen</em></h1><p>Tre små dyr er blevet væk på Christiansborg. Find dem, giv dem julemad, og tag dem med hen til juletræet!</p><div class="introFaces" aria-hidden="true">🐭 🍚 🐴 🥕 🐈 🐟</div><button id="start" class="bigButton" type="button">🎄 Start eventyret</button></div>
+    </section>
+    <section id="game" class="card hidden" aria-label="Julespillet">
+      <div class="gameHead"><div id="place" class="place"></div><div id="progress" class="progress"></div></div>
+      <div class="prompt"><span id="promptEmoji" class="promptEmoji" aria-hidden="true"></span><div><span id="promptText"></span><small id="promptHelp"></small></div></div>
+      <div id="scene" class="scene"><span class="decor a" aria-hidden="true">🎄</span><span class="decor b" aria-hidden="true">✨</span><span class="decor c" aria-hidden="true">🎁</span><button id="target" class="target" type="button"><span class="icon"></span><span class="look">Tryk her</span></button><div id="parade" class="parade" aria-label="Dine dyrevenner"></div></div>
+      <div class="controls"><div id="status" class="status" role="status" aria-live="polite"></div><button id="next" class="bigButton next hidden" type="button">Næste rum ➜</button><button id="hint" class="smallButton" type="button">✨ Vis mig</button></div>
+    </section>
+    <section id="ending" class="card hidden win" aria-labelledby="endTitle"><div class="winPicture" aria-hidden="true">🎄</div><div class="stars" aria-hidden="true">✦ ✦ ✦</div><h1 id="endTitle">Alle er med til jul!</h1><div class="winAnimals" aria-hidden="true">🧒 🐭 🐴 🐈</div><p>Musen, ponyen og katten fulgte dig hele vejen. Nu kan julefesten begynde på Christiansborg!</p><button id="again" class="bigButton" type="button">🎄 Spil igen</button></section>
+    <span class="tip">Ingen tabere, ingen tidspres. Store knapper til små fingre.</span>
+  </main>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const rooms = [
+      {place:'Rigsdaggården',scene:'courtyard',ask:'Find den lille mus!',help:'Se efter en mus i sneen.',icon:'🐭',x:'24%',y:'46%',kind:'animal',name:'Musen',done:'Hurra! Musen går med dig.'},
+      {place:'Snapstinget',scene:'pantry',ask:'Find risengrød til musen!',help:'Tryk på skålen med grød.',icon:'🍚',x:'70%',y:'48%',kind:'food',done:'Mums! Musen fik risengrød.'},
+      {place:'De Kongelige Stalde',scene:'stable',ask:'Find den søde pony!',help:'Se efter ponyen i stalden.',icon:'🐴',x:'27%',y:'50%',kind:'animal',name:'Ponyen',done:'Juhu! Ponyen går også med.'},
+      {place:'Foderkammeret',scene:'feed',ask:'Find en gulerod!',help:'Ponyen er sulten.',icon:'🥕',x:'69%',y:'51%',kind:'food',done:'Knask! Ponyen fik sin gulerod.'},
+      {place:'Riddersalen',scene:'hall',ask:'Find julekatten!',help:'Se efter katten mellem julepynten.',icon:'🐈',x:'71%',y:'48%',kind:'animal',name:'Katten',done:'Mjav! Katten følger også med.'},
+      {place:'Julebordet',scene:'table',ask:'Find mad til katten!',help:'Tryk på fiskeskålen.',icon:'🐟',x:'29%',y:'49%',kind:'food',done:'Mums! Katten fik sin fisk.'}
+    ];
+    let index=0, found=false, friends=[];
+    const stopSpeech=()=>{if('speechSynthesis' in window) speechSynthesis.cancel()};
+    function speak(message){if(!('speechSynthesis' in window))return;stopSpeech();const utterance=new SpeechSynthesisUtterance(message);utterance.lang='da-DK';utterance.rate=.86;speechSynthesis.speak(utterance)}
+    function show(which){for(const id of ['intro','game','ending'])$(id).classList.toggle('hidden',id!==which)}
+    function parade(){const container=$('parade');container.replaceChildren();const all=[{icon:'🧒',name:'Dig'},...friends];all.forEach((friend,i)=>{const el=document.createElement('div');el.className='friend'+(i===0?' me':'');el.style.setProperty('--delay',(i*.12)+'s');const face=document.createElement('span');face.textContent=friend.icon;face.setAttribute('aria-hidden','true');const name=document.createElement('b');name.textContent=friend.name;el.append(face,name);container.append(el)})}
+    function render(){const room=rooms[index];found=false;show('game');$('place').textContent=room.place;$('progress').textContent=(index+1)+' / '+rooms.length+' ✨';$('promptEmoji').textContent=room.icon;$('promptText').textContent=room.ask;$('promptHelp').textContent=room.help;$('status').textContent='Tryk på '+(room.kind==='animal'?'dyret.':'maden.');$('scene').className='scene '+room.scene;$('target').style.setProperty('--x',room.x);$('target').style.setProperty('--y',room.y);$('target').querySelector('.icon').textContent=room.icon;$('target').querySelector('.look').textContent='Tryk her';$('target').classList.remove('found','hint');$('target').disabled=false;$('target').setAttribute('aria-label',room.ask);$('next').classList.add('hidden');$('hint').classList.remove('hidden');parade()}
+    function start(){stopSpeech();index=0;friends=[];render();speak('Velkommen! '+rooms[0].ask)}
+    $('start').addEventListener('click',start);$('again').addEventListener('click',start);
+    $('target').addEventListener('click',()=>{if(found)return;found=true;const room=rooms[index];if(room.kind==='animal')friends.push({icon:room.icon,name:room.name});$('target').classList.remove('hint');$('target').classList.add('found');$('target').disabled=true;$('target').querySelector('.look').textContent='⭐';$('status').textContent=room.done;$('promptText').textContent=room.done;$('promptHelp').textContent='Tryk på Næste rum.';$('next').textContent=index===rooms.length-1?'Til juletræet 🎄':'Næste rum ➜';$('next').classList.remove('hidden');$('hint').classList.add('hidden');parade();speak(room.done)});
+    $('next').addEventListener('click',()=>{stopSpeech();if(index===rooms.length-1){show('ending');speak('Alle er med til jul! Musen, ponyen og katten fulgte dig hele vejen.');return}index++;render();speak(rooms[index].ask)});
+    $('hint').addEventListener('click',()=>{const button=$('target');button.classList.remove('hint');void button.offsetWidth;button.classList.add('hint');button.focus();speak(rooms[index].ask+' Tryk på det, der lyser.')});
+    $('sound').addEventListener('click',()=>{const text=$('intro').classList.contains('hidden')?$('ending').classList.contains('hidden')?(found?rooms[index].done:rooms[index].ask):'Alle er med til jul!':'Find tre små dyr, og giv dem julemad. Tryk på Start eventyret.';speak(text)});
+  </script>
+</body>
+</html>
